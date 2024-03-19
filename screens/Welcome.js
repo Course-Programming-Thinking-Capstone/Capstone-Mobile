@@ -7,12 +7,12 @@ import back1 from '../assets/welcome/back.png'
 import pic1 from '../assets/welcome/pic1.png'
 import pic2 from '../assets/welcome/pic2.png'
 import pic3 from '../assets/welcome/pic3.png'
-
+import Swiper from 'react-native-swiper';
 
 const Page1 = ({ navigation }) => (
   <View>
     <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-      <Text style={{ textAlign: 'right', marginTop: hp('10%'), fontWeight: 'bold', fontSize: wp('4%'), color: '#83AFFA' }}>Skip</Text>
+      <Text style={{ textAlign: 'right', marginTop: hp('7%'),marginRight:wp('2%') ,fontWeight: 'bold', fontSize: wp('4%'), color: '#83AFFA' }}>Skip</Text>
     </TouchableOpacity>
     <Image style={styles.img1} source={pic1} />
     <Text style={styles.Title}>Discover Your <Text style={{ color: '#FFAD0E' }}>Learning Adventure</Text></Text>
@@ -20,9 +20,11 @@ const Page1 = ({ navigation }) => (
   </View>
 );
 
-const Page2 = () => (
+const Page2 = ({ navigation }) => (
   <View>
-    <Text style={{ textAlign: 'right', marginTop: hp('10%'), fontWeight: 'bold', fontSize: wp('4%'), color: '#83AFFA' }}>Skip</Text>
+    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+      <Text style={{ textAlign: 'right', marginTop: hp('7%'),marginRight:wp('2%') ,fontWeight: 'bold', fontSize: wp('4%'), color: '#83AFFA' }}>Skip</Text>
+    </TouchableOpacity>
     <Image style={styles.img1} source={welcome} />
     <Text style={styles.Title}>Stay Organized With <Text style={{ color: '#FFAD0E' }}>Bookmarks</Text></Text>
     <Text style={styles.Description}>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model</Text>
@@ -70,7 +72,7 @@ const Welcome = ({ goToNext, navigation }) => {
       case 1:
         return <Page1 goToNext={goToNextPage} navigation={navigation} />;
       case 2:
-        return <Page2 goToNext={goToNextPage} goToPrev={goToPrevPage} />;
+        return <Page2 goToNext={goToNextPage} navigation={navigation} goToPrev={goToPrevPage} />;
       case 3:
         return <Page3 goToPrev={goToPrevPage} />;
       default:
@@ -106,13 +108,13 @@ const styles = StyleSheet.create({
     marginBottom: hp('3%')
   },
   img1: {
-    width: wp('90%'),
+    width: wp('95%'),
     height: hp('50%'),
   },
   img2: {
     width: wp('90%'),
     height: hp('50%'),
-    marginTop: hp('12.5%')
+    marginTop: hp('10%')
   },
   Description: {
     fontSize: wp('4%'),

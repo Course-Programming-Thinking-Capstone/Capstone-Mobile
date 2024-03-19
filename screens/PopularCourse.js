@@ -3,6 +3,7 @@ import React from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import Ionicons from '@expo/vector-icons/Ionicons'
+import {isSmallPhone,isSmallTablet} from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const PopularCourse = () => {
     const Near = [
@@ -20,7 +21,7 @@ const PopularCourse = () => {
             <Image source={item.image} style={styles.CourseImage} />
             <View>
                 <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
-                    <Text style={{ color: 'orange', fontWeight: '500' }}>Best Seller</Text>
+                    <Text style={{ color: 'orange', fontWeight: '500',fontSize: isSmallPhone || isSmallTablet ? wp('3%'): wp('3.5%') }}>Best Seller</Text>
                 </View>
                 <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{item.name}</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
@@ -77,7 +78,13 @@ const styles = StyleSheet.create({
         paddingVertical: wp('2%'),
         borderRadius: 10,
         borderColor: '#E9E9E9',
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: 'black',
+        shadowOpacity: 0.9,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 20,
+        elevation:5,
+        backgroundColor:'white'
     },
     CourseImage: {
         width: wp('30%'),
@@ -85,4 +92,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginRight: wp('3%')
     },
+    List:{
+        paddingLeft:wp('1%'),
+        paddingBottom:hp('1%')
+    }
 })

@@ -5,6 +5,7 @@ import teacher from '../assets/Lesson/teacher1.png'
 import ProgressBar from 'react-native-progress/Bar';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useNavigation } from "@react-navigation/native";
+import right from '../assets/HomePage/right.png'
 const MyCourse = () => {
 
     const navigation = useNavigation();
@@ -12,7 +13,6 @@ const MyCourse = () => {
         { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg') },
         { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 VND', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg') },
         { id: '5', name: 'Lập trình with C/C++', teacher: 'CongLT', price: '3.500.000 VND', image: require('../assets/MyCourse/kid5.jpg') },
-        { id: '6', name: 'Lập trình with Android', teacher: 'CongLT', price: '4.500.000 VND', image: require('../assets/MyCourse/kid7.jpg') },
     ];
     const Done = [
         { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 VND', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg') },
@@ -82,6 +82,7 @@ const MyCourse = () => {
             numColumns={1}
             showsVerticalScrollIndicator={false}
             scrollEnabled={false}
+            contentContainerStyle={styles.List}
         />
     );
     const [index, setIndex] = useState(0);
@@ -130,23 +131,33 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         paddingLeft: wp('5%'),
-        paddingRight: wp('5%'),
     },
     Course: {
         flexDirection: 'row',
         marginTop: hp('1.5%'),
-        borderWidth: 2,
+        borderWidth: 1,
         width: wp('90%'),
         paddingHorizontal: hp('1%'),
         paddingVertical: wp('2%'),
         borderRadius: 10,
         borderColor: '#E9E9E9',
         alignItems: 'center',
+        shadowColor: 'black',
+        shadowOpacity: 0.9,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 20,
+        elevation:5,
+        backgroundColor:'white'
+        
     },
     CourseImage: {
         width: wp('30%'),
         height: hp('15%'),
         borderRadius: 10,
         marginRight: wp('3%')
+    },
+    List:{
+        paddingLeft:wp('1%'),
+        paddingBottom:hp('1%')
     }
 })

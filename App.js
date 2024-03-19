@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import back1 from './assets/welcome/back.png'
@@ -7,6 +7,7 @@ import welcome from './screens/Welcome'
 import Login from './screens/Login'
 import SignUp from './screens/SignUp'
 import HomePage from './screens/HomePage';
+import Schedule from './assets/HomePage/schedule.png';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -19,6 +20,20 @@ import TopMentor from './screens/TopMentor';
 import BookMark from './screens/BookMark';
 import Course from './screens/Course';
 import { LogBox } from 'react-native';
+import PayMethods from './screens/PayMethods';
+import ReviewSum from './screens/ReviewSum';
+import Payment from './screens/Payment';
+import Success from './screens/Success';
+import Order from './screens/Order';
+import OrderDetail from './screens/OrderDetail';
+import CancelOrder from './screens/CancelOrder';
+import CancelDetail from './screens/CancelDetail';
+import Profile from './screens/Profile';
+import ChildProcess from './screens/ChildProcess';
+import ChildDetail from './screens/ChildDetail';
+import StudyProcess from './screens/StudyProcess';
+import KidHome from './screens/KidHome';
+import KidCourse from './screens/KidCourse';
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -28,7 +43,9 @@ function MyTabs() {
     navigation.goBack();
   };
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{
+      tabBarHideOnKeyboard: true
+    }}>
       <Tab.Screen name="Home" component={HomePage} options={{
         tabBarIcon: ({ color, size }) => (
           <Image
@@ -70,7 +87,7 @@ function MyTabs() {
         ),
         headerTitleAlign: 'center'
       }} />
-      <Tab.Screen name="Cart" component={welcome} options={{
+      <Tab.Screen name="Order" component={Order} options={{
         tabBarIcon: ({ color, size }) => (
           <Image
             source={require('./assets/HomePage/cart.png')}
@@ -79,22 +96,55 @@ function MyTabs() {
         ),
         headerTitle: () => (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), marginLeft: wp('25%'), fontWeight: 'bold', color: '#223263' }}>My Account</Text>
+            <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), marginLeft: wp('32%'), fontWeight: 'bold', color: '#223263' }}>My Order</Text>
           </View>
         )
       }} />
-      <Tab.Screen name="Profile" component={welcome} options={{
+      <Tab.Screen name="Profile" component={Profile} options={{
         tabBarIcon: ({ color, size }) => (
           <Image
             source={require('./assets/HomePage/profile.png')}
             style={{ width: size, height: size }}
           />
+        ), headerShown: false
+      }} />
+    </Tab.Navigator>
+  );
+}
+function KidTab() {
+  const navigation = useNavigation();
+  return (
+    <Tab.Navigator screenOptions={{
+      tabBarHideOnKeyboard: true
+    }}>
+      <Stack.Screen name="Home" component={KidHome} options={{
+        tabBarIcon: ({ color, size }) => (
+          <Image
+            source={require('./assets/HomePage/house.png')}
+            style={{ width: size, height: size, }}
+          />
+        ), headerShown: false
+      }} />
+      <Tab.Screen name="Schedule" component={Order} options={{
+        tabBarIcon: ({ color, size }) => (
+          <Image
+            source={Schedule}
+            style={{ width: size, height: size }}
+          />
         ),
         headerTitle: () => (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), marginLeft: wp('25%'), fontWeight: 'bold', color: '#223263' }}>My Account</Text>
+            <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), marginLeft: wp('32%'), fontWeight: 'bold', color: '#223263' }}>My Order</Text>
           </View>
         )
+      }} />
+      <Tab.Screen name="Profile" component={Profile} options={{
+        tabBarIcon: ({ color, size }) => (
+          <Image
+            source={require('./assets/HomePage/profile.png')}
+            style={{ width: size, height: size }}
+          />
+        ), headerShown: false
       }} />
     </Tab.Navigator>
   );
@@ -142,9 +192,10 @@ export default function App() {
                 <Image style={{ width: wp('5%'), height: hp('3%') }} source={back1} />
               </TouchableOpacity>
             </View> */}
-              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263', marginLeft: wp('15%') }}>Popular Course</Text>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Popular Course</Text>
             </View>
-          )
+          ),
+          headerTitleAlign: 'center'
         }} />
         <Stack.Screen name="TopMentor" component={TopMentor} options={{
           tabBarIcon: ({ color, size }) => (
@@ -180,6 +231,147 @@ export default function App() {
               </TouchableOpacity>
             </View> */}
               <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Course</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center',
+        }} />
+        <Stack.Screen name="PayMethods" component={PayMethods} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Payment Method</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center'
+        }} />
+        <Stack.Screen name="ReviewSum" component={ReviewSum} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263', marginLeft: wp('10%') }}>Review Summary</Text>
+            </View>
+          )
+        }} />
+        <Stack.Screen name="Payment" component={Payment} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Payment</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center'
+        }} />
+        <Stack.Screen name="Success" component={Success} options={{ headerShown: false }} />
+        <Stack.Screen name="OrderDetail" component={OrderDetail} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Order Detail</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center'
+        }} />
+        <Stack.Screen name="CancelOrder" component={CancelOrder} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Cancel Order</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center'
+        }} />
+        <Stack.Screen name="CancelDetail" component={CancelDetail} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Cancel Detail</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center',
+        }} />
+        <Stack.Screen name="ChildProcess" component={ChildProcess} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>My Children</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center',
+        }} />
+        <Stack.Screen name="ChildDetail" component={ChildDetail} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Children Details</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center',
+        }} />
+        <Stack.Screen name="StudyProcess" component={StudyProcess} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Study Process</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center',
+        }} />
+        <Stack.Screen name="KidHome" component={KidTab} options={{ headerShown: false }} />
+        <Stack.Screen name="KidCourse" component={KidCourse} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>My Course</Text>
             </View>
           ),
           headerTitleAlign: 'center',

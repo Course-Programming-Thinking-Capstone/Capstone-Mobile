@@ -151,7 +151,7 @@ const SignUp = ({ navigation }) => {
           {confirmPasswordError ? <Text style={styles.errorText}>{confirmPasswordError}</Text> : null}
 
           <View style={styles.Button}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>{navigation.navigate('KidHome')}}>
               <Text style={styles.LoginTxt}>Sign Up</Text>
             </TouchableOpacity>
           </View>

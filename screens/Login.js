@@ -1,67 +1,53 @@
-import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { ActivityIndicator, Button, StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import background from '../assets/Login/giphy.gif'
 import ig from '../assets/Login/ig.png'
-import face from '../assets/Login/face1.jpg' 
+import face from '../assets/Login/face1.jpg'
 import google from '../assets/Login/google.png'
 import mail from '../assets/Login/email2.png'
 import pass from '../assets/Login/padlock.png'
 import CheckBox from 'expo-checkbox';
-
+import axios from 'axios'
+import { BASE_URL } from '../Api/Api'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Loading from '../Loading/Loading'
+import { login } from '../Api/Log'
 const Login = ({ navigation }) => {
-  // const [userName, setUsername] = useState('');
-  // const [userEmail, setUserEmail] = useState('');
-  // const [rePassword, setRePassword] = useState('');
-  // const [password, setPassword] = useState('');
-  // const handleSignUp = () => {
-  //     if (password == rePassword) {
-  //         axios.post("http://shoeshine-001-site1.ftempurl.com/api/users/register?role=2", {
-  //             // Thêm các trường dữ liệu đăng ký tài khoản vào đây
-  //             userName: userName,
-  //             userEmail: userEmail,
-  //             userPassword: password,
-  //             confirmPassword: rePassword,
-  //             // Các trường dữ liệu khác cần thiết
-  //         })
-  //             .then((response) => {
-  //                 // Xử lý phản hồi từ máy chủ sau khi đăng ký
-  //                 if (response.status === 200) {
-  //                     // Đăng ký thành công, bạn có thể điều hướng đến màn hình khác
-  //                     navigation.navigate('Login');
-  //                 }
-  //             })
-  //             .catch((err) => {
-  //                 Alert.alert('đăng kí thất bại !!!');
-  //             });
-  //     }
-  //     else {
-  //         Alert.alert("Password is not match !!!")
-  //     }
-  // };
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const handleLogin = () => {
+    login(phone, password, navigation, setLoading, setPhone, setPassword);
+  };
+
   const [isSelected, setSelection] = useState(false);
   return (
     <View style={styles.All}>
       <ImageBackground source={background} blurRadius={1.3} style={styles.backPic}>
         <View style={styles.Container}>
           <Text style={styles.Header}>Log In</Text>
-          <Text style={styles.Title}>Hi, Welcome back ,you've been missed</Text>
+          <Text style={styles.Title}>Hi, Welcome back, you've been missed</Text>
         </View>
         <View style={styles.Form}>
           <View style={styles.Email}>
             <Image source={mail} style={styles.Icon} />
             <TextInput style={styles.EmailTitle}
-              placeholder="Email"
+              placeholder="Phone"
+              value={phone}
+              onChangeText={text => setPhone(text)}
             />
           </View>
           <View style={styles.Pass}>
             <Image source={pass} style={styles.Icon} />
             <TextInput style={styles.EmailTitle}
               placeholder="Password"
-              secureTextEntry={true}
+              value={password}
+              secureTextEntry
+              onChangeText={text => setPassword(text)}
             />
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between',marginLeft:wp('7.3%'), marginTop: hp('2%') }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginLeft: wp('7.3%'), marginTop: hp('2%') }}>
             <View style={styles.checkboxContainer}>
               <CheckBox
                 value={isSelected}
@@ -70,11 +56,15 @@ const Login = ({ navigation }) => {
               />
               <Text style={{ fontSize: wp('3.2%'), color: 'blue', fontWeight: 'bold', marginLeft: wp('2%') }}>Remember Pass</Text>
             </View>
-            <Text style={{ fontSize: wp('3.2%'), color: 'blue', fontWeight: 'bold',marginRight:wp('6%') }}>Forgot Password</Text>
+            <Text style={{ fontSize: wp('3.2%'), color: 'blue', fontWeight: 'bold', marginRight: wp('6%') }}>Forgot Password</Text>
           </View>
           <View style={styles.Button}>
-            <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
-              <Text style={styles.LoginTxt}>Log In</Text>
+            <TouchableOpacity onPress={handleLogin}>
+              {loading ? (
+                <Loading />
+              ) : (
+                <Text style={styles.LoginTxt}>Log In</Text>
+              )}
             </TouchableOpacity>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%'), justifyContent: 'center' }}>
@@ -90,7 +80,7 @@ const Login = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity >
               <Image style={{
-                marginTop:hp('0.5%'),
+                marginTop: hp('0.5%'),
                 width: wp('13%'),
                 height: hp('6%'),
                 borderRadius: 10,
@@ -255,6 +245,6 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     alignSelf: 'center',
-    color:'blue'
+    color: 'blue'
   },
 })

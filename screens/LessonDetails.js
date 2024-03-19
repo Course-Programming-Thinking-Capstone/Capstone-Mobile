@@ -25,7 +25,8 @@ import video from '../assets/MyCourse/video.png'
 import { WebView } from 'react-native-webview';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { usePreventScreenCapture } from 'expo-screen-capture';
-
+import PayMethods from './PayMethods';
+import {isSmallPhone,isSmallTablet} from '../Responsive/Responsive'
 const LessonDetails = ({ route }) => {
     const [showVideo, setShowVideo] = useState(false);
     const lessons1 = [
@@ -188,7 +189,7 @@ const LessonDetails = ({ route }) => {
         ),
         lessons: () => (
             <View >
-                <Modal visible={showVideo} animationType="slide" transparent={true}>
+                <Modal visible={showVideo} animationType="slide" transparent={true} statusBarTranslucent={true}>
                     <View style={styles.modalContainer}>
                         <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
                             <Image source={close} style={styles.buttonClose} />
@@ -196,7 +197,7 @@ const LessonDetails = ({ route }) => {
                         <VideoWebView />
                     </View>
                 </Modal>
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ height: isSmallPhone || isSmallTablet ? hp('60%') : hp('63%') }}>
                     <Text style={{ marginTop: hp('1%'), marginBottom: hp('1%'), fontSize: wp('4%'), fontWeight: '500' }}>Lessons<Text style={{ color: 'blue' }}> (32) </Text></Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={{ marginBottom: hp('1%'), color: '#8A8A8A', fontWeight: 'bold' }}>Section 1 <Text>- Introduction </Text></Text>
@@ -245,7 +246,7 @@ const LessonDetails = ({ route }) => {
         ),
         reviews: () => (
             <View>
-                <ScrollView showsVerticalScrollIndicator={false} style={{ height: hp('62%') }}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ height: isSmallPhone || isSmallTablet ? hp('59%') : hp('62%') }}>
                     <Text style={{ fontSize: wp('4%'), fontWeight: '500', marginTop: hp('1%') }}>Reviews <Text style={{ color: 'blue' }}> (45)</Text></Text>
                     <View style={styles.Search}>
                         <Image source={search} style={styles.SearchIcon} />
@@ -341,7 +342,7 @@ const LessonDetails = ({ route }) => {
     const goBack = () => {
         navigation.goBack(); // Điều hướng quay lại trang trước đó
     };
-    usePreventScreenCapture(); 
+    // usePreventScreenCapture(); 
     return (
         <View style={styles.Container}>
             <ImageBackground source={LessImage} style={{ width: wp('100%'), height: hp('40%') }}>
@@ -359,7 +360,7 @@ const LessonDetails = ({ route }) => {
                         alignItems: 'center',
                     }}>
                         <Image source={open} style={{ width: wp('8%'), height: hp('4%'), marginRight: wp('3%') }} />
-                        <Text style={{ fontSize: wp('4%'), color: 'blue', fontWeight: '500' }}>Course Preview</Text>
+                        <Text style={{  fontSize: isSmallPhone || isSmallTablet ? wp('3.5%'): wp('4%'), color: 'blue', fontWeight: '500' }}>Course Preview</Text>
                     </View>
                 </TouchableOpacity>
                 <View style={styles.DetailForm}>
@@ -378,7 +379,7 @@ const LessonDetails = ({ route }) => {
                     <Text style={{ color: '#327CF7', fontWeight: '800' }}>{Price}</Text>
                 </View>
                 <View style={styles.Button}>
-                    <Text style={{ fontWeight: '800', color: 'white' }}>Enroll Now</Text>
+                    <Text onPress={()=>{navigation.navigate('Payment', { Name, LessImage, Lecture, Avatar, Price, Id })}} style={{ fontWeight: '800', color: 'white' }}>Enroll Now</Text>
                 </View>
             </View>
 
@@ -418,7 +419,7 @@ const styles = StyleSheet.create({
     },
     CircleMen: {
         width: wp('13.5%'),
-        height: hp('6.5%'),
+        height: isSmallPhone || isSmallTablet ? hp('6.5%') : hp('6.75%'),
         borderRadius: 30,
         borderWidth: 2,
         justifyContent: 'center',
@@ -434,7 +435,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#EFEFEF',
-        marginRight: wp('4%')
+        marginRight: wp('5%')
     },
     Button: {
         borderWidth: 1,
@@ -519,7 +520,7 @@ const styles = StyleSheet.create({
     },
     closeButton: {
         position: 'absolute',
-        top: hp('1%'),
+        top: hp('10%'),
         right: wp('4%')
     },
 })
