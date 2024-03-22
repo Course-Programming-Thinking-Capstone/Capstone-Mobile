@@ -1,17 +1,71 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import Modal from "react-native-modal";
 import warn from '../assets/Payment/warn.png'
+import Loading from '../Loading/Loading'
+import { Linking } from 'react-native';
+import { CreateOrder, CreatePayment } from '../Api/Order';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const ReviewSum = ({ route, navigation }) => {
-    const { Name, LessImage, Lecture, Price, payment, info, checked } = route.params;
+    const { Name, LessImage, Lecture, Price, payment, selectedStudents } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
-
+    const [loading1, setLoading1] = useState(false);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+    const momo = async () => {
+        try {
+            const response = await axios.get('http://shoeshine-001-site1.ftempurl.com/api/payments/momo/');
+            const momoAppURI = response.data; // Thiết lập giá trị momoAppURI từ phản hồi
+
+            Linking.canOpenURL(momoAppURI)
+                .then((supported) => {
+                    if (supported) {
+                        Linking.openURL(momoAppURI);
+                    } else {
+                        Alert.alert("Fails!");
+                    }
+                })
+                .catch((err) => {
+                    console.error('Lỗi khi kiểm tra hoặc mở ứng dụng:', err);
+                });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    const [id, setId] = useState([])
+    const postOrder = async () => {
+        try {
+            setLoading1(true);
+            const studentId = selectedStudents.map(student => student.id);
+            const count = selectedStudents.length
+            const success = await CreateOrder(studentId, count);
+            if (success) {
+                // setId(success)
+                navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment, selectedStudents, success })
+            } else {
+                Alert.alert('Đăng ký thất bại !!!');
+            }
+        } catch (error) {
+            console.error("Error handling add children:", error);
+        } finally {
+            setLoading1(false);
+        }
+    };
+    const fetchPayment = async () => {
+        try {
+            const paymentDetail = await CreatePayment(id);
+            if (paymentDetail) {
+                // setPay(paymentDetail);
+                console.log("Thành Công");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
     return (
         <View style={styles.Container}>
             <View style={styles.Course}>
@@ -35,18 +89,18 @@ const ReviewSum = ({ route, navigation }) => {
                             fontWeight: 'bold',
                             color: 'blue',
                             fontSize: wp('3.8%')
-                        }}>{Price}</Text>
+                        }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text>
                     </View>
                 </View>
             </View>
             <View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
                     <View>
-                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive <Text style={{ color: 'red', fontWeight: '500' }}>({selectedStudents.length})</Text></Text>
                         <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Receive Method</Text>
                     </View>
                     <View style={{ alignItems: 'flex-end' }}>
-                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{checked}</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{selectedStudents.map(student => student.fullName).join(', ')}</Text>
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>Zalo , Email</Text>
                     </View>
                 </View>
@@ -56,12 +110,14 @@ const ReviewSum = ({ route, navigation }) => {
                     <View>
                         <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Payment Method</Text>
                         <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Voucher</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Quantity</Text>
                         <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Amount</Text>
                     </View>
                     <View>
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{payment}</Text>
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>0 đ</Text>
-                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{Price}</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>x{selectedStudents.length}</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text>
                     </View>
                 </View>
                 <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
@@ -71,7 +127,7 @@ const ReviewSum = ({ route, navigation }) => {
                         <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>Total</Text>
                     </View>
                     <View>
-                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{Price}</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text>
                     </View>
                 </View>
                 <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
@@ -88,13 +144,17 @@ const ReviewSum = ({ route, navigation }) => {
                             {/* <View style={{ alignItems: 'center' }}>
                 <Image source={warn} style={{ width: wp('22.5%'), height: hp('10%') }} />
               </View> */}
-                            <Text style={{ fontSize: wp('5%'), textAlign: 'center', marginTop: hp('1%'), fontWeight: '700', color: '#FF8A00' }}>Do you want to cancel order ?</Text>
+                            <Text style={{ fontSize: wp('5%'), textAlign: 'center', marginTop: hp('1%'), fontWeight: '700', color: '#FF8A00' }}>Do you want to check out ?</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: hp('3.5%') }}>
                                 <TouchableOpacity style={[styles.Btn, { marginRight: wp('5%') }]} onPress={toggleModal}>
                                     <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>No</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment, info, checked }) }} style={[styles.Btn, { backgroundColor: 'red' }]}>
-                                    <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Yes</Text>
+                                <TouchableOpacity onPress={postOrder} style={[styles.Btn, { backgroundColor: 'red' }]}>
+                                    {loading1 ? (
+                                        <Loading />
+                                    ) : (
+                                        <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Yes</Text>
+                                    )}
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -128,8 +188,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.9,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 20,
-        elevation:5,
-        backgroundColor:'white'
+        elevation: 5,
+        backgroundColor: 'white'
     },
     CourseImage: {
         width: wp('30%'),

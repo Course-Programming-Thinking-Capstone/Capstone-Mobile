@@ -44,7 +44,7 @@ function MyTabs() {
   };
   return (
     <Tab.Navigator screenOptions={{
-      tabBarHideOnKeyboard: true
+      tabBarHideOnKeyboard: false
     }}>
       <Tab.Screen name="Home" component={HomePage} options={{
         tabBarIcon: ({ color, size }) => (
@@ -63,11 +63,6 @@ function MyTabs() {
         ),
         headerTitle: () => (
           <View style={{}}>
-            {/* <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'white', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>
-              <TouchableOpacity onPress={goBack}>
-                <Image style={{ width: wp('5%'), height: hp('3%') }} source={back1} />
-              </TouchableOpacity>
-            </View> */}
             <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>My Course</Text>
           </View>
         ),

@@ -11,6 +11,8 @@ import lesson from '../assets/Profile/book2.png'
 import answer from '../assets/Profile/reading.png'
 import quiz from '../assets/Profile/quiz.png'
 import game from '../assets/Profile/control.png'
+import drop from '../assets/MyCourse/drop.png'
+
 const Course = () => {
   const lessons1 = [
     { id: '01', name: 'Introduction programming ', time: '10:00', status: 'video' },
@@ -87,6 +89,9 @@ const Course = () => {
   const closeModal = () => {
     setShowVideo(false);
   };
+  const [showLessons, setShowLessons] = useState(false);
+  const [showLessons1, setShowLessons1] = useState(false);
+  const [showLessons2, setShowLessons2] = useState(false);
   const renderScene = SceneMap({
     lessons: () => (
       <View style={{ marginTop: hp('2%') }}>
@@ -99,47 +104,44 @@ const Course = () => {
           </View>
         </Modal>
         <ScrollView showsVerticalScrollIndicator={false} >
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={{ marginBottom: hp('1%'), color: '#8A8A8A', fontWeight: 'bold',fontSize:wp('4%') }}>Section 1 <Text>- Introduction </Text></Text>
-            <Text style={{ color: 'blue', fontWeight: 'bold' }}>15 Min</Text>
-          </View>
+          <TouchableOpacity onPress={() => setShowLessons(!showLessons)} style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]}>
+            <View style={{ flexDirection: 'row', alignItems: "center" }}>
+              <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: wp('4%'), marginLeft: wp('1.5%'),width:wp('48%') }}>Section 1 <Text>- Introduction </Text></Text>
+              <Text style={{ color: 'blue', fontWeight: 'bold', marginRight: wp('2%') }}>( 15 Min )</Text>
+            </View>
+            <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), marginRight: wp('5%') }} />
+          </TouchableOpacity>
           <View>
-            <FlatList
-              data={lessons1}
-              renderItem={render}
-              keyExtractor={item => item.id}
-              numColumns={1}
-              showsVerticalScrollIndicator={false}
-              scrollEnabled={false}
-            />
+            {showLessons && <View>
+              <FlatList
+                data={lessons1}
+                renderItem={render}
+                keyExtractor={item => item.id}
+                numColumns={1}
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={false}
+              />
+            </View>}
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={{ marginBottom: hp('1%'), color: '#8A8A8A', fontWeight: 'bold',fontSize:wp('4%') }}>Section 2 <Text>- Fundamentals </Text></Text>
-            <Text style={{ color: 'blue', fontWeight: 'bold' }}>45 Min</Text>
-          </View>
+
+          <TouchableOpacity onPress={() => setShowLessons1(!showLessons1)} style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]}>
+            <View style={{ flexDirection: 'row', alignItems: "center" }}>
+              <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: wp('4%'), marginLeft: wp('1.5%'),width:wp('48%') }}>Section 2 <Text>- Programming </Text></Text>
+              <Text style={{ color: 'blue', fontWeight: 'bold', marginRight: wp('2%') }}>( 45 Min )</Text>
+            </View>
+            <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), marginRight: wp('5%') }} />
+          </TouchableOpacity>
           <View>
-            <FlatList
-              data={lessons2}
-              renderItem={render}
-              keyExtractor={item => item.id}
-              numColumns={1}
-              showsVerticalScrollIndicator={false}
-              scrollEnabled={false}
-            />
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={{ marginBottom: hp('1%'), color: '#8A8A8A', fontWeight: 'bold',fontSize:wp('4%') }}>Section 3 <Text>- Capstone </Text></Text>
-            <Text style={{ color: 'blue', fontWeight: 'bold' }}>15 Min</Text>
-          </View>
-          <View>
-            <FlatList
-              data={lessons3}
-              renderItem={render}
-              keyExtractor={item => item.id}
-              numColumns={1}
-              showsVerticalScrollIndicator={false}
-              scrollEnabled={false}
-            />
+            {showLessons1 && <View>
+              <FlatList
+                data={lessons2}
+                renderItem={render}
+                keyExtractor={item => item.id}
+                numColumns={1}
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={false}
+              />
+            </View>}
           </View>
         </ScrollView>
       </View>
@@ -181,10 +183,11 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
     backgroundColor: 'white',
-    paddingLeft:wp('4%'),
-    paddingRight:wp('4%')
+    paddingLeft: wp('4%'),
+    paddingRight: wp('4%')
   },
   LessBorder: {
+    height: hp('7%'),
     flexDirection: 'row',
     borderRadius: 30,
     borderColor: '#e9f0f9',
@@ -199,8 +202,8 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     elevation: 5,
     backgroundColor: 'white',
-    marginLeft:wp('0.5%'),
-    marginRight:wp('0.5%')
+    marginLeft: wp('0.5%'),
+    marginRight: wp('0.5%')
   },
   LessId: {
     borderRadius: 30,

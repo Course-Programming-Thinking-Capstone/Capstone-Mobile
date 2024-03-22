@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList, Text, TouchableOpacity, View, Image, TextInput, KeyboardAvoidingView, SafeAreaView, ScrollView } from 'react-native'
+import { StyleSheet, FlatList, Alert, Text, TouchableOpacity, View, Image, TextInput, KeyboardAvoidingView, SafeAreaView, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { RadioButton } from 'react-native-paper';
 import teacher from '../assets/Lesson/teacher1.png'
@@ -7,35 +7,44 @@ import Modal from "react-native-modal";
 import { SelectList } from 'react-native-dropdown-select-list'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { getStudent, addChildren } from '../Api/Children';
+import { getContact } from '../Api/Parents';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import CheckBox from 'expo-checkbox';
 import Loading from '../Loading/Loading'
+import lich from '../assets/Profile/lich.png'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const Payment = ({ route, navigation }) => {
+    const [name, setName] = useState('')
+    const [dob, setDob] = useState(null);
+    const [displayText, setDisplayText] = useState('Date of Birth');
     const [checked, setChecked] = React.useState('Thanh An');
     const [info, setInfo] = React.useState('Email');
     const { Name, LessImage, Lecture, Avatar, Price, Id } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
+        setDisplayText('Date of Birth'),
+            setName('')
     };
-    const [selected, setSelected] = React.useState("");
+    const [selected, setSelected] = React.useState('2');
     const [loading, setLoading] = useState(true);
-    const [isSelected, setSelection] = useState(false);
+    const [loading1, setLoading1] = useState(false);
     const data = [
         { key: '1', value: 'Male' },
         { key: '2', value: 'Female' },
     ]
     const [student, setStudent] = useState([])
-    const [count, setCount] = useState(0)
+    const [contact, setContact] = useState([])
     useEffect(() => {
         fetchKid();
+        fetchContact();
     }, []);
     const fetchKid = async () => {
         try {
             const studentData = await getStudent();
             if (studentData) {
-                setStudent(studentData);
-                setCount(studentData.length)
+                const sortedStudents = studentData.sort((a, b) => b.id - a.id);
+                setStudent(sortedStudents);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -43,22 +52,85 @@ const Payment = ({ route, navigation }) => {
             setLoading(false);
         }
     };
+    const fetchContact = async () => {
+        try {
+            const contactData = await getContact();
+            if (contactData) {
+                setContact(contactData);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [count, setCount] = useState(0);
+    const [selectedStudents, setSelectedStudents] = useState([]);
+
+    const toggleSelection = (id, fullName) => {
+        let newCount = count;
+        const index = selectedItems.indexOf(id);
+        if (index !== -1) {
+            setSelectedItems(prevState => prevState.filter(item => item !== id));
+            setSelectedStudents(prevState => prevState.filter(student => student.id !== id));
+            newCount--;
+        } else {
+            setSelectedItems(prevState => [...prevState, id]);
+            setSelectedStudents(prevState => [...prevState, { id, fullName }]);
+            newCount++;
+        }
+        setCount(newCount);
+    };
     const renderItem = ({ item }) => (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: wp('2%') }}>
             <View style={[styles.NameKid]}>
                 <CheckBox
-                    value={isSelected}
-                    onValueChange={setSelection}
+                    value={selectedItems.includes(item.id)} // Kiểm tra xem id có trong mảng selectedItems hay không
+                    onValueChange={() => toggleSelection(item.id, item.fullName)}
                     style={styles.checkbox}
                 />
                 <Text style={{ color: '#212121CC', width: wp('25%'), textAlign: 'center', fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>{item.fullName}</Text>
             </View>
         </View>
     )
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || dob;
+        setShowDatePicker(Platform.OS === 'ios'); // Tắt DatePicker trên iOS sau khi chọn
+        if (currentDate instanceof Date) { // Kiểm tra xem currentDate có phải là một đối tượng Date hay không
+            const formattedDate = currentDate.toISOString().split('T')[0];
+            setDob(currentDate);
+            setDisplayText(formattedDate);
+        }
+    };
+
+    const showDatepicker = () => {
+        setShowDatePicker(true);
+    };
+    const handleAddChildren = async () => {
+        try {
+            setLoading1(true);
+            const success = await addChildren(name, dob, selected);
+            if (success) {
+                toggleModal();
+                fetchKid();
+                setName('');
+                setDob('');
+                setSelected('');
+            } else {
+                Alert.alert('Đăng ký thất bại !!!');
+            }
+        } catch (error) {
+            console.error("Error handling add children:", error);
+        } finally {
+            setLoading1(false);
+        }
+    };
     return (
         <View style={styles.Container}>
             <View style={styles.AddChild}>
-                <Text style={styles.TxtChild}>Select children to receive:<Text style={{color:'red',fontWeight:'800'}}>({count})</Text></Text>
+                <Text style={styles.TxtChild}>Select children to receive:<Text style={{ color: 'red', fontWeight: '800' }}>({count})</Text></Text>
                 <TouchableOpacity onPress={toggleModal}>
                     <Text style={styles.ButChild}>Add</Text>
                 </TouchableOpacity>
@@ -94,7 +166,11 @@ const Payment = ({ route, navigation }) => {
                     <View style={[styles.Account]}>
                         <View style={{ alignItems: 'center' }}>
                             <Text style={{ fontWeight: 500, color: '#212121CC', fontSize: wp('4%') }}>Zalo</Text>
-                            <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}>0397528860</Text>
+                            {loading ? (
+                                <Loading />
+                            ) : (
+                                <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}>{contact.phoneNumber}</Text>
+                            )}
                         </View>
                     </View>
                 </View>
@@ -125,37 +201,45 @@ const Payment = ({ route, navigation }) => {
                                 fontWeight: 'bold',
                                 color: 'blue',
                                 fontSize: wp('3.8%')
-                            }}>{Price}</Text>
+                            }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text>
                         </View>
                     </View>
                 </View>
             </View>
             <View style={styles.Enroll}>
-                <TouchableOpacity style={styles.Button} onPress={() => { navigation.navigate('PayMethods', { Name, LessImage, Lecture, Avatar, Price, info, checked }) }}>
+                <TouchableOpacity style={styles.Button} onPress={() => { navigation.navigate('PayMethods', { Name, LessImage, Lecture, Avatar, Price, info, checked, selectedStudents, contact }) }}>
                     <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Continue</Text>
                 </TouchableOpacity>
             </View>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Modal isVisible={isModalVisible} transparent={true} >
+                <Modal isVisible={isModalVisible} transparent={true}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                         <View style={styles.Popup}>
-                            <Text style={{
-                                color: 'blue', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('4.7%') : wp('5.3%')
-                                , textAlign: 'center', width: wp('90%')
-                            }}>Add New Children's Information</Text>
+                            <Text style={{ color: 'blue', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('6%') : wp('7%'), textAlign: 'center', width: wp('90%') }}>Add New Child Information</Text>
                             <View style={styles.Search}>
                                 <TextInput
                                     placeholder="Enter Full Name"
+                                    value={name}
+                                    onChangeText={text => setName(text)}
                                 />
                             </View>
                             <View style={styles.Search}>
-                                <TextInput
-                                    placeholder="Date Of Birth"
-                                />
+                                <Text>{displayText}</Text>
+                                <TouchableOpacity onPress={showDatepicker} style={{ position: "absolute", right: 10 }}>
+                                    <Image source={lich} style={{ height: hp('4%'), width: wp('8.5%') }} />
+                                </TouchableOpacity>
                             </View>
                             <View style={{ width: wp('82%'), marginTop: hp('3%') }}>
                                 <SelectList
-                                    setSelected={(val) => setSelected(val)}
+                                    setSelected={(val) => {
+                                        if (val === 'Male') {
+                                            setSelected(1);
+                                        } else if (val === 'Female') {
+                                            setSelected(2);
+                                        } else {
+                                            setSelected(1);
+                                        }
+                                    }}
                                     data={data}
                                     save="value"
                                     search={false}
@@ -166,14 +250,27 @@ const Payment = ({ route, navigation }) => {
                                 <TouchableOpacity style={[styles.Btn, { marginRight: wp('2.5%') }]} onPress={toggleModal}>
                                     <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Close</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.Btn, { backgroundColor: 'red' }]} onPress={toggleModal}>
-                                    <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Add</Text>
+                                <TouchableOpacity style={[styles.Btn, { backgroundColor: 'red' }]} onPress={handleAddChildren}>
+                                    {loading1 ? (
+                                        <Loading />
+                                    ) : (
+                                        <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Add</Text>
+                                    )}
                                 </TouchableOpacity>
                             </View>
                         </View>
                     </View>
                 </Modal>
             </View>
+            {showDatePicker && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={dob || new Date()}
+                    mode="date" // Chỉ hiển thị ngày tháng năm, không bao gồm giờ
+                    display="default"
+                    onChange={onChange}
+                />
+            )}
         </View>
     )
 }
@@ -207,11 +304,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 0.5,
-        width: wp('44%'),
+        width: wp('42.5%'),
         marginTop: hp('2%'),
         borderRadius: 10,
-        borderColor: '#21212133',
         height: hp('8%'),
+        borderColor: '#E9E9E9',
+        alignItems: 'center',
+        shadowColor: 'black',
+        shadowOpacity: 0.9,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 20,
+        elevation: 5,
+        backgroundColor: 'white',
+        marginLeft: wp('1%')
     },
     Account: {
         flexDirection: 'row',

@@ -2,12 +2,13 @@ import { StyleSheet, Dimensions, Button, Text, View, TouchableOpacity, Image, Te
 import React, { useState, useEffect } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import boy from '../assets/Profile/boy.png'
-import girl from '../assets/Profile/girl.png'
+import lich from '../assets/Profile/lich.png'
 import right from '../assets/HomePage/right.png'
 import cong from '../assets/Lesson/cong2.jpg'
 import an from '../assets/Lesson/an.jpg'
 import vu from '../assets/Lesson/vu.jpg'
 import Modal from "react-native-modal";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { SelectList } from 'react-native-dropdown-select-list'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { TextInputMask } from 'react-native-masked-text'
@@ -16,7 +17,8 @@ import { getStudent, addChildren } from '../Api/Children';
 const ChildProcess = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [loading1, setLoading1] = useState(false);
-    const [dob, setDob] = useState('');
+    const [dob, setDob] = useState(null);
+    const [displayText, setDisplayText] = useState('Date of Birth');
     const [student, setStudent] = useState([])
     const [isModalVisible, setModalVisible] = useState(false);
     const [selected, setSelected] = React.useState('2');
@@ -25,11 +27,10 @@ const ChildProcess = ({ navigation }) => {
         { key: '1', value: 'Male' },
         { key: '2', value: 'Female' },
     ]
-    const handleChange = (formatted, extracted) => {
-        setDob(formatted);
-    };
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
+        setDisplayText('Date of Birth'),
+        setName('')
     };
     useEffect(() => {
         fetchKid();
@@ -39,8 +40,8 @@ const ChildProcess = ({ navigation }) => {
         try {
             const studentData = await getStudent();
             if (studentData) {
-                setStudent(studentData);
-                console.log(studentData);
+                const sortedStudents = studentData.sort((a, b) => b.id - a.id);
+                setStudent(sortedStudents);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -75,7 +76,7 @@ const ChildProcess = ({ navigation }) => {
                 image: item.image,
                 id: item.id,
                 gender: item.gender,
-                birth:item.dateOfBirth
+                birth: item.dateOfBirth
             })
         }}>
             <View style={{
@@ -98,6 +99,21 @@ const ChildProcess = ({ navigation }) => {
             </View>
         </TouchableOpacity>
     )
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || dob;
+        setShowDatePicker(Platform.OS === 'ios'); // Tắt DatePicker trên iOS sau khi chọn
+        if (currentDate instanceof Date) { // Kiểm tra xem currentDate có phải là một đối tượng Date hay không
+            const formattedDate = currentDate.toISOString().split('T')[0];
+            setDob(currentDate);
+            setDisplayText(formattedDate);
+        }
+    };
+
+    const showDatepicker = () => {
+        setShowDatePicker(true);
+    };
     return (
         <View style={styles.Container}>
             <ScrollView style={{ height: hp('75%') }} showsVerticalScrollIndicator={false}>
@@ -132,17 +148,12 @@ const ChildProcess = ({ navigation }) => {
                                 />
                             </View>
                             <View style={styles.Search}>
-                                <TextInputMask
-                                    type={'datetime'}
-                                    options={{
-                                        format: 'YYYY-MM-DD', // Định dạng ngày tháng năm
-                                    }}
-                                    placeholder="YYYY-MM-DD"
-                                    value={dob}
-                                    onChangeText={handleChange}
-                                />
+                                <Text>{displayText}</Text>
+                                <TouchableOpacity onPress={showDatepicker} style={{ position: "absolute", right: 10 }}>
+                                    <Image source={lich} style={{ height: hp('4%'), width: wp('8.5%') }} />
+                                </TouchableOpacity>
                             </View>
-                            <View style={{ width: wp('82%'), marginTop: hp('3%') }}>
+                            <View style={{ width: wp('82%'), marginTop: hp('3%')}}>
                                 <SelectList
                                     setSelected={(val) => {
                                         if (val === 'Male') {
@@ -175,6 +186,15 @@ const ChildProcess = ({ navigation }) => {
                     </View>
                 </Modal>
             </View>
+            {showDatePicker && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={dob || new Date()}
+                    mode="date" // Chỉ hiển thị ngày tháng năm, không bao gồm giờ
+                    display="default"
+                    onChange={onChange}
+                />
+            )}
         </View>
     )
 }
@@ -239,13 +259,17 @@ const styles = StyleSheet.create({
         marginTop: hp('3%'),
         width: wp('82%'),
         height: hp('8%'),
-        borderColor: '#EFEFEF',
-        borderWidth: 1.5,
         borderRadius: 8,
         alignItems: 'center',
         flexDirection: 'row',
         paddingLeft: wp('2.5%'),
+        borderWidth: 1, shadowColor: 'black',
+        shadowOpacity: 0.9,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 20,
+        elevation: 5,
         backgroundColor: 'white',
+        borderColor: '#e9f2eb'
     },
     List: {
         paddingLeft: wp('5%'),

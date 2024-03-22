@@ -1,5 +1,5 @@
 import { ActivityIndicator, Button, StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import background from '../assets/Login/giphy.gif'
 import ig from '../assets/Login/ig.png'
@@ -17,6 +17,8 @@ const Login = ({ navigation }) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const textInputRef = useRef(null);
+  const textInputRef1 = useRef(null);
   const handleLogin = () => {
     login(phone, password, navigation, setLoading, setPhone, setPassword);
   };
@@ -30,23 +32,35 @@ const Login = ({ navigation }) => {
           <Text style={styles.Title}>Hi, Welcome back, you've been missed</Text>
         </View>
         <View style={styles.Form}>
-          <View style={styles.Email}>
+          <TouchableOpacity
+            style={styles.Email}
+            activeOpacity={1} // Loại bỏ hiệu ứng opacity khi nhấn
+            onPress={() => textInputRef.current.focus()} // Tập trung vào TextInput khi nhấn
+          >
             <Image source={mail} style={styles.Icon} />
-            <TextInput style={styles.EmailTitle}
+            <TextInput
+              ref={textInputRef} 
+              style={{ flex: 1, marginLeft: wp('3%') }} // Đảm bảo TextInput mở rộng để lấp đầy vùng chứa của TouchableOpacity
               placeholder="Phone"
               value={phone}
-              onChangeText={text => setPhone(text)}
+              onChangeText={(text) => setPhone(text)}
             />
-          </View>
-          <View style={styles.Pass}>
-            <Image source={pass} style={styles.Icon} />
-            <TextInput style={styles.EmailTitle}
-              placeholder="Password"
-              value={password}
-              secureTextEntry
-              onChangeText={text => setPassword(text)}
-            />
-          </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => textInputRef1.current.focus()} 
+            activeOpacity={1}
+            >
+            <View style={styles.Pass}>
+              <Image source={pass} style={styles.Icon} />
+              <TextInput
+                ref={textInputRef1}
+                style={styles.EmailTitle}
+                placeholder="Password"
+                value={password}
+                secureTextEntry
+                onChangeText={text => setPassword(text)}
+              />
+            </View>
+          </TouchableOpacity>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginLeft: wp('7.3%'), marginTop: hp('2%') }}>
             <View style={styles.checkboxContainer}>
               <CheckBox

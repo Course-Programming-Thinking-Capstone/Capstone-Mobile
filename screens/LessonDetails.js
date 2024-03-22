@@ -376,7 +376,7 @@ const LessonDetails = ({ route }) => {
             <View style={styles.Enroll}>
                 <View>
                     <Text style={{ color: '#94867D', fontSize: wp('4%'), fontWeight: '700' }}>Total Price</Text>
-                    <Text style={{ color: '#327CF7', fontWeight: '800' }}>{Price}</Text>
+                    <Text style={{ color: '#327CF7', fontWeight: '800' }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text>
                 </View>
                 <View style={styles.Button}>
                     <Text onPress={()=>{navigation.navigate('Payment', { Name, LessImage, Lecture, Avatar, Price, Id })}} style={{ fontWeight: '800', color: 'white' }}>Enroll Now</Text>

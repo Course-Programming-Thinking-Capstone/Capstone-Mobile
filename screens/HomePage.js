@@ -22,17 +22,16 @@ import background from '../assets/HomePage/gif5.gif'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 const HomePage = ({ navigation }) => {
     const Near = [
-        { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 đ', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg') },
-        { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1.500.000 đ', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg') },
-        { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 đ', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg') },
-        { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 đ', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg') },
-        { id: '5', name: 'Lập trình with C', teacher: 'CongLT', price: '1.500.000 đ' },
-        { id: '6', name: 'Lập trình with C', teacher: 'CongLT', price: '1.500.000 đ' },
+        { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1500000', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg') },
+        { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1500000', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg') },
+        { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2000000', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg') },
+        { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2500000', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg') },
+        { id: '5', name: 'Lập trình with C', teacher: 'CongLT', price: '1500000' },
+        { id: '6', name: 'Lập trình with C', teacher: 'CongLT', price: '1500000' },
     ];
     const numberOfItems = 4; // Render component number
     const limitedNear = Near.slice(0, numberOfItems);
     const renderItem = ({ item }) => (
-
         <TouchableOpacity style={styles.Course} onPress={() => {
             navigation.navigate('LessonDetails', { Name: item.name, LessImage: item.image, Lecture: item.teacher, Avatar: item.avatar, Price: item.price, Id: item.id })
         }}>
@@ -46,7 +45,7 @@ const HomePage = ({ navigation }) => {
                 <Text style={{
                     fontWeight: 'bold',
                     color: '#40BFFF',
-                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%'): wp('3.8%')
+                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
                 }}>{item.teacher}</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
@@ -54,14 +53,16 @@ const HomePage = ({ navigation }) => {
                 <Text style={{
                     fontWeight: 'bold',
                     color: 'blue',
-                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%'): wp('3.8%')
-                }}>{item.price}</Text>
+                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
+                }}>
+                    {parseFloat(item.price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ
+                </Text>
             </View>
         </TouchableOpacity>
     );
     const renderMentor = ({ item }) => (
         <View style={{ marginVertical: hp('2%') }}>
-            <TouchableOpacity style={{ paddingRight: wp('9%') }} onPress={() => {
+            <TouchableOpacity style={{ paddingRight: wp('8%'),paddingLeft:wp('1%') }} onPress={() => {
                 navigation.navigate('MentorDetails', { Lecture: item.teacher, Avatar: item.avatar, Id: item.id })
             }}>
                 <View >
@@ -110,8 +111,8 @@ const HomePage = ({ navigation }) => {
                     </View>
                 </SafeAreaView>
             </ImageBackground>
-            <ScrollView style={{marginLeft: wp('5%'), marginRight: wp('3%')}} showsVerticalScrollIndicator={false}>
-                <View style={{marginTop: hp('2%') }}>
+            <ScrollView style={{ marginLeft: wp('5%'), marginRight: wp('3%') }} showsVerticalScrollIndicator={false}>
+                <View style={{ marginTop: hp('2%') }}>
                     <View style={styles.EventTitle}>
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Categories</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -149,8 +150,8 @@ const HomePage = ({ navigation }) => {
                 <View >
                     <View style={styles.Title}>
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Popular Course</Text>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=>{navigation.navigate('PopularCourse')}}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%')}}>View all</Text>
+                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('PopularCourse') }}>
+                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
@@ -168,7 +169,7 @@ const HomePage = ({ navigation }) => {
                 <View>
                     <View style={styles.EventTitle}>
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Top Mentor</Text>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={()=>{navigation.navigate('TopMentor')}} >
+                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('TopMentor') }} >
                             <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }} >View all</Text>
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
@@ -179,6 +180,7 @@ const HomePage = ({ navigation }) => {
                             keyExtractor={item => item.id}
                             renderItem={renderMentor}
                             horizontal
+                            scrollEnabled={false}
                             showsHorizontalScrollIndicator={false}
                         />
                     </View>
@@ -187,7 +189,7 @@ const HomePage = ({ navigation }) => {
                     <View style={styles.Title}>
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>3 - 4 years old</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} onPress={()=>{navigation.navigate('PopularCourse')}}>View all</Text>
+                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} onPress={() => { navigation.navigate('PopularCourse') }}>View all</Text>
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
@@ -206,7 +208,7 @@ const HomePage = ({ navigation }) => {
                     <View style={styles.Title}>
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>5 - 6 years old</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} onPress={()=>{navigation.navigate('PopularCourse')}}>View all</Text>
+                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} onPress={() => { navigation.navigate('PopularCourse') }}>View all</Text>
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
@@ -317,7 +319,7 @@ const styles = StyleSheet.create({
     },
     List: {
         height: hp('30%'),
-        paddingLeft:wp('1%')
+        paddingLeft: wp('1%')
     },
     Course: {
         borderRadius: 8,
@@ -345,7 +347,7 @@ const styles = StyleSheet.create({
         width: wp('50%'),
         fontWeight: 'bold',
         color: '#223263',
-        fontSize: isSmallPhone || isSmallTablet ? wp('3.4%'): wp('3.7%')
+        fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.7%')
     },
     Location: {
         fontWeight: 'bold',

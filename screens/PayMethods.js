@@ -7,7 +7,7 @@ import paypal from '../assets/Payment/paypal1.png'
 import apple from '../assets/Payment/apple1.png'
 import { Button, RadioButton } from 'react-native-paper';
 const PayMethods = ({ navigation, route }) => {
-  const { Name, LessImage, Lecture, Avatar, Price, Id,info,checked  } = route.params;
+  const { Name, LessImage, Lecture, Avatar, Price, Id, info, contact, selectedStudents } = route.params;
   const [payment, setPayment] = React.useState('Momo');
   return (
     <View style={styles.Container}>
@@ -17,7 +17,7 @@ const PayMethods = ({ navigation, route }) => {
           <Image source={momo} style={styles.PaymentIcon} />
           <View style={{ alignItems: 'center' }}>
             <Text style={{ fontWeight: 600, color: '#212121CC', fontSize: wp('4%') }}>Momo E-wallet</Text>
-            <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: wp('3.5%') }}>0397528860</Text>
+            <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: wp('3.5%') }}>{contact.phoneNumber}</Text>
           </View>
           <RadioButton
             value="Momo"
@@ -29,7 +29,7 @@ const PayMethods = ({ navigation, route }) => {
           <Image source={zalo} style={[styles.PaymentIcon, { width: wp('13%'), height: hp('6%'), marginLeft: wp('2.3%') }]} />
           <View style={{ alignItems: 'center' }}>
             <Text style={{ fontWeight: 600, color: '#212121CC', fontSize: wp('4%') }}>Zalo E-wallet</Text>
-            <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: wp('3.5%') }}>0397528860</Text>
+            <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: wp('3.5%') }}>{contact.phoneNumber}</Text>
           </View>
           <RadioButton
             value="Zalo"
@@ -52,24 +52,26 @@ const PayMethods = ({ navigation, route }) => {
         </View>
       </View>
       <View style={{ marginTop: hp('1%') }}>
-        <Text style={{ fontWeight: '500', fontSize: wp('4%'), marginVertical: hp('1%') }}>Order paymentrmation</Text>
+        <Text style={{ fontWeight: '500', fontSize: wp('4%'), marginVertical: hp('1%') }}>Order payment</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Course</Text>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Price</Text>
+            <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Quantity</Text>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Discount</Text>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Total</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{Name}</Text>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{Price}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>x{selectedStudents.length}</Text>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>0 đ</Text>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{Price}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text>
           </View>
         </View>
       </View>
       <View style={styles.Enroll}>
-        <TouchableOpacity style={styles.Checkout} onPress={() => { navigation.navigate('ReviewSum', { Name, LessImage, Lecture, Avatar, Price, Id,payment,info,checked  }) }}>
+        <TouchableOpacity style={styles.Checkout} onPress={() => { navigation.navigate('ReviewSum', { Name, LessImage, Lecture, Avatar, Price, Id, payment, info, selectedStudents }) }}>
           <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Continue</Text>
         </TouchableOpacity>
       </View>
