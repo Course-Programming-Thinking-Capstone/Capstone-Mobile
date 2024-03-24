@@ -109,7 +109,7 @@ const Login = ({ navigation }) => {
           </View>
           <View style={styles.SignUp}>
             <Text style={{ marginTop: 10, color: 'white', fontSize: wp('4%') }}>Create your account?</Text>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('SignUp')}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {navigation.navigate('SignUp'),setEmail(''),setPassword('')}}>
               <Text style={styles.SignUpTitle}>Sign Up here</Text>
             </TouchableOpacity>
           </View>

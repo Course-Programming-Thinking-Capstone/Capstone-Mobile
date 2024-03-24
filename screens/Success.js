@@ -26,7 +26,6 @@ const Success = ({ navigation, route }) => {
                 setData(orderDetail);
             }
         } catch (error) {
-            console.error("Error fetching data:", error);
         }
     };
     return (

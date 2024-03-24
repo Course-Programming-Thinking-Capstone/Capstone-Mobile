@@ -6,13 +6,8 @@ import mail from '../assets/Login/email2.png'
 import pass from '../assets/Login/padlock.png'
 import user from '../assets/Login/user.png'
 import warn from '../assets/Login/warning.png'
-import {
-  validateEmail,
-  validateName,
-  validatePassword,
-  validateConfirmPassword,
-  validateForm,
-} from '../Validate/Validation.js'
+import { SignUpForm } from '../Api/Log'
+import Loading from '../Loading/Loading'
 
 const SignUp = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -20,44 +15,15 @@ const SignUp = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [formHeight, setFormHeight] = useState(hp('50%'));
-  
+  const [loading, setLoading] = useState(false);
+
   const [emailError, setEmailError] = useState('');
   const [nameError, setNameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-
   const handleSignUp = () => {
-    const { emailError, nameError, passwordError, confirmPasswordError, isValid } = validateForm(
-      email,
-      name,
-      password,
-      confirmPassword
-    );
-
-    setEmailError(emailError);
-    setNameError(nameError);
-    setPasswordError(passwordError);
-    setConfirmPasswordError(confirmPasswordError);
-
-    if (isValid) {
-      // Thực hiện hành động đăng ký
-      // Ví dụ: Gửi dữ liệu đăng ký lên server
-      // handleSubmit({ email, name, password });
-      // Reset các trường nhập sau khi đăng ký thành công (nếu cần)
-      setEmail('');
-      setName('');
-      setPassword('');
-      setConfirmPassword('');
-    }
+    SignUpForm(email, name, password, confirmPassword, navigation, setLoading, setEmail, setName, setPassword, setConfirmPassword);
   };
-  const handleErrors = () => {
-    if (emailError || nameError || passwordError) {
-      return true; // Trả về true nếu có lỗi
-    } else {
-      return false; // Trả về false nếu không có lỗi
-    }
-  };
-
   return (
     <View style={styles.All}>
       <ImageBackground source={background} style={styles.backPic}>
@@ -72,7 +38,6 @@ const SignUp = ({ navigation }) => {
               placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
-              onBlur={() => setEmailError(validateEmail(email))}
             />
             {emailError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
           </View>
@@ -83,7 +48,6 @@ const SignUp = ({ navigation }) => {
               placeholder="Name"
               value={name}
               onChangeText={(text) => setName(text)}
-              onBlur={() => setNameError(validateName(name))}
             />
             {nameError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
           </View>
@@ -95,11 +59,6 @@ const SignUp = ({ navigation }) => {
               secureTextEntry={true}
               value={password}
               onChangeText={(text) => { setPassword(text) }}
-              onBlur={() => {
-                setPasswordError(validatePassword(password));
-                ; setFormHeight(handleErrors() ? hp('60%') : hp('50%'));
-              }
-              }
             />
             {passwordError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
           </View>
@@ -111,19 +70,20 @@ const SignUp = ({ navigation }) => {
               secureTextEntry={true}
               value={confirmPassword}
               onChangeText={(text) => {
-                setConfirmPasswordError(validateConfirmPassword(text, password));
                 setConfirmPassword(text);
               }}
-              onBlur={() => { setFormHeight(handleErrors() ? hp('60%') : hp('50%')); }}
-
             />
             {confirmPasswordError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
           </View>
           {confirmPasswordError ? <Text style={styles.errorText}>{confirmPasswordError}</Text> : null}
 
           <View style={styles.Button}>
-            <TouchableOpacity onPress={()=>{navigation.navigate('KidHome')}}>
-              <Text style={styles.LoginTxt}>Sign Up</Text>
+            <TouchableOpacity onPress={handleSignUp}>
+              {loading ? (
+                <Loading />
+              ) : (
+                <Text style={styles.LoginTxt}>Sign Up</Text>
+              )}
             </TouchableOpacity>
           </View>
           <View style={styles.SignUp}>

@@ -83,7 +83,7 @@ const Payment = ({ route, navigation }) => {
         setCount(newCount);
     };
     const renderItem = ({ item }) => (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: wp('2%') }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: wp('2%'),marginTop:hp('1%') }}>
             <View style={[styles.NameKid]}>
                 <CheckBox
                     value={selectedItems.includes(item.id)} // Kiểm tra xem id có trong mảng selectedItems hay không
@@ -159,18 +159,23 @@ const Payment = ({ route, navigation }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={[styles.Account]}>
                         <View style={{ alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 600, color: '#212121CC', fontSize: wp('4%') }}>Email</Text>
-                            <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}>long88ka@gmail.com</Text>
+                            <Text style={{ fontWeight: 500, color: '#212121CC', fontSize: wp('4%') }}>Email</Text>
+                            {loading ? (
+                                <Loading />
+                            ) : (
+                                <Text style={{ fontWeight: 700, color: '#FF8A00',fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%')}}> {contact.email.split('@').map((part, index) => (
+                                    <Text key={index}>
+                                        {index > 0 && <Text>{"\n@"}</Text>}
+                                        {part}
+                                    </Text>
+                                ))}</Text>
+                            )}
                         </View>
                     </View>
                     <View style={[styles.Account]}>
                         <View style={{ alignItems: 'center' }}>
                             <Text style={{ fontWeight: 500, color: '#212121CC', fontSize: wp('4%') }}>Zalo</Text>
-                            {loading ? (
-                                <Loading />
-                            ) : (
-                                <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}>{contact.phoneNumber}</Text>
-                            )}
+                            <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}>0393103426</Text>
                         </View>
                     </View>
                 </View>
@@ -288,6 +293,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         height: hp('3%'),
+        marginBottom:hp('1%')
     },
     TxtChild: {
         fontWeight: '500',
@@ -305,7 +311,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 0.5,
         width: wp('42.5%'),
-        marginTop: hp('2%'),
         borderRadius: 10,
         height: hp('8%'),
         borderColor: '#E9E9E9',
@@ -316,7 +321,8 @@ const styles = StyleSheet.create({
         shadowRadius: 20,
         elevation: 5,
         backgroundColor: 'white',
-        marginLeft: wp('1%')
+        marginLeft: wp('1%'),
+        marginBottom:hp('2%'),
     },
     Account: {
         flexDirection: 'row',
@@ -421,6 +427,7 @@ const styles = StyleSheet.create({
     checkbox: {
         alignSelf: 'center',
         color: 'blue',
-        marginLeft: wp('3%')
+        marginLeft: wp('3%'),
+        marginRight:wp('3%')
     },
 })

@@ -17,11 +17,21 @@ export const login = async (email, password, navigation, setLoading, setEmail, s
             navigation.navigate('HomePage');
             setEmail('');
             setPassword('');
+        } else {
+            const accountStatus = response.data?.accountStatus;
+            if (accountStatus === "NotActivated") {
+                Alert.alert("Your account is not activated");
+            } else {
+            }
         }
     } catch (error) {
-        setLoading(false); // Đặt trạng thái loading thành false nếu có lỗi khi đăng nhập
+        setLoading(false);
         console.error('Error during login:', error);
-        Alert.alert('Đăng nhập thất bại !!!');
+        if (error.response.data.accountStatus === "NotActivated") {
+            Alert.alert("Your account is not activated");
+        } else {
+            Alert.alert('Đăng nhập thất bại !!!');
+        }
     }
 };
 
@@ -31,5 +41,34 @@ export const logout = async (navigation) => {
         navigation.navigate('Login');
     } catch (error) {
         console.error('Error during logout:', error);
+    }
+};
+
+export const SignUpForm = async (email, name, password, confirmPassword, navigation, setLoading, setEmail, setName, setPassword, setConfirmPassword) => {
+    setLoading(true);
+    try {
+        const headers = await getApiHeaders();
+        const response = await axios.post(`${BASE_URL}/authentication/register/email`, {
+            email: email,
+            fullName: name,
+            password: password,
+            rePassword: confirmPassword
+        }, { headers });
+        if (response.status === 201) {
+            setLoading(false);
+            setEmail('');
+            setPassword('');
+            setName('');
+            setConfirmPassword('');
+            Alert.alert('Please verify your account by email !'),
+            navigation.navigate('Login')
+        }
+    } catch (error) {
+        setLoading(false);
+        console.error('Error during SignUp:', error);
+        if (error.status === 409) {
+            Alert.alert('Account existed !!!');
+        }
+        Alert.alert('Đăng kí thất bại !!!');
     }
 };
