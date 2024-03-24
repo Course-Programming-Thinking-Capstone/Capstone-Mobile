@@ -15,41 +15,12 @@ import {
 } from '../Validate/Validation.js'
 
 const SignUp = ({ navigation }) => {
-  // const [userName, setUsername] = useState('');
-  // const [userEmail, setUserEmail] = useState('');
-  // const [rePassword, setRePassword] = useState('');
-  // const [password, setPassword] = useState('');
-  // const handleSignUp = () => {
-  //     if (password == rePassword) {
-  //         axios.post("http://shoeshine-001-site1.ftempurl.com/api/users/register?role=2", {
-  //             // Thêm các trường dữ liệu đăng ký tài khoản vào đây
-  //             userName: userName,
-  //             userEmail: userEmail,
-  //             userPassword: password,
-  //             confirmPassword: rePassword,
-  //             // Các trường dữ liệu khác cần thiết
-  //         })
-  //             .then((response) => {
-  //                 // Xử lý phản hồi từ máy chủ sau khi đăng ký
-  //                 if (response.status === 200) {
-  //                     // Đăng ký thành công, bạn có thể điều hướng đến màn hình khác
-  //                     navigation.navigate('Login');
-  //                 }
-  //             })
-  //             .catch((err) => {
-  //                 Alert.alert('đăng kí thất bại !!!');
-  //             });
-  //     }
-  //     else {
-  //         Alert.alert("Password is not match !!!")
-  //     }
-  // };
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [formHeight, setFormHeight] = useState(hp('50%'));
-
+  
   const [emailError, setEmailError] = useState('');
   const [nameError, setNameError] = useState('');
   const [passwordError, setPasswordError] = useState('');

@@ -2,18 +2,20 @@ import axios from 'axios';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../Api/Api'
-export const login = async (phone, password, navigation, setLoading, setPhone, setPassword) => {
-    setLoading(true); // Đặt trạng thái loading thành true khi bắt đầu xử lý đăng nhập
+import { getApiHeaders } from '../Api/Headers';
+export const login = async (email, password, navigation, setLoading, setEmail, setPassword) => {
+    setLoading(true);
     try {
-        const response = await axios.post(`${BASE_URL}/authentication/login/phoneNumber`, {
-            phoneNumber: phone,
+        const headers = await getApiHeaders();
+        const response = await axios.post(`${BASE_URL}/authentication/login/email`, {
+            email: email,
             password: password,
-        });
+        }, { headers });
         if (response.status === 200) {
             await AsyncStorage.setItem('accessToken', response.data.accessToken);
-            setLoading(false); // Đặt trạng thái loading thành false sau khi lưu accessToken thành công
+            setLoading(false);
             navigation.navigate('HomePage');
-            setPhone('');
+            setEmail('');
             setPassword('');
         }
     } catch (error) {
@@ -22,7 +24,6 @@ export const login = async (phone, password, navigation, setLoading, setPhone, s
         Alert.alert('Đăng nhập thất bại !!!');
     }
 };
-
 
 export const logout = async (navigation) => {
     try {

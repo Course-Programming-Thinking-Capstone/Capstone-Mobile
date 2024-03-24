@@ -6,9 +6,10 @@ export const getApiHeaders = async () => {
         return {
             'Authorization': `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
+            'accept': 'application/json', // Thêm tiêu đề 'accept' nếu cần
         };
     } catch (error) {
         console.error("Error getting access token:", error);
         return {};
     }
-};
+}

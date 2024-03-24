@@ -14,13 +14,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loading from '../Loading/Loading'
 import { login } from '../Api/Log'
 const Login = ({ navigation }) => {
-  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const textInputRef = useRef(null);
   const textInputRef1 = useRef(null);
   const handleLogin = () => {
-    login(phone, password, navigation, setLoading, setPhone, setPassword);
+    login(email, password, navigation, setLoading, setEmail, setPassword);
   };
 
   const [isSelected, setSelection] = useState(false);
@@ -42,8 +42,8 @@ const Login = ({ navigation }) => {
               ref={textInputRef} 
               style={{ flex: 1, marginLeft: wp('3%') }} // Đảm bảo TextInput mở rộng để lấp đầy vùng chứa của TouchableOpacity
               placeholder="Phone"
-              value={phone}
-              onChangeText={(text) => setPhone(text)}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => textInputRef1.current.focus()} 
