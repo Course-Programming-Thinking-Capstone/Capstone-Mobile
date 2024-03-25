@@ -20,17 +20,6 @@ const ReviewSum = ({ route, navigation }) => {
     //         const response = await axios.get('http://shoeshine-001-site1.ftempurl.com/api/payments/momo/');
     //         const momoAppURI = response.data; // Thiết lập giá trị momoAppURI từ phản hồi
 
-    //         Linking.canOpenURL(momoAppURI)
-    //             .then((supported) => {
-    //                 if (supported) {
-    //                     Linking.openURL(momoAppURI);
-    //                 } else {
-    //                     Alert.alert("Fails!");
-    //                 }
-    //             })
-    //             .catch((err) => {
-    //                 console.error('Lỗi khi kiểm tra hoặc mở ứng dụng:', err);
-    //             });
     //     } catch (error) {
     //         console.error('Error fetching data:', error);
     //     }
@@ -43,10 +32,23 @@ const ReviewSum = ({ route, navigation }) => {
             const count = selectedStudents.length
             const success = await CreateOrder(studentId, count);
             if (success) {
-                // setId(success)
-                navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment, selectedStudents, success })
+                const paymentDetail = await CreatePayment(success);
+                if (paymentDetail) {
+                    Linking.canOpenURL(paymentDetail.payUrl)
+                        .then((supported) => {
+                            if (supported) {
+                                Linking.openURL(paymentDetail.payUrl);
+                            } else {
+                                Alert.alert("Fails!");
+                            }
+                        })
+                        .catch((err) => {
+                            console.error('Lỗi khi kiểm tra hoặc mở ứng dụng:', err);
+                        });
+                    navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment, selectedStudents, success })
+                }
             } else {
-                Alert.alert('Đăng ký thất bại !!!');
+                Alert.alert('thất bại !!!');
             }
         } catch (error) {
             console.error("Error handling add children:", error);
@@ -54,17 +56,16 @@ const ReviewSum = ({ route, navigation }) => {
             setLoading1(false);
         }
     };
-    const fetchPayment = async () => {
-        try {
-            const paymentDetail = await CreatePayment(id);
-            if (paymentDetail) {
-                // setPay(paymentDetail);
-                console.log("Thành Công");
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
+    // const fetchPayment = async () => {
+    //     try {
+    //         const paymentDetail = await CreatePayment(id);
+    //         if (paymentDetail) {
+    //             console.log("Thành Công");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error fetching data:", error);
+    //     }
+    // };
 
     return (
         <View style={styles.Container}>

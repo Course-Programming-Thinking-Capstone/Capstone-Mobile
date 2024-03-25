@@ -36,11 +36,11 @@ export const getOrder = async () => {
         return null;
     }
 };
-export const CreatePayment = async (id) => {
+export const CreatePayment = async (success) => {
     try {
-        console.log("Data:",id);
         const headers = await getApiHeaders();
-        const response = await axios.post(`${BASE_URL}/payment/momo/${id}`, { headers });
+        const orderId = success.orderId;
+        const response = await axios.post(`${BASE_URL}/payment/momo/${orderId}`, {}, { headers });
         if (response.status === 200) {
             return response.data;
         }
@@ -54,7 +54,7 @@ export const getOrderDetail = async (success) => {
     try {
         const headers = await getApiHeaders();
         const orderId = success.orderId;
-        const response = await axios.get(`${BASE_URL}/orders/detail?orderId=${orderId}`, { headers });
+        const response = await axios.get(`${BASE_URL}/orders/detail/${orderId}`, { headers });
         if (typeof response.data === 'object' && response.data !== null) {
             return response.data;
         } else {

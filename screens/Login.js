@@ -41,7 +41,7 @@ const Login = ({ navigation }) => {
             <TextInput
               ref={textInputRef} 
               style={{ flex: 1, marginLeft: wp('3%') }} // Đảm bảo TextInput mở rộng để lấp đầy vùng chứa của TouchableOpacity
-              placeholder="Phone"
+              placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
             />

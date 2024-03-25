@@ -12,7 +12,7 @@ import Swiper from 'react-native-swiper';
 const Page1 = ({ navigation }) => (
   <View>
     <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-      <Text style={{ textAlign: 'right', marginTop: hp('7%'),marginRight:wp('2%') ,fontWeight: 'bold', fontSize: wp('4%'), color: '#83AFFA' }}>Skip</Text>
+      <Text style={{ textAlign: 'right', marginTop: hp('7%'), marginRight: wp('2%'), fontWeight: 'bold', fontSize: wp('4%'), color: '#83AFFA' }}>Skip</Text>
     </TouchableOpacity>
     <Image style={styles.img1} source={pic1} />
     <Text style={styles.Title}>Discover Your <Text style={{ color: '#FFAD0E' }}>Learning Adventure</Text></Text>
@@ -23,7 +23,7 @@ const Page1 = ({ navigation }) => (
 const Page2 = ({ navigation }) => (
   <View>
     <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-      <Text style={{ textAlign: 'right', marginTop: hp('7%'),marginRight:wp('2%') ,fontWeight: 'bold', fontSize: wp('4%'), color: '#83AFFA' }}>Skip</Text>
+      <Text style={{ textAlign: 'right', marginTop: hp('7%'), marginRight: wp('2%'), fontWeight: 'bold', fontSize: wp('4%'), color: '#83AFFA' }}>Skip</Text>
     </TouchableOpacity>
     <Image style={styles.img1} source={welcome} />
     <Text style={styles.Title}>Stay Organized With <Text style={{ color: '#FFAD0E' }}>Bookmarks</Text></Text>
@@ -41,7 +41,6 @@ const Page3 = () => (
 
 const Welcome = ({ goToNext, navigation }) => {
   const [page, setPage] = useState(1);
-
   const goToNextPage = () => {
     if (page < 3) {
       setPage(page + 1);

@@ -97,8 +97,8 @@ const Payment = ({ route, navigation }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || dob;
-        setShowDatePicker(Platform.OS === 'ios'); // Tắt DatePicker trên iOS sau khi chọn
-        if (currentDate instanceof Date) { // Kiểm tra xem currentDate có phải là một đối tượng Date hay không
+        setShowDatePicker(Platform.OS === 'ios'); 
+        if (currentDate instanceof Date) {
             const formattedDate = currentDate.toISOString().split('T')[0];
             setDob(currentDate);
             setDisplayText(formattedDate);
@@ -163,7 +163,7 @@ const Payment = ({ route, navigation }) => {
                             {loading ? (
                                 <Loading />
                             ) : (
-                                <Text style={{ fontWeight: 700, color: '#FF8A00',fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%')}}> {contact.email.split('@').map((part, index) => (
+                                <Text style={{ fontWeight: 700, color: '#FF8A00',fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%')}}> {contact.email && contact.email.split('@').map((part, index) => (
                                     <Text key={index}>
                                         {index > 0 && <Text>{"\n@"}</Text>}
                                         {part}
