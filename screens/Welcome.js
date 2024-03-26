@@ -8,7 +8,7 @@ import pic1 from '../assets/welcome/pic1.png'
 import pic2 from '../assets/welcome/pic2.png'
 import pic3 from '../assets/welcome/pic3.png'
 import Swiper from 'react-native-swiper';
-
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 const Page1 = ({ navigation }) => (
   <View>
     <TouchableOpacity onPress={() => navigation.navigate('Login')}>

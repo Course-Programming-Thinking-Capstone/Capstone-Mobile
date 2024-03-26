@@ -3,6 +3,8 @@ import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../Api/Api'
 import { getApiHeaders } from '../Api/Headers';
+import { Dialog, ALERT_TYPE } from 'react-native-alert-notification';
+
 export const login = async (email, password, navigation, setLoading, setEmail, setPassword) => {
     setLoading(true);
     try {
@@ -17,18 +19,12 @@ export const login = async (email, password, navigation, setLoading, setEmail, s
             navigation.navigate('HomePage');
             setEmail('');
             setPassword('');
-        } else {
-            const accountStatus = response.data?.accountStatus;
-            if (accountStatus === "NotActivated") {
-                Alert.alert("Your account is not activated");
-            } else {
-            }
         }
     } catch (error) {
         setLoading(false);
         console.error('Error during login:', error);
         if (error.response.data.accountStatus === "NotActivated") {
-            Alert.alert("Your account is not activated");
+            Alert.alert('Đăng nhập thất bại !!!');
         } else {
             Alert.alert('Đăng nhập thất bại !!!');
         }
@@ -61,7 +57,7 @@ export const SignUpForm = async (email, name, password, confirmPassword, navigat
             setName('');
             setConfirmPassword('');
             Alert.alert('Please verify your account by email !'),
-            navigation.navigate('Login')
+                navigation.navigate('Login')
         }
     } catch (error) {
         setLoading(false);

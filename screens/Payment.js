@@ -1,9 +1,8 @@
-import { StyleSheet, FlatList, Alert, Text, TouchableOpacity, View, Image, TextInput, KeyboardAvoidingView, SafeAreaView, ScrollView } from 'react-native'
+import { StyleSheet, FlatList, Alert, Text, TouchableOpacity, View, Image, TextInput, Modal, SafeAreaView, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { RadioButton } from 'react-native-paper';
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
-import Modal from "react-native-modal";
 import { SelectList } from 'react-native-dropdown-select-list'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { getStudent, addChildren } from '../Api/Children';
@@ -83,7 +82,7 @@ const Payment = ({ route, navigation }) => {
         setCount(newCount);
     };
     const renderItem = ({ item }) => (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: wp('2%'),marginTop:hp('1%') }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: wp('2%'), marginTop: hp('1%') }}>
             <View style={[styles.NameKid]}>
                 <CheckBox
                     value={selectedItems.includes(item.id)} // Kiểm tra xem id có trong mảng selectedItems hay không
@@ -97,7 +96,7 @@ const Payment = ({ route, navigation }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || dob;
-        setShowDatePicker(Platform.OS === 'ios'); 
+        setShowDatePicker(Platform.OS === 'ios');
         if (currentDate instanceof Date) {
             const formattedDate = currentDate.toISOString().split('T')[0];
             setDob(currentDate);
@@ -163,7 +162,7 @@ const Payment = ({ route, navigation }) => {
                             {loading ? (
                                 <Loading />
                             ) : (
-                                <Text style={{ fontWeight: 700, color: '#FF8A00',fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%')}}> {contact.email && contact.email.split('@').map((part, index) => (
+                                <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}> {contact.email && contact.email.split('@').map((part, index) => (
                                     <Text key={index}>
                                         {index > 0 && <Text>{"\n@"}</Text>}
                                         {part}
@@ -217,10 +216,13 @@ const Payment = ({ route, navigation }) => {
                 </TouchableOpacity>
             </View>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Modal isVisible={isModalVisible} transparent={true}>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Modal visible={isModalVisible} transparent={false} statusBarTranslucent={true} animationType="slide">
+                    <View style={{
+                        flex: 1, justifyContent: 'center', alignItems: 'center',
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    }}>
                         <View style={styles.Popup}>
-                            <Text style={{ color: 'blue', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('6%') : wp('7%'), textAlign: 'center', width: wp('90%') }}>Add New Child Information</Text>
+                            <Text style={{ color: 'blue', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('6%') : wp('6.5%'), textAlign: 'center', width: wp('90%') }}>Add New Child Information</Text>
                             <View style={styles.Search}>
                                 <TextInput
                                     placeholder="Enter Full Name"
@@ -293,7 +295,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         height: hp('3%'),
-        marginBottom:hp('1%')
+        marginBottom: hp('1%')
     },
     TxtChild: {
         fontWeight: '500',
@@ -322,7 +324,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         backgroundColor: 'white',
         marginLeft: wp('1%'),
-        marginBottom:hp('2%'),
+        marginBottom: hp('2%'),
     },
     Account: {
         flexDirection: 'row',
@@ -421,6 +423,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: wp('2.5%'),
         backgroundColor: 'white',
+        borderWidth: 1, shadowColor: 'black',
+        shadowOpacity: 0.9,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 20,
+        elevation: 5,
+        backgroundColor: 'white',
+        borderColor: '#e9f2eb'
     }, List: {
         width: wp('92%'),
     },
@@ -428,6 +437,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         color: 'blue',
         marginLeft: wp('3%'),
-        marginRight:wp('3%')
+        marginRight: wp('3%')
     },
 })

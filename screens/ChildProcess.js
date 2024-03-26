@@ -1,17 +1,12 @@
-import { StyleSheet, Dimensions, Button, Text, View, TouchableOpacity, Image, TextInput, FlatList, Alert, ScrollView } from 'react-native'
+import { StyleSheet, Modal, Text, View, TouchableOpacity, Image, TextInput, FlatList, Alert, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import boy from '../assets/Profile/boy.png'
 import lich from '../assets/Profile/lich.png'
 import right from '../assets/HomePage/right.png'
-import cong from '../assets/Lesson/cong2.jpg'
-import an from '../assets/Lesson/an.jpg'
-import vu from '../assets/Lesson/vu.jpg'
-import Modal from "react-native-modal";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SelectList } from 'react-native-dropdown-select-list'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-import { TextInputMask } from 'react-native-masked-text'
 import Loading from '../Loading/Loading'
 import { getStudent, addChildren } from '../Api/Children';
 const ChildProcess = ({ navigation }) => {
@@ -136,8 +131,8 @@ const ChildProcess = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Modal isVisible={isModalVisible} transparent={true}>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Modal visible={isModalVisible} transparent={false} statusBarTranslucent={true} animationType='slide'>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
                         <View style={styles.Popup}>
                             <Text style={{ color: 'blue', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('6%') : wp('7%'), textAlign: 'center', width: wp('90%') }}>Add New Child Information</Text>
                             <View style={styles.Search}>
