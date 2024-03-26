@@ -8,7 +8,13 @@ import user from '../assets/Login/user.png'
 import warn from '../assets/Login/warning.png'
 import { SignUpForm } from '../Api/Log'
 import Loading from '../Loading/Loading'
-
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+  validateConfirmPassword,
+  validateForm,
+} from '../Validate/Validation'
 const SignUp = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -38,6 +44,7 @@ const SignUp = ({ navigation }) => {
               placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
+              onBlur={() => setEmailError(validateEmail(email))}
             />
             {emailError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
           </View>
@@ -72,6 +79,7 @@ const SignUp = ({ navigation }) => {
               onChangeText={(text) => {
                 setConfirmPassword(text);
               }}
+              onBlur={() => setConfirmPasswordError(validateConfirmPassword(confirmPassword))}
             />
             {confirmPasswordError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
           </View>
