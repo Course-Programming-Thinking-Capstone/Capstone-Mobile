@@ -86,7 +86,7 @@ const Payment = ({ route, navigation }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: wp('2%'), marginTop: hp('1%') }}>
             <View style={[styles.NameKid]}>
                 <CheckBox
-                    value={selectedItems.includes(item.id)} // Kiểm tra xem id có trong mảng selectedItems hay không
+                    value={selectedItems.includes(item.id)}
                     onValueChange={() => toggleSelection(item.id, item.fullName)}
                     style={styles.checkbox}
                 />
@@ -127,6 +127,13 @@ const Payment = ({ route, navigation }) => {
             setLoading1(false);
         }
     };
+    const handleContinue = () => {
+        if (selectedStudents.length === 0) {
+            Alert.alert('Alert', 'Please select at least one student.');
+        } else {
+            navigation.navigate('PayMethods', { Name, LessImage, Lecture, Avatar, Price, info, checked, selectedStudents, contact });
+        }
+    };
     return (
         <View style={styles.Container}>
             <View style={styles.AddChild}>
@@ -139,14 +146,18 @@ const Payment = ({ route, navigation }) => {
                 {loading ? (
                     <Loading />
                 ) : (
-                    <FlatList
-                        data={student}
-                        keyExtractor={item => item.id.toString()}
-                        renderItem={renderItem}
-                        showsHorizontalScrollIndicator={false}
-                        scrollEnabled={false}
-                        numColumns={2}
-                    />
+                    student.length === 0 ? (
+                        <Text style={{ textAlign: 'center',marginTop:hp('15%') }}>No student data available !</Text>
+                    ) : (
+                        <FlatList
+                            data={student}
+                            keyExtractor={item => item.id.toString()}
+                            renderItem={renderItem}
+                            showsHorizontalScrollIndicator={false}
+                            scrollEnabled={false}
+                            numColumns={2}
+                        />
+                    )
                 )}
             </ScrollView>
             <View>
@@ -212,7 +223,7 @@ const Payment = ({ route, navigation }) => {
                 </View>
             </View>
             <View style={styles.Enroll}>
-                <TouchableOpacity style={styles.Button} onPress={() => { navigation.navigate('PayMethods', { Name, LessImage, Lecture, Avatar, Price, info, checked, selectedStudents, contact }) }}>
+                <TouchableOpacity style={styles.Button} onPress={handleContinue}>
                     <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Continue</Text>
                 </TouchableOpacity>
             </View>
