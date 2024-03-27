@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, Button, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import welcome from '../assets/welcome/welcom.png'
-import next from '../assets/welcome/next.png'
+import next from '../assets/welcome/next.png' 
 import back1 from '../assets/welcome/back.png'
 import pic1 from '../assets/welcome/pic1.png'
 import pic2 from '../assets/welcome/pic2.png'
 import pic3 from '../assets/welcome/pic3.png'
-import Swiper from 'react-native-swiper';
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Page1 = ({ navigation }) => (
   <View>
     <TouchableOpacity onPress={() => navigation.navigate('Login')}>

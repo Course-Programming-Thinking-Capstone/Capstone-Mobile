@@ -121,7 +121,7 @@ const SignUp = ({ navigation }) => {
           <View style={styles.SignUp}>
             <Text style={{ color: 'white', fontSize: wp('4%') }}>Already have an account?</Text>
             <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.SignUpTitle}>Sign Up here</Text>
+              <Text style={styles.SignUpTitle}>Sign In here</Text>
             </TouchableOpacity>
           </View>
           {/* <AlertNotificationRoot>

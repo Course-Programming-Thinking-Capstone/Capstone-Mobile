@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Alert,Modal } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, Modal, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
@@ -93,14 +93,23 @@ const ReviewSum = ({ route, navigation }) => {
                     </View>
                 </View>
             </View>
-            <View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                    <View>
+            <ScrollView style={{height:hp('60%')}}>
+                <View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
                         <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive <Text style={{ color: 'red', fontWeight: '500' }}>({selectedStudents.length})</Text></Text>
-                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Receive Method</Text>
+                        <View>
+                            {selectedStudents.map((student, index) => (
+                                <Text
+                                    key={index}
+                                    style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500',textAlign:'right' }}
+                                >
+                                    {student.fullName}
+                                </Text>
+                            ))}
+                        </View>
                     </View>
-                    <View style={{ alignItems: 'flex-end' }}>
-                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{selectedStudents.map(student => student.fullName).join(', ')}</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Receive Method</Text>
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>Zalo , Email</Text>
                     </View>
                 </View>
@@ -131,7 +140,7 @@ const ReviewSum = ({ route, navigation }) => {
                     </View>
                 </View>
                 <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
-            </View>
+            </ScrollView >
             <View style={styles.Enroll}>
                 <TouchableOpacity style={styles.Button} onPress={toggleModal}>
                     <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Checkout</Text>
@@ -139,7 +148,7 @@ const ReviewSum = ({ route, navigation }) => {
             </View>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Modal visible={isModalVisible} transparent={true} statusBarTranslucent={true}>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
                         <View style={styles.Popup}>
                             {/* <View style={{ alignItems: 'center' }}>
                 <Image source={warn} style={{ width: wp('22.5%'), height: hp('10%') }} />
