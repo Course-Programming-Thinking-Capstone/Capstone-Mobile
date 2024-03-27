@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, Alert, Button } from 'react-native'
 import React, { useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import background from '../assets/Login/giphy.gif'
@@ -8,6 +8,8 @@ import user from '../assets/Login/user.png'
 import warn from '../assets/Login/warning.png'
 import { SignUpForm } from '../Api/Log'
 import Loading from '../Loading/Loading'
+import { showAlert } from '../Alert/Alert'
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import {
   validateEmail,
   validateName,
@@ -79,7 +81,7 @@ const SignUp = ({ navigation }) => {
               onChangeText={(text) => {
                 setConfirmPassword(text);
               }}
-              onBlur={() => setConfirmPasswordError(validateConfirmPassword(confirmPassword))}
+              onBlur={() => setConfirmPasswordError(validateConfirmPassword(confirmPassword,password))}
             />
             {confirmPasswordError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
           </View>
@@ -100,6 +102,20 @@ const SignUp = ({ navigation }) => {
               <Text style={styles.SignUpTitle}>Sign Up here</Text>
             </TouchableOpacity>
           </View>
+          {/* <AlertNotificationRoot>
+            <TouchableOpacity
+              onPress={() =>
+                Dialog.show({
+                  type: ALERT_TYPE.SUCCESS,
+                  title: 'Success',
+                  textBody: 'Congrats! this is dialog box success',
+                  button: 'close',
+                })
+              }
+            >
+              <Text></Text>
+            </TouchableOpacity>
+          </AlertNotificationRoot> */}
         </View>
       </ImageBackground>
     </View>

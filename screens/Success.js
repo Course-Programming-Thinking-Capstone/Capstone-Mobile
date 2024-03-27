@@ -1,9 +1,8 @@
-import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, Text, View, TouchableOpacity,Modal} from 'react-native'
 import React, { useState, useEffect } from 'react'
 import success1 from '../assets/Payment/Success.png'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
-import Modal from "react-native-modal";
 import close from '../assets/welcome/close1.png'
 import { getOrderDetail } from '../Api/Order';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
@@ -77,8 +76,8 @@ const Success = ({ navigation, route }) => {
                 </TouchableOpacity>
             </View>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Modal isVisible={isModalVisible} transparent={true}>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Modal visible={isModalVisible} transparent={true} statusBarTranslucent={true}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
                         <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
                             <Image source={close} style={styles.buttonClose} />
                         </TouchableOpacity>

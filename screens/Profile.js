@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, TouchableOpacity, ImageBackground, Text } from 'react-native'
+import { StyleSheet, View, Image, TouchableOpacity, ImageBackground, Text,Modal } from 'react-native'
 import React, { useState } from 'react'
 import cong from '../assets/Lesson/cong2.jpg'
 import Back from '../assets/Profile/back1.jpg'
@@ -8,7 +8,6 @@ import atm from '../assets/Profile/atm.png'
 import process from '../assets/Profile/process.png'
 import people from '../assets/Profile/people.png'
 import logoutIcon from '../assets/Profile/logout.png'
-import Modal from "react-native-modal";
 import { logout } from '../Api/Log'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Profile = ({ navigation }) => {
@@ -96,8 +95,8 @@ const Profile = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <Modal isVisible={isModalVisible} transparent={true}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Modal visible={isModalVisible} transparent={true} statusBarTranslucent={true}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
           <View style={styles.Popup}>
             {/* <View style={{ alignItems: 'center' }}>
                 <Image source={warn} style={{ width: wp('22.5%'), height: hp('10%') }} />
