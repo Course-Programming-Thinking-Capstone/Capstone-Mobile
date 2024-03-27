@@ -277,8 +277,10 @@ const Payment = ({ route, navigation }) => {
                 <DateTimePicker
                     testID="dateTimePicker"
                     value={dob || new Date()}
-                    mode="date" // Chỉ hiển thị ngày tháng năm, không bao gồm giờ
+                    mode="date"
                     display="default"
+                    minimumDate={new Date(1950, 0, 1)}
+                    maximumDate={new Date()}
                     onChange={onChange}
                 />
             )}

@@ -99,8 +99,8 @@ const ChildProcess = ({ navigation }) => {
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || dob;
-        setShowDatePicker(Platform.OS === 'ios'); // Tắt DatePicker trên iOS sau khi chọn
-        if (currentDate instanceof Date) { // Kiểm tra xem currentDate có phải là một đối tượng Date hay không
+        setShowDatePicker(Platform.OS === 'ios');
+        if (currentDate instanceof Date) {
             const formattedDate = currentDate.toISOString().split('T')[0];
             setDob(currentDate);
             setDisplayText(formattedDate);
@@ -189,8 +189,10 @@ const ChildProcess = ({ navigation }) => {
                 <DateTimePicker
                     testID="dateTimePicker"
                     value={dob || new Date()}
-                    mode="date" // Chỉ hiển thị ngày tháng năm, không bao gồm giờ
+                    mode="date"
                     display="default"
+                    minimumDate={new Date(1950, 0, 1)}
+                    maximumDate={new Date()}
                     onChange={onChange}
                 />
             )}
