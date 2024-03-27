@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, Alert, Button } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import background from '../assets/Login/giphy.gif'
 import mail from '../assets/Login/email2.png'
@@ -29,6 +29,12 @@ const SignUp = ({ navigation }) => {
   const [nameError, setNameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+  const emailRef = useRef(null);
+  const nameRef = useRef(null);
+  const passRef = useRef(null);
+  const rePassRef = useRef(null);
+
   const handleSignUp = () => {
     SignUpForm(email, name, password, confirmPassword, navigation, setLoading, setEmail, setName, setPassword, setConfirmPassword);
   };
@@ -40,51 +46,62 @@ const SignUp = ({ navigation }) => {
           <Text style={styles.Title}>Hi,Create account to dicover new things</Text>
         </View>
         <View style={[styles.Form, { height: formHeight }]}>
-          <View style={styles.Email}>
+          <TouchableOpacity style={styles.Email} activeOpacity={1}
+            onPress={() => emailRef.current.focus()} >
             <Image source={mail} style={styles.Icon} />
             <TextInput style={styles.EmailTitle}
+              ref={emailRef}
               placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
               onBlur={() => setEmailError(validateEmail(email))}
             />
             {emailError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
-          </View>
+          </TouchableOpacity>
           {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
-          <View style={styles.Pass}>
+          <TouchableOpacity style={styles.Pass}
+            activeOpacity={1}
+            onPress={() => nameRef.current.focus()}>
             <Image source={user} style={styles.Icon} />
             <TextInput style={styles.EmailTitle}
+              ref={nameRef}
               placeholder="Name"
               value={name}
               onChangeText={(text) => setName(text)}
             />
             {nameError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
-          </View>
+          </TouchableOpacity>
           {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
-          <View style={styles.Pass}>
+          <TouchableOpacity style={styles.Pass}
+            activeOpacity={1}
+            onPress={() => passRef.current.focus()}>
             <Image source={pass} style={styles.Icon} />
             <TextInput style={styles.EmailTitle}
+              ref={passRef}
               placeholder="Password"
               secureTextEntry={true}
               value={password}
               onChangeText={(text) => { setPassword(text) }}
             />
             {passwordError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
-          </View>
+          </TouchableOpacity>
           {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
-          <View style={styles.Pass}>
+          <TouchableOpacity style={styles.Pass}
+            activeOpacity={1}
+            onPress={() => rePassRef.current.focus()}>
             <Image source={pass} style={styles.Icon} />
             <TextInput style={styles.EmailTitle}
+              ref={rePassRef}
               placeholder="Re-Password"
               secureTextEntry={true}
               value={confirmPassword}
               onChangeText={(text) => {
                 setConfirmPassword(text);
               }}
-              onBlur={() => setConfirmPasswordError(validateConfirmPassword(confirmPassword,password))}
+              onBlur={() => setConfirmPasswordError(validateConfirmPassword(confirmPassword, password))}
             />
             {confirmPasswordError ? <Image source={warn} style={{ width: wp('4%'), height: hp('2%'), position: 'absolute', right: 20 }} /> : null}
-          </View>
+          </TouchableOpacity>
           {confirmPasswordError ? <Text style={styles.errorText}>{confirmPasswordError}</Text> : null}
 
           <View style={styles.Button}>
