@@ -232,7 +232,7 @@ const Payment = ({ route, navigation }) => {
                         backgroundColor: 'rgba(0, 0, 0, 0.7)',
                     }}>
                         <View style={styles.Popup}>
-                            <Text style={{ color: 'blue', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('6%') : wp('6.5%'), textAlign: 'center', width: wp('90%') }}>Add New Child Information</Text>
+                            <Text style={{ color: 'blue', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('5.7%') : wp('6.5%'), textAlign: 'center', width: wp('90%') }}>Add New Child Information</Text>
                             <TouchableOpacity style={styles.Search}
                                 activeOpacity={1}
                                 onPress={() => textInputRef.current.focus()}>

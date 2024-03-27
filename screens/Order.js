@@ -5,16 +5,16 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 const Order = ({ route, navigation }) => {
     const [pending, setPending] = useState([]);
     const [success, setSuccess] = useState([]);
     const [cancelled, setCancelled] = useState([]);
     const Near = [
-        { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 VND', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg'), status: 'Pending',children:'Tuan Vu',payment:'Zalo' },
-        { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1.500.000 VND', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg'), status: 'Success',children:'Thanh An',payment:'Momo' },
-        { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg'), status: 'Cancelled',children:'Thanh An',payment:'Momo' },
-        { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 VND', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg'), status: 'Success',children:'Tuan Vu',payment:'Zalo' },
+        { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 VND', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg'), status: 'Pending', children: 'Tuan Vu', payment: 'Zalo' },
+        { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1.500.000 VND', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg'), status: 'Success', children: 'Thanh An', payment: 'Momo' },
+        { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg'), status: 'Cancelled', children: 'Thanh An', payment: 'Momo' },
+        { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 VND', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg'), status: 'Success', children: 'Tuan Vu', payment: 'Zalo' },
         { id: '5', name: 'Lập trình with C', teacher: 'CongLT', price: '1.500.000 VND' },
         { id: '6', name: 'Lập trình with C', teacher: 'CongLT', price: '1.500.000 VND' },
     ];
@@ -51,14 +51,14 @@ const Order = ({ route, navigation }) => {
     const limitedNear = Near.slice(0, numberOfItems);
     const renderItem = ({ item }) => (
         <TouchableOpacity style={{ alignItems: 'center', marginBottom: hp('1%') }} onPress={() => {
-            navigation.navigate('OrderDetail', { Name: item.name, LessImage: item.image, Lecture: item.teacher, Avatar: item.avatar, Price: item.price, Id: item.id, Status: item.status,Child:item.children,Payment:item.payment })
+            navigation.navigate('OrderDetail', { Name: item.name, LessImage: item.image, Lecture: item.teacher, Avatar: item.avatar, Price: item.price, Id: item.id, Status: item.status, Child: item.children, Payment: item.payment })
         }}>
             <View style={styles.Course}>
                 <Image source={item.image} style={styles.CourseImage} />
                 <View>
                     <View style={{
                         borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10,
-                        backgroundColor: item.status === 'Pending' ? '#FF8A00':item.status === 'Success' ? '#6DCE63' :item.status === 'Cancelled' ? 'red' : 'red',
+                        backgroundColor: item.status === 'Pending' ? '#FF8A00' : item.status === 'Success' ? '#6DCE63' : item.status === 'Cancelled' ? 'red' : 'red',
                         width: wp('21.9%'), width: wp('21.9%')
                     }}>
                         <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>{item.status}</Text>
@@ -89,7 +89,7 @@ const Order = ({ route, navigation }) => {
         { key: 'all', title: 'All' },
         { key: 'pending', title: 'Pending' },
         { key: 'success', title: 'Success' },
-        { key: 'cancelled', title: 'Canceled' },
+        { key: 'cancelled', title: 'Cancelled' },
     ]);
     const renderScene = SceneMap({
         all: () => (
@@ -141,7 +141,7 @@ const Order = ({ route, navigation }) => {
             labelStyle={{ color: 'black' }}// Màu chữ của tab
             tabStyle={{ color: 'red' }}
             renderLabel={({ route, focused, color }) => (
-                <Text style={{ color: focused ? 'blue' : 'black' }}>{route.title}</Text>
+                <Text style={{ color: focused ? 'blue' : 'black', fontWeight: focused ? '600' : '400', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('3.8%'), width: isSmallPhone || isSmallTablet ? wp('19%') : wp('20%'),textAlign:'center' }}>{route.title}</Text>
             )}
         />
     );
@@ -183,8 +183,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.9,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 20,
-        elevation:5,
-        backgroundColor:'white'
+        elevation: 5,
+        backgroundColor: 'white'
     },
     CourseImage: {
         width: wp('30%'),

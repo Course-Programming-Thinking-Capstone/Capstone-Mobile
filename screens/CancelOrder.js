@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView,Alert } from 'react-native'
 import React, { useState } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
@@ -10,8 +10,8 @@ import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const CancelOrder = ({ route, navigation }) => {
   const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar } = route.params;
-  const [selected, setSelected] = React.useState("");
   const [checked1, setChecked] = React.useState(false);
+  const [selected, setSelected] = React.useState("");
   const data = [
     { key: '1', value: 'Muốn mua khóa học khác' },
     { key: '2', value: 'Muốn thay đổi hình thức thanh toán' },
@@ -23,6 +23,13 @@ const CancelOrder = ({ route, navigation }) => {
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+  const handleCancelOrder = () => {
+    if (!selected) {
+      Alert.alert('Alert', 'Please select a reason for cancellation.');
+    } else {
+      toggleModal()
+    }
   };
   return (
     <View style={styles.Container}>
@@ -92,7 +99,7 @@ const CancelOrder = ({ route, navigation }) => {
             },
           ]}
           disabled={!checked1}
-          onPress={toggleModal}
+          onPress={handleCancelOrder}
         >
           <Text style={{ color: 'white', fontWeight: '500' }}>Cancel Order</Text>
         </TouchableOpacity>
