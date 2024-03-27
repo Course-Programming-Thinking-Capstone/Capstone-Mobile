@@ -13,6 +13,8 @@ import { BASE_URL } from '../Api/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loading from '../Loading/Loading'
 import { login } from '../Api/Log'
+import logo from '../assets/kidLogo.png'
+import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,11 +29,15 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.All}>
       <ImageBackground source={background} blurRadius={1.3} style={styles.backPic}>
-        <View style={styles.Container}>
-          <Text style={styles.Header}>Log In</Text>
-          <Text style={styles.Title}>Hi, Welcome back, you've been missed</Text>
+        <View style={{ alignItems: 'center',marginTop: isSmallPhone || isSmallTablet ? hp('10%') : hp('15%'), }}>
+          <Image source={logo} style={{ height: hp('20%'), width: isSmallPhone || isSmallTablet ? wp('34%') : wp('32%'),
+ }} />
         </View>
         <View style={styles.Form}>
+          <View style={styles.Container}>
+            <Text style={styles.Header}>Log In</Text>
+            <Text style={styles.Title}>Hi, Welcome back, you've been missed</Text>
+          </View>
           <TouchableOpacity
             style={styles.Email}
             activeOpacity={1} // Loại bỏ hiệu ứng opacity khi nhấn
@@ -39,16 +45,16 @@ const Login = ({ navigation }) => {
           >
             <Image source={mail} style={styles.Icon} />
             <TextInput
-              ref={textInputRef} 
+              ref={textInputRef}
               style={{ flex: 1, marginLeft: wp('3%') }} // Đảm bảo TextInput mở rộng để lấp đầy vùng chứa của TouchableOpacity
               placeholder="Email"
               value={email}
               onChangeText={(text) => setEmail(text)}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => textInputRef1.current.focus()} 
+          <TouchableOpacity onPress={() => textInputRef1.current.focus()}
             activeOpacity={1}
-            >
+          >
             <View style={styles.Pass}>
               <Image source={pass} style={styles.Icon} />
               <TextInput
@@ -81,35 +87,9 @@ const Login = ({ navigation }) => {
               )}
             </TouchableOpacity>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%'), justifyContent: 'center' }}>
-            <View style={{ height: 1, width: wp('27%'), backgroundColor: 'white' }} />
-            <View>
-              <Text style={{ width: wp('20%'), textAlign: 'center', color: 'white' }}>OR</Text>
-            </View>
-            <View style={{ width: wp('27%'), height: 1, backgroundColor: 'white' }} />
-          </View>
-          <View style={styles.Contact}>
-            <TouchableOpacity >
-              <Image style={styles.Image} source={ig}></Image>
-            </TouchableOpacity>
-            <TouchableOpacity >
-              <Image style={{
-                marginTop: hp('0.5%'),
-                width: wp('13%'),
-                height: hp('6%'),
-                borderRadius: 10,
-                alignSelf: 'center',
-                marginLeft: wp('5%'),
-                marginRight: wp('5%')
-              }} source={face}></Image>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image style={styles.Image} source={google}></Image>
-            </TouchableOpacity>
-          </View>
           <View style={styles.SignUp}>
             <Text style={{ marginTop: 10, color: 'white', fontSize: wp('4%') }}>Create your account?</Text>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => {navigation.navigate('SignUp'),setEmail(''),setPassword('')}}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => { navigation.navigate('SignUp'), setEmail(''), setPassword('') }}>
               <Text style={styles.SignUpTitle}>Sign Up here</Text>
             </TouchableOpacity>
           </View>
@@ -124,18 +104,16 @@ export default Login
 const styles = StyleSheet.create({
   Container: {
     alignItems: 'center',
-    marginTop: hp('2%'),
     marginBottom: hp('1%')
   },
   Header: {
-    fontSize: wp('12%'),
+    fontSize: isSmallPhone || isSmallTablet ? wp('7%') : wp('9%'),
     fontWeight: 'bold',
     color: 'white',
-    marginTop: hp('20%')
   },
   Title: {
     color: 'white',
-    fontSize: wp('4.5%'),
+    fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'),
     marginBottom: hp('1%')
   },
   Pic: {
@@ -167,7 +145,6 @@ const styles = StyleSheet.create({
     marginLeft: wp('2.5%')
   },
   Email: {
-    marginTop: hp('4%'),
     marginLeft: wp('4%'),
     width: wp('81.5%'),
     height: hp('6.5%'),

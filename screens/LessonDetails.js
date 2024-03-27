@@ -47,7 +47,7 @@ const LessonDetails = ({ route }) => {
     const VideoWebView = () => {
         return (
             <View style={{ height: 300, alignItems: 'center' }}>
-                <WebView style={{ width: wp('100%') }}
+                <WebView style={{ width: wp('100%'),flex:1 }}
                     allowsFullscreenVideo
                     source={{ uri: 'https://www.youtube.com/embed/mpSmBuco6I0?si=p1hauMk3VsiiPzzR%22%20title=' }}
                 />
@@ -520,7 +520,7 @@ const styles = StyleSheet.create({
     },
     closeButton: {
         position: 'absolute',
-        top: hp('10%'),
-        right: wp('4%')
+        top: hp('25%'),
+        right: wp('1%')
     },
 })

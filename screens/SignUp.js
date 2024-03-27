@@ -8,8 +8,8 @@ import user from '../assets/Login/user.png'
 import warn from '../assets/Login/warning.png'
 import { SignUpForm } from '../Api/Log'
 import Loading from '../Loading/Loading'
-import { showAlert } from '../Alert/Alert'
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import logo from '../assets/kidLogo.png'
+import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import {
   validateEmail,
   validateName,
@@ -22,7 +22,7 @@ const SignUp = ({ navigation }) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [formHeight, setFormHeight] = useState(hp('50%'));
+  const [formHeight, setFormHeight] = useState(hp('57%'));
   const [loading, setLoading] = useState(false);
 
   const [emailError, setEmailError] = useState('');
@@ -41,11 +41,16 @@ const SignUp = ({ navigation }) => {
   return (
     <View style={styles.All}>
       <ImageBackground source={background} style={styles.backPic}>
-        <View style={styles.Container}>
-          <Text style={styles.Header}>Sign Up</Text>
-          <Text style={styles.Title}>Hi,Create account to dicover new things</Text>
+        <View style={{ alignItems: 'center', marginTop: isSmallPhone || isSmallTablet ? hp('10%') : hp('15%'), }}>
+          <Image source={logo} style={{
+            height: hp('20%'), width: isSmallPhone || isSmallTablet ? wp('34%') : wp('32%'),
+          }} />
         </View>
-        <View style={[styles.Form, { height: formHeight }]}>
+        <View style={[styles.Form, { heigh: isSmallPhone || isSmallTablet ? wp('57%') : wp('60%'), }]}>
+          <View style={styles.Container}>
+            <Text style={styles.Header}>Sign Up</Text>
+            <Text style={styles.Title}>Hi,Create account to dicover new things</Text>
+          </View>
           <TouchableOpacity style={styles.Email} activeOpacity={1}
             onPress={() => emailRef.current.focus()} >
             <Image source={mail} style={styles.Icon} />
@@ -144,18 +149,15 @@ export default SignUp
 const styles = StyleSheet.create({
   Container: {
     alignItems: 'center',
-    marginTop: hp('2%'),
-    marginBottom: hp('1%')
   },
   Header: {
-    fontSize: wp('12%'),
+    fontSize: isSmallPhone || isSmallTablet ? wp('7%') : wp('9%'),
     fontWeight: 'bold',
     color: 'white',
-    marginTop: hp('20%')
   },
   Title: {
     color: 'white',
-    fontSize: wp('4.5%'),
+    fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'),
     marginBottom: hp('1%')
   },
   Pic: {
@@ -187,7 +189,6 @@ const styles = StyleSheet.create({
     marginLeft: wp('2.5%')
   },
   Email: {
-    marginTop: hp('1.5%'),
     marginLeft: wp('4%'),
     width: wp('81.5%'),
     height: hp('6.5%'),
@@ -249,7 +250,6 @@ const styles = StyleSheet.create({
     marginLeft: wp('5%'),
     borderRadius: 20,
     alignContent: 'center',
-    paddingTop: hp('1%'),
     borderColor: 'white',
     borderWidth: 1
   },
