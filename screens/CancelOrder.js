@@ -1,11 +1,9 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView,Alert } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView,Alert,Modal } from 'react-native'
 import React, { useState } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import { SelectList } from 'react-native-dropdown-select-list'
 import { Checkbox } from 'react-native-paper';
-import Modal from "react-native-modal";
-import warn from '../assets/Payment/warn.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const CancelOrder = ({ route, navigation }) => {
@@ -105,8 +103,8 @@ const CancelOrder = ({ route, navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Modal isVisible={isModalVisible} transparent={true}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Modal visible={isModalVisible} transparent={true} statusBarTranslucent={true} animationType={'fade'}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
             <View style={styles.Popup}>
               {/* <View style={{ alignItems: 'center' }}>
                 <Image source={warn} style={{ width: wp('22.5%'), height: hp('10%') }} />
@@ -168,7 +166,7 @@ const styles = StyleSheet.create({
   },
   TxtInput: {
     borderWidth: 1,
-    height: hp('10%'),
+    height: isSmallPhone || isSmallTablet ? hp('10%') : hp('13%'),  
     width: wp('90%'),
     paddingLeft: wp('1%'),
     borderColor: '#E9E9E9',
