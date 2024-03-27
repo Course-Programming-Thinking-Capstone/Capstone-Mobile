@@ -45,11 +45,10 @@ const Payment = ({ route, navigation }) => {
             if (studentData) {
                 const sortedStudents = studentData.sort((a, b) => b.id - a.id);
                 setStudent(sortedStudents);
+                setLoading(false);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
-        } finally {
-            setLoading(false);
         }
     };
     const fetchContact = async () => {
@@ -57,11 +56,10 @@ const Payment = ({ route, navigation }) => {
             const contactData = await getContact();
             if (contactData) {
                 setContact(contactData);
+                setLoading(false);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
-        } finally {
-            setLoading(false);
         }
     };
     const [selectedItems, setSelectedItems] = useState([]);
@@ -85,14 +83,13 @@ const Payment = ({ route, navigation }) => {
     const renderItem = ({ item }) => (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: wp('2%'), marginTop: hp('1%') }}>
             <TouchableOpacity onPress={() => toggleSelection(item.id, item.fullName)}
-            activeOpacity={1}>
-                <View style={[styles.NameKid]}>
-                    <CheckBox
-                        value={selectedItems.includes(item.id)}
-                        style={styles.checkbox}
-                    />
-                    <Text style={{ color: '#212121CC', width: wp('25%'), textAlign: 'center', fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>{item.fullName}</Text>
-                </View>
+                activeOpacity={1} style={[styles.NameKid]}>
+                <CheckBox
+                    value={selectedItems.includes(item.id)}
+                    style={styles.checkbox}
+                    onValueChange={() => toggleSelection(item.id, item.fullName)}
+                />
+                <Text style={{ color: '#212121CC', width: wp('25%'), textAlign: 'center', fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>{item.fullName}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -147,19 +144,18 @@ const Payment = ({ route, navigation }) => {
             <ScrollView style={{ height: hp('11%') }}>
                 {loading ? (
                     <Loading />
+                ) : (student.length === 0 ? (
+                    <Text style={{ textAlign: 'center', marginTop: hp('15%') }}>No student data available !</Text>
                 ) : (
-                    student.length === 0 ? (
-                        <Text style={{ textAlign: 'center', marginTop: hp('15%') }}>No student data available !</Text>
-                    ) : (
-                        <FlatList
-                            data={student}
-                            keyExtractor={item => item.id.toString()}
-                            renderItem={renderItem}
-                            showsHorizontalScrollIndicator={false}
-                            scrollEnabled={false}
-                            numColumns={2}
-                        />
-                    )
+                    <FlatList
+                        data={student}
+                        keyExtractor={item => item.id.toString()}
+                        renderItem={renderItem}
+                        showsHorizontalScrollIndicator={false}
+                        scrollEnabled={false}
+                        numColumns={2}
+                    />
+                )
                 )}
             </ScrollView>
             <View>

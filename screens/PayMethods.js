@@ -5,7 +5,7 @@ import zalo from '../assets/Payment/zalo1.png'
 import momo from '../assets/Payment/momo.png'
 import paypal from '../assets/Payment/paypal1.png'
 import apple from '../assets/Payment/apple1.png'
-import { Button, RadioButton } from 'react-native-paper';
+import { RadioButton } from 'react-native-paper';
 const PayMethods = ({ navigation, route }) => {
   const { Name, LessImage, Lecture, Avatar, Price, Id, info, contact, selectedStudents } = route.params;
   const [payment, setPayment] = React.useState('Momo');
@@ -13,7 +13,7 @@ const PayMethods = ({ navigation, route }) => {
     <View style={styles.Container}>
       <View style={{ marginTop: hp('1%') }}>
         <Text style={{ fontWeight: '500', fontSize: wp('4%') }}>Select a payment method</Text>
-        <View style={[styles.Account, { borderColor: payment === 'Momo' ? 'blue' : '#21212133', backgroundColor: payment === 'Momo' ? '#D9D9D933' : 'white' }]}>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => setPayment('Momo')} style={[styles.Account, { borderColor: payment === 'Momo' ? 'blue' : '#21212133', backgroundColor: payment === 'Momo' ? '#D9D9D933' : 'white' }]}>
           <Image source={momo} style={styles.PaymentIcon} />
           <View style={{ alignItems: 'center' }}>
             <Text style={{ fontWeight: 600, color: '#212121CC', fontSize: wp('4%') }}>Momo E-wallet</Text>
@@ -24,8 +24,8 @@ const PayMethods = ({ navigation, route }) => {
             status={payment === 'Momo' ? 'checked' : 'unchecked'}
             onPress={() => setPayment('Momo')}
           />
-        </View>
-        <View style={[styles.Account, { borderColor: payment === 'Zalo' ? 'blue' : '#21212133', backgroundColor: payment === 'Zalo' ? '#D9D9D933' : 'white' }]}>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => setPayment('Zalo')} style={[styles.Account, { borderColor: payment === 'Zalo' ? 'blue' : '#21212133', backgroundColor: payment === 'Zalo' ? '#D9D9D933' : 'white' }]}>
           <Image source={zalo} style={[styles.PaymentIcon, { width: wp('13%'), height: hp('6%'), marginLeft: wp('2.3%') }]} />
           <View style={{ alignItems: 'center' }}>
             <Text style={{ fontWeight: 600, color: '#212121CC', fontSize: wp('4%') }}>Zalo E-wallet</Text>
@@ -36,7 +36,7 @@ const PayMethods = ({ navigation, route }) => {
             status={payment === 'Zalo' ? 'checked' : 'unchecked'}
             onPress={() => setPayment('Zalo')}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={{ marginTop: hp('1%') }}>
         <Text style={{ fontWeight: '500', fontSize: wp('4%'), marginVertical: hp('1%') }}>Voucher</Text>

@@ -253,9 +253,10 @@ export default function App() {
           ),
           headerTitle: () => (
             <View>
-              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263', marginLeft: wp('10%') }}>Review Summary</Text>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Review Summary</Text>
             </View>
-          )
+          ),
+          headerTitleAlign: 'center'
         }} />
         <Stack.Screen name="Payment" component={Payment} options={{
           tabBarIcon: ({ color, size }) => (
