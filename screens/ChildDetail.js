@@ -66,7 +66,7 @@ const ChildDetail = ({ route, navigation }) => {
           <Text style={{ color: '#FF8A00', fontWeight: '500', fontSize: wp('10%') }}>2</Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => { navigation.navigate('StudyProcess') }}>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => { navigation.navigate('StudyProcess') }}>
         <View style={{
           flexDirection: 'row', backgroundColor: 'white', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('0.5%'), borderWidth: 1, shadowColor: 'black',
           shadowOpacity: 0.9,

@@ -84,14 +84,16 @@ const Payment = ({ route, navigation }) => {
     };
     const renderItem = ({ item }) => (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: wp('2%'), marginTop: hp('1%') }}>
-            <View style={[styles.NameKid]}>
-                <CheckBox
-                    value={selectedItems.includes(item.id)}
-                    onValueChange={() => toggleSelection(item.id, item.fullName)}
-                    style={styles.checkbox}
-                />
-                <Text style={{ color: '#212121CC', width: wp('25%'), textAlign: 'center', fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>{item.fullName}</Text>
-            </View>
+            <TouchableOpacity onPress={() => toggleSelection(item.id, item.fullName)}
+            activeOpacity={1}>
+                <View style={[styles.NameKid]}>
+                    <CheckBox
+                        value={selectedItems.includes(item.id)}
+                        style={styles.checkbox}
+                    />
+                    <Text style={{ color: '#212121CC', width: wp('25%'), textAlign: 'center', fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>{item.fullName}</Text>
+                </View>
+            </TouchableOpacity>
         </View>
     )
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -147,7 +149,7 @@ const Payment = ({ route, navigation }) => {
                     <Loading />
                 ) : (
                     student.length === 0 ? (
-                        <Text style={{ textAlign: 'center',marginTop:hp('15%') }}>No student data available !</Text>
+                        <Text style={{ textAlign: 'center', marginTop: hp('15%') }}>No student data available !</Text>
                     ) : (
                         <FlatList
                             data={student}

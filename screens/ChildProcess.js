@@ -65,7 +65,7 @@ const ChildProcess = ({ navigation }) => {
         }
     };
     const renderItem = ({ item }) => (
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity activeOpacity={0.8} onPress={() => {
             navigation.navigate('ChildDetail', {
                 name: item.fullName,
                 age: item.age,

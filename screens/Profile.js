@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, TouchableOpacity, ImageBackground, Text,Modal } from 'react-native'
+import { StyleSheet, View, Image, TouchableOpacity, ImageBackground, Text, Modal } from 'react-native'
 import React, { useState } from 'react'
 import cong from '../assets/Lesson/cong2.jpg'
 import Back from '../assets/Profile/back1.jpg'
@@ -27,7 +27,7 @@ const Profile = ({ navigation }) => {
         </View>
       </ImageBackground>
       <View style={styles.Avt}>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={1}>
           <View >
             <Image source={cong} style={styles.CircleMen} />
           </View>
@@ -35,7 +35,7 @@ const Profile = ({ navigation }) => {
         <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginTop: hp('1%'), fontWeight: '500' }}>Thành Công</Text>
       </View>
       <View style={{ paddingLeft: wp('5%'), paddingRight: wp('5%') }}>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={1}>
           <View style={{
             flexDirection: 'row', backgroundColor: '#e9f2eb', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('2%'), shadowColor: 'black',
             shadowOpacity: 0.9,
@@ -52,17 +52,16 @@ const Profile = ({ navigation }) => {
             <Image source={right} style={{ width: wp('6%'), height: hp('3.5%'), alignSelf: 'center', marginRight: wp('3%') }} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={{ flexDirection: 'row', backgroundColor: '#e9f2eb', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('2%') }}>
+        <TouchableOpacity activeOpacity={1}>
+          <View style={{
+            flexDirection: 'row', backgroundColor: '#e9f2eb', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('2%'), shadowColor: 'black',
+            shadowOpacity: 0.9,
+            shadowOffset: { width: 0, height: 2 },
+            shadowRadius: 20,
+            elevation: 5,
+          }}>
             <View style={{ flexDirection: 'row' }}>
-              <View style={{
-                borderColor: '#e9f2eb', borderRadius: 10, borderWidth: 2, width: wp('12%'), height: hp('6%'), backgroundColor: '#78a1e3', alignItems: 'center', marginLeft: wp('2%'), justifyContent: 'center', shadowColor: 'black',
-                shadowOpacity: 0.9,
-                shadowOffset: { width: 0, height: 2 },
-                shadowRadius: 20,
-                elevation: 5,
-                backgroundColor: '#e9f2eb'
-              }}>
+              <View style={{ borderColor: '#e9f2eb', borderRadius: 10, borderWidth: 2, width: wp('12%'), height: hp('6%'), backgroundColor: '#78a1e3', alignItems: 'center', marginLeft: wp('2%'), justifyContent: 'center' }}>
                 <Image source={atm} style={{ width: wp('7.5%'), height: hp('4.5%') }} />
               </View>
               <Text style={{ fontSize: wp('4.5%'), fontWeight: '500', alignSelf: 'center', marginLeft: wp('5%') }}>Payment Methods</Text>
@@ -70,7 +69,7 @@ const Profile = ({ navigation }) => {
             <Image source={right} style={{ width: wp('6%'), height: hp('3.5%'), alignSelf: 'center', marginRight: wp('3%') }} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { navigation.navigate('ChildProcess') }}>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => { navigation.navigate('ChildProcess') }}>
           <View style={{
             flexDirection: 'row', backgroundColor: '#e9f2eb', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('2%'), shadowColor: 'black',
             shadowOpacity: 0.9,
@@ -96,7 +95,7 @@ const Profile = ({ navigation }) => {
         </View>
       </View>
       <Modal visible={isModalVisible} transparent={true} statusBarTranslucent={true}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
           <View style={styles.Popup}>
             {/* <View style={{ alignItems: 'center' }}>
                 <Image source={warn} style={{ width: wp('22.5%'), height: hp('10%') }} />
