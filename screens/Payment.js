@@ -1,5 +1,5 @@
 import { StyleSheet, FlatList, Alert, Text, TouchableOpacity, View, Image, TextInput, Modal, SafeAreaView, ScrollView } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { RadioButton } from 'react-native-paper';
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
@@ -20,6 +20,7 @@ const Payment = ({ route, navigation }) => {
     const [info, setInfo] = React.useState('Email');
     const { Name, LessImage, Lecture, Avatar, Price, Id } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
+    const textInputRef = useRef(null);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
         setDisplayText('Date of Birth'),
@@ -223,13 +224,16 @@ const Payment = ({ route, navigation }) => {
                     }}>
                         <View style={styles.Popup}>
                             <Text style={{ color: 'blue', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('6%') : wp('6.5%'), textAlign: 'center', width: wp('90%') }}>Add New Child Information</Text>
-                            <View style={styles.Search}>
+                            <TouchableOpacity style={styles.Search}
+                                activeOpacity={1}
+                                onPress={() => textInputRef.current.focus()}>
                                 <TextInput
+                                    ref={textInputRef}
                                     placeholder="Enter Full Name"
                                     value={name}
                                     onChangeText={text => setName(text)}
                                 />
-                            </View>
+                            </TouchableOpacity>
                             <View style={styles.Search}>
                                 <Text>{displayText}</Text>
                                 <TouchableOpacity onPress={showDatepicker} style={{ position: "absolute", right: 10 }}>

@@ -1,5 +1,5 @@
 import { StyleSheet, Modal, Text, View, TouchableOpacity, Image, TextInput, FlatList, Alert, ScrollView } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import boy from '../assets/Profile/boy.png'
 import lich from '../assets/Profile/lich.png'
@@ -18,6 +18,7 @@ const ChildProcess = ({ navigation }) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [selected, setSelected] = React.useState('2');
     const [name, setName] = useState('')
+    const textInputRef = useRef(null);
     const data = [
         { key: '1', value: 'Male' },
         { key: '2', value: 'Female' },
@@ -25,7 +26,7 @@ const ChildProcess = ({ navigation }) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
         setDisplayText('Date of Birth'),
-        setName('')
+            setName('')
     };
     useEffect(() => {
         fetchKid();
@@ -132,23 +133,26 @@ const ChildProcess = ({ navigation }) => {
             </View>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Modal visible={isModalVisible} transparent={false} statusBarTranslucent={true} animationType='slide'>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
                         <View style={styles.Popup}>
                             <Text style={{ color: 'blue', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('6%') : wp('7%'), textAlign: 'center', width: wp('90%') }}>Add New Child Information</Text>
-                            <View style={styles.Search}>
+                            <TouchableOpacity style={styles.Search}
+                                activeOpacity={1}
+                                onPress={() => textInputRef.current.focus()}>
                                 <TextInput
+                                    ref={textInputRef}
                                     placeholder="Enter Full Name"
                                     value={name}
                                     onChangeText={text => setName(text)}
                                 />
-                            </View>
+                            </TouchableOpacity>
                             <View style={styles.Search}>
                                 <Text>{displayText}</Text>
                                 <TouchableOpacity onPress={showDatepicker} style={{ position: "absolute", right: 10 }}>
                                     <Image source={lich} style={{ height: hp('4%'), width: wp('8.5%') }} />
                                 </TouchableOpacity>
                             </View>
-                            <View style={{ width: wp('82%'), marginTop: hp('3%')}}>
+                            <View style={{ width: wp('82%'), marginTop: hp('3%') }}>
                                 <SelectList
                                     setSelected={(val) => {
                                         if (val === 'Male') {
