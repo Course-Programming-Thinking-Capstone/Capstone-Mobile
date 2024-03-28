@@ -12,7 +12,7 @@ import answer from '../assets/Profile/reading.png'
 import quiz from '../assets/Profile/quiz.png'
 import game from '../assets/Profile/control.png'
 import drop from '../assets/MyCourse/drop.png'
-
+import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 const Course = () => {
   const lessons1 = [
     { id: '01', name: 'Introduction programming ', time: '10:00', status: 'video' },
@@ -61,13 +61,13 @@ const Course = () => {
         }} source={answer} />
       ) : item.status === 'quiz' ? (
         <Image style={{
-          width: wp('9%'),
+          width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
           height: hp('4.5%'),
           position: 'absolute', right: wp('2%')
         }} source={quiz} />
       ) : (
         <Image style={{
-          width: wp('9%'),
+          width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
           height: hp('4.5%'),
           position: 'absolute', right: wp('2%')
         }} source={game} />
@@ -106,7 +106,7 @@ const Course = () => {
         <ScrollView showsVerticalScrollIndicator={false} >
           <TouchableOpacity onPress={() => setShowLessons(!showLessons)} style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]}>
             <View style={{ flexDirection: 'row', alignItems: "center" }}>
-              <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: wp('4%'), marginLeft: wp('1.5%'),width:wp('48%') }}>Section 1 <Text>- Introduction </Text></Text>
+              <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('1.5%'),width:wp('51%') }}>Section 1 <Text>- Introduction </Text></Text>
               <Text style={{ color: 'blue', fontWeight: 'bold', marginRight: wp('2%') }}>( 15 Min )</Text>
             </View>
             <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), marginRight: wp('5%') }} />
@@ -126,7 +126,7 @@ const Course = () => {
 
           <TouchableOpacity onPress={() => setShowLessons1(!showLessons1)} style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]}>
             <View style={{ flexDirection: 'row', alignItems: "center" }}>
-              <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: wp('4%'), marginLeft: wp('1.5%'),width:wp('48%') }}>Section 2 <Text>- Programming </Text></Text>
+              <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('1.5%'),width:wp('51%') }}>Section 2 <Text>- Programming </Text></Text>
               <Text style={{ color: 'blue', fontWeight: 'bold', marginRight: wp('2%') }}>( 45 Min )</Text>
             </View>
             <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), marginRight: wp('5%') }} />

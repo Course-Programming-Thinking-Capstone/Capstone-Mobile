@@ -8,6 +8,7 @@ import Login from './screens/Login'
 import SignUp from './screens/SignUp'
 import HomePage from './screens/HomePage';
 import Schedule from './assets/HomePage/schedule.png';
+import Search from './screens/Search'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -368,6 +369,20 @@ export default function App() {
           headerTitle: () => (
             <View>
               <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>My Course</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center',
+        }} />
+        <Stack.Screen name="Search" component={Search} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Search Course</Text>
             </View>
           ),
           headerTitleAlign: 'center',

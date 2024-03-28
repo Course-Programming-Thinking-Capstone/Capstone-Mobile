@@ -62,7 +62,7 @@ const HomePage = ({ navigation }) => {
     );
     const renderMentor = ({ item }) => (
         <View style={{ marginVertical: hp('2%') }}>
-            <TouchableOpacity style={{ paddingRight: wp('8%'),paddingLeft:wp('1%') }} onPress={() => {
+            <TouchableOpacity style={{ paddingRight: wp('8%'), paddingLeft: wp('1%') }} onPress={() => {
                 navigation.navigate('MentorDetails', { Lecture: item.teacher, Avatar: item.avatar, Id: item.id })
             }}>
                 <View >
@@ -96,12 +96,13 @@ const HomePage = ({ navigation }) => {
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <View style={styles.Search}>
+                        <TouchableOpacity activeOpacity={1} onPress={() => { navigation.navigate('Search') }} style={styles.Search}>
                             <Image source={search} style={styles.SearchIcon} />
                             <TextInput
                                 placeholder="Search ..."
+                                editable={false}
                             />
-                        </View>
+                        </TouchableOpacity>
                         <View style={styles.Filter}>
                             <Image style={{
                                 width: wp('5.2%'),

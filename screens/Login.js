@@ -29,9 +29,10 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.All}>
       <ImageBackground source={background} blurRadius={1.3} style={styles.backPic}>
-        <View style={{ alignItems: 'center',marginTop: isSmallPhone || isSmallTablet ? hp('10%') : hp('15%'), }}>
-          <Image source={logo} style={{ height: hp('20%'), width: isSmallPhone || isSmallTablet ? wp('34%') : wp('32%'),
- }} />
+        <View style={{ alignItems: 'center', marginTop: isSmallPhone || isSmallTablet ? hp('10%') : hp('15%'), }}>
+          <Image source={logo} style={{
+            height: hp('20%'), width: isSmallPhone || isSmallTablet ? wp('34%') : wp('32%'),
+          }} />
         </View>
         <View style={styles.Form}>
           <View style={styles.Container}>
@@ -47,7 +48,7 @@ const Login = ({ navigation }) => {
             <TextInput
               ref={textInputRef}
               style={{ flex: 1, marginLeft: wp('3%') }} // Đảm bảo TextInput mở rộng để lấp đầy vùng chứa của TouchableOpacity
-              placeholder="Email"
+              placeholder="Email or Account"
               value={email}
               onChangeText={(text) => setEmail(text)}
             />
@@ -211,11 +212,11 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   LoginTxt: {
-    marginLeft: wp('33%'),
     marginTop: hp('1.5%'),
     fontSize: wp('4%'),
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   Contact: {
     flexDirection: 'row',

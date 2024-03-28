@@ -9,14 +9,35 @@ export const login = async (email, password, navigation, setLoading, setEmail, s
     setLoading(true);
     try {
         const headers = await getApiHeaders();
-        const response = await axios.post(`${BASE_URL}/authentication/login/email`, {
-            email: email,
-            password: password,
-        }, { headers });
+        let apiUrl = '';
+        let requestData = {};
+        let nextPage = '';
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isEmail = emailPattern.test(email);
+
+        if (isEmail) {
+            apiUrl = `${BASE_URL}/authentication/login/email`;
+            requestData = {
+                email: email,
+                password: password,
+            };
+            nextPage = 'HomePage';
+        } else {
+            apiUrl = `${BASE_URL}/authentication/login/account`;
+            requestData = {
+                account: email,
+                password: password,
+            };
+            nextPage = 'KidHome';
+        }
+
+        const response = await axios.post(apiUrl, requestData, { headers });
+
         if (response.status === 200) {
             await AsyncStorage.setItem('accessToken', response.data.accessToken);
             setLoading(false);
-            navigation.navigate('HomePage');
+            navigation.navigate(nextPage);
             setEmail('');
             setPassword('');
         }
@@ -30,6 +51,8 @@ export const login = async (email, password, navigation, setLoading, setEmail, s
         }
     }
 };
+
+
 
 export const logout = async (navigation) => {
     try {
