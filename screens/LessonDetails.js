@@ -26,7 +26,7 @@ import { WebView } from 'react-native-webview';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { usePreventScreenCapture } from 'expo-screen-capture';
 import PayMethods from './PayMethods';
-import {isSmallPhone,isSmallTablet} from '../Responsive/Responsive'
+import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 const LessonDetails = ({ route }) => {
     const [showVideo, setShowVideo] = useState(false);
     const lessons1 = [
@@ -47,7 +47,7 @@ const LessonDetails = ({ route }) => {
     const VideoWebView = () => {
         return (
             <View style={{ height: 300, alignItems: 'center' }}>
-                <WebView style={{ width: wp('100%'),flex:1 }}
+                <WebView style={{ width: wp('100%'), flex: 1 }}
                     allowsFullscreenVideo
                     source={{ uri: 'https://www.youtube.com/embed/mpSmBuco6I0?si=p1hauMk3VsiiPzzR%22%20title=' }}
                 />
@@ -360,7 +360,7 @@ const LessonDetails = ({ route }) => {
                         alignItems: 'center',
                     }}>
                         <Image source={open} style={{ width: wp('8%'), height: hp('4%'), marginRight: wp('3%') }} />
-                        <Text style={{  fontSize: isSmallPhone || isSmallTablet ? wp('3.5%'): wp('4%'), color: 'blue', fontWeight: '500' }}>Course Preview</Text>
+                        <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%'), color: 'blue', fontWeight: '500' }}>Course Preview</Text>
                     </View>
                 </TouchableOpacity>
                 <View style={styles.DetailForm}>
@@ -376,10 +376,11 @@ const LessonDetails = ({ route }) => {
             <View style={styles.Enroll}>
                 <View>
                     <Text style={{ color: '#94867D', fontSize: wp('4%'), fontWeight: '700' }}>Total Price</Text>
-                    <Text style={{ color: '#327CF7', fontWeight: '800' }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text>
+                    <Text style={{ color: '#327CF7', fontWeight: '800' }}>{Price} đ</Text>
+                    {/* <Text style={{ color: '#327CF7', fontWeight: '800' }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text> */}
                 </View>
                 <View style={styles.Button}>
-                    <Text onPress={()=>{navigation.navigate('Payment', { Name, LessImage, Lecture, Avatar, Price, Id })}} style={{ fontWeight: '800', color: 'white' }}>Enroll Now</Text>
+                    <Text onPress={() => { navigation.navigate('Payment', { Name, LessImage, Lecture, Avatar, Price, Id }) }} style={{ fontWeight: '800', color: 'white' }}>Enroll Now</Text>
                 </View>
             </View>
 

@@ -16,3 +16,18 @@ export const getContact = async () => {
         return null;
     }
 };
+export const getUserInfo = async () => {
+    try {
+        const headers = await getApiHeaders();
+        const response = await axios.get(`${BASE_URL}/users/account`, { headers });
+        if (typeof response.data === 'object' && response.data !== null) {
+            return response.data;
+        } else {
+            console.error("Invalid data received from the server:", response.data);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        return null;
+    }
+};

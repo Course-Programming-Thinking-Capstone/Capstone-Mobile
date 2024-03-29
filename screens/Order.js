@@ -5,65 +5,84 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { getOrder } from '../Api/Order'
+import test from '../assets/Lesson/kid1.jpg'
+import Loading from '../Loading/Loading'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 const Order = ({ route, navigation }) => {
+    const [loading, setLoading] = useState(true);
+    const [orderList, setOrderList] = useState([]);
     const [pending, setPending] = useState([]);
+    const [process, setProcess] = useState([]);
     const [success, setSuccess] = useState([]);
-    const [cancelled, setCancelled] = useState([]);
-    const Near = [
-        { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 VND', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg'), status: 'Pending', children: 'Tuan Vu', payment: 'Zalo' },
-        { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1.500.000 VND', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg'), status: 'Success', children: 'Thanh An', payment: 'Momo' },
-        { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg'), status: 'Cancelled', children: 'Thanh An', payment: 'Momo' },
-        { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 VND', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg'), status: 'Success', children: 'Tuan Vu', payment: 'Zalo' },
-        { id: '5', name: 'Lập trình with C', teacher: 'CongLT', price: '1.500.000 VND' },
-        { id: '6', name: 'Lập trình with C', teacher: 'CongLT', price: '1.500.000 VND' },
-    ];
+    const [refunded, setRefunded] = useState([]);
+
     useEffect(() => {
-        const filterDataByStatus = () => {
-            const pendingData = [];
-            const successData = [];
-            const cancelledData = [];
+        fetchOrder();
+    }, []);
 
-            for (const item of Near) {
-                if (item.status === 'Pending') {
-                    pendingData.push(item);
-                } else if (item.status === 'Success') {
-                    successData.push(item);
-                } else if (item.status === 'Cancelled') {
-                    cancelledData.push(item);
-                }
-            }
+    useEffect(() => {
+        const fetchOrderOnFocus = navigation.addListener('focus', () => {
+            fetchOrder();
+        });
+        return fetchOrderOnFocus;
+    }, [navigation]);
 
-            if (JSON.stringify(pendingData) !== JSON.stringify(pending)) {
-                setPending(pendingData);
+    const fetchOrder = async () => {
+        try {
+            setLoading(true);
+            const orderData = await getOrder();
+            if (orderData) {
+                const sortedOrder = orderData.sort((a, b) => b.orderId - a.orderId);
+                setOrderList(sortedOrder);
+                filterDataByStatus(sortedOrder);
+                setLoading(false);
             }
-            if (JSON.stringify(successData) !== JSON.stringify(success)) {
-                setSuccess(successData);
-            }
-            if (JSON.stringify(cancelledData) !== JSON.stringify(cancelled)) {
-                setCancelled(cancelledData);
-            }
-        };
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setLoading(false);
+        }
+    };
 
-        filterDataByStatus();
-    }, [Near]);
-    const numberOfItems = 4; // Render component number
-    const limitedNear = Near.slice(0, numberOfItems);
+    const filterDataByStatus = (orderData) => {
+        const pendingData = [];
+        const processData = [];
+        const successData = [];
+        const refundedData = [];
+
+        for (const item of orderData) {
+            if (item.orderStatus === 'Pending') {
+                pendingData.push(item);
+            } else if (item.orderStatus === 'Process') {
+                processData.push(item);
+            } else if (item.orderStatus === 'Success') {
+                successData.push(item);
+            } else if (item.orderStatus === 'Refunded') {
+                refundedData.push(item);
+            }
+        }
+
+        setPending(pendingData);
+        setProcess(processData);
+        setSuccess(successData);
+        setRefunded(refundedData);
+    };
+
     const renderItem = ({ item }) => (
         <TouchableOpacity style={{ alignItems: 'center', marginBottom: hp('1%') }} onPress={() => {
-            navigation.navigate('OrderDetail', { Name: item.name, LessImage: item.image, Lecture: item.teacher, Avatar: item.avatar, Price: item.price, Id: item.id, Status: item.status, Child: item.children, Payment: item.payment })
+            navigation.navigate('OrderDetail', { Id: item.orderId, Status: item.orderStatus });
         }}>
             <View style={styles.Course}>
-                <Image source={item.image} style={styles.CourseImage} />
+                <Image source={test} style={styles.CourseImage} />
                 <View>
                     <View style={{
                         borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10,
-                        backgroundColor: item.status === 'Pending' ? '#FF8A00' : item.status === 'Success' ? '#6DCE63' : item.status === 'Cancelled' ? 'red' : 'red',
+                        backgroundColor: item.orderStatus === 'Pending' ? '#FF8A00' : item.orderStatus === 'process' ? '#6DCE63' : item.orderStatus === 'refunded' ? 'red' : 'red',
                         width: wp('21.9%'), width: wp('21.9%')
                     }}>
-                        <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>{item.status}</Text>
+                        <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>{item.orderStatus}</Text>
                     </View>
-                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{item.name}</Text>
+                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500', width: wp('50%') }}>{item.courseName}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                         <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                         <Text style={{
@@ -78,61 +97,108 @@ const Order = ({ route, navigation }) => {
                             fontWeight: 'bold',
                             color: 'blue',
                             fontSize: wp('3.8%')
-                        }}>{item.price}</Text>
+                        }}>{item.totalPrice}</Text>
                     </View>
                 </View>
             </View>
         </TouchableOpacity>
     );
+
     const [index, setIndex] = useState(0);
     const [routes] = useState([
         { key: 'all', title: 'All' },
+        { key: 'process', title: 'Process' },
         { key: 'pending', title: 'Pending' },
         { key: 'success', title: 'Success' },
-        { key: 'cancelled', title: 'Cancelled' },
+        { key: 'refunded', title: 'Refunded' },
     ]);
+
     const renderScene = SceneMap({
         all: () => (
             <View style={{ marginTop: hp('1%') }}>
-                <FlatList
-                    data={limitedNear}
-                    keyExtractor={item => item.id}
-                    renderItem={renderItem}
-                    showsVerticalScrollIndicator={false}
-                />
+                {loading ? (
+                    <Loading />
+                ) : (orderList.length === 0 ? (
+                    <Text style={{ textAlign: 'center', marginTop: hp('15%') }}>No data available !</Text>
+                ) : (
+                    <FlatList
+                        data={orderList}
+                        keyExtractor={item => item.orderId.toString()}
+                        renderItem={renderItem}
+                        showsVerticalScrollIndicator={false}
+                    />
+                )
+                )}
+            </View>
+        ),
+        process: () => (
+            <View style={{ marginTop: hp('1%') }}>
+                {loading ? (
+                    <Loading />
+                ) : (process.length === 0 ? (
+                    <Text style={{ textAlign: 'center', marginTop: hp('15%') }}>No data available !</Text>
+                ) : (
+                    <FlatList
+                        data={process}
+                        keyExtractor={item => item.orderId.toString()}
+                        renderItem={renderItem}
+                        showsVerticalScrollIndicator={false}
+                    />)
+                )}
             </View>
         ),
         pending: () => (
             <View style={{ marginTop: hp('1%') }}>
-                <FlatList
-                    data={pending}
-                    keyExtractor={item => item.id}
-                    renderItem={renderItem}
-                    showsVerticalScrollIndicator={false}
-                />
+                {loading ? (
+                    <Loading />
+                ) : (pending.length === 0 ? (
+                    <Text style={{ textAlign: 'center', marginTop: hp('15%') }}>No data available !</Text>
+                ) : (
+                    <FlatList
+                        data={pending}
+                        keyExtractor={item => item.orderId.toString()}
+                        renderItem={renderItem}
+                        showsVerticalScrollIndicator={false}
+                    />
+                )
+                )}
             </View>
         ),
         success: () => (
             <View style={{ marginTop: hp('1%') }}>
-                <FlatList
-                    data={success}
-                    keyExtractor={item => item.id}
-                    renderItem={renderItem}
-                    showsVerticalScrollIndicator={false}
-                />
+                {loading ? (
+                    <Loading />
+                ) : (success.length === 0 ? (
+                    <Text style={{ textAlign: 'center', marginTop: hp('15%') }}>No data available !</Text>
+                ) : (
+                    <FlatList
+                        data={success}
+                        keyExtractor={item => item.orderId.toString()}
+                        renderItem={renderItem}
+                        showsVerticalScrollIndicator={false}
+                    />)
+                )}
             </View>
         ),
-        cancelled: () => (
+        refunded: () => (
             <View style={{ marginTop: hp('1%') }}>
-                <FlatList
-                    data={cancelled}
-                    keyExtractor={item => item.id}
-                    renderItem={renderItem}
-                    showsVerticalScrollIndicator={false}
-                />
+                {loading ? (
+                    <Loading />
+                ) : (refunded.length === 0 ? (
+                    <Text style={{ textAlign: 'center', marginTop: hp('15%') }}>No data available !</Text>
+                ) : (
+                    <FlatList
+                        data={refunded}
+                        keyExtractor={item => item.orderId.toString()}
+                        renderItem={renderItem}
+                        showsVerticalScrollIndicator={false}
+                    />
+                )
+                )}
             </View>
         )
-    })
+    });
+
     const renderTabBar = (props) => (
         <TabBar
             {...props}
@@ -141,10 +207,11 @@ const Order = ({ route, navigation }) => {
             labelStyle={{ color: 'black' }}// Màu chữ của tab
             tabStyle={{ color: 'red' }}
             renderLabel={({ route, focused, color }) => (
-                <Text style={{ color: focused ? 'blue' : 'black', fontWeight: focused ? '600' : '400', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('3.8%'), width: isSmallPhone || isSmallTablet ? wp('19%') : wp('20%'),textAlign:'center' }}>{route.title}</Text>
+                <Text style={{ color: focused ? 'blue' : 'black', fontWeight: focused ? '600' : '400', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('3.8%'), width: isSmallPhone || isSmallTablet ? wp('19%') : wp('20%'), textAlign: 'center' }}>{route.title}</Text>
             )}
         />
     );
+
     return (
         <View style={styles.Container}>
             <View style={{
@@ -153,14 +220,14 @@ const Order = ({ route, navigation }) => {
                 <TabView
                     navigationState={{ index, routes }}
                     renderScene={renderScene}
-                    onIndexChange={setIndex}
+                    onIndexChange={(index) => setIndex(index)}
                     initialLayout={{ width: '100%' }}
                     renderTabBar={renderTabBar}
                 />
             </View>
         </View>
     )
-}
+};
 
 export default Order
 

@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList, ScrollView, ImageBackground } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import noti from '../assets/HomePage/noti.png'
@@ -14,13 +14,38 @@ import hello from '../assets/HomePage/hello.png'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import learning from '../assets/Lesson/learning.png'
-import cong from '../assets/Lesson/cong2.jpg'
-import an from '../assets/Lesson/an.jpg'
-import vu from '../assets/Lesson/vu.jpg'
-import thien from '../assets/Lesson/thien.jpg'
 import background from '../assets/HomePage/gif5.gif'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import { getCourse } from '../Api/Course';
+import { getUserInfo } from '../Api/Parents';
+import test from '../assets/Lesson/kid1.jpg'
 const HomePage = ({ navigation }) => {
+    const [course, setCourse] = useState([])
+    useEffect(() => {
+        fetchCourse()
+        fetchInfo()
+    }, [])
+    const fetchCourse = async () => {
+        try {
+            const courseData = await getCourse();
+            if (courseData) {
+                setCourse(courseData);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    const [userInfo, setUserInfo] = useState([])
+    const fetchInfo = async () => {
+        try {
+            const userData = await getUserInfo();
+            if (userData) {
+                setUserInfo(userData);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
     const Near = [
         { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1500000', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg') },
         { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1500000', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg') },
@@ -86,7 +111,7 @@ const HomePage = ({ navigation }) => {
                                     fontSize: wp('5%'),
                                     color: 'white',
                                     fontWeight: 'bold'
-                                }}>Hi, John</Text>
+                                }}>Hi, {userInfo.fullName}</Text>
                                 <Image source={hello} style={{ width: wp('6%'), height: hp('3%'), marginLeft: wp('2%') }} />
                             </View>
                             <Text style={styles.Text}>Let's start learning!</Text>
@@ -213,15 +238,34 @@ const HomePage = ({ navigation }) => {
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
-                    <View>
-                        <FlatList
-                            data={limitedNear}
-                            keyExtractor={item => item.id}
-                            renderItem={renderItem}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            contentContainerStyle={styles.List}
-                        />
+                    <View style={{ paddingLeft: wp('1%'), marginBottom: hp('0.5%') }}>
+                        <TouchableOpacity style={styles.Course} onPress={() => {
+                            navigation.navigate('LessonDetails', { Name: course.name, LessImage: course.image, Lecture: course.teacher, Avatar: course.avatar, Price: course.price, Id: course.id })
+                        }}>
+                            <Image source={test} style={styles.Image} />
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
+                                <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                                <Text style={styles.Name}>{course.name}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
+                                <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                                <Text style={{
+                                    fontWeight: 'bold',
+                                    color: '#40BFFF',
+                                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
+                                }}>{course.teacher}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
+                                <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                                <Text style={{
+                                    fontWeight: 'bold',
+                                    color: 'blue',
+                                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
+                                }}>
+                                    {course.price}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>

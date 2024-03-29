@@ -14,15 +14,6 @@ const ReviewSum = ({ route, navigation }) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    // const momo = async () => {
-    //     try {
-    //         const response = await axios.get('http://shoeshine-001-site1.ftempurl.com/api/payments/momo/');
-    //         const momoAppURI = response.data; // Thiết lập giá trị momoAppURI từ phản hồi
-
-    //     } catch (error) {
-    //         console.error('Error fetching data:', error);
-    //     }
-    // };
     const [id, setId] = useState([])
     const postOrder = async () => {
         try {
@@ -55,16 +46,6 @@ const ReviewSum = ({ route, navigation }) => {
             setLoading1(false);
         }
     };
-    // const fetchPayment = async () => {
-    //     try {
-    //         const paymentDetail = await CreatePayment(id);
-    //         if (paymentDetail) {
-    //             console.log("Thành Công");
-    //         }
-    //     } catch (error) {
-    //         console.error("Error fetching data:", error);
-    //     }
-    // };
 
     return (
         <View style={styles.Container}>
@@ -89,11 +70,14 @@ const ReviewSum = ({ route, navigation }) => {
                             fontWeight: 'bold',
                             color: 'blue',
                             fontSize: wp('3.8%')
-                        }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text>
+                        }}>
+                            {Price}
+                            {/* {parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ */}
+                        </Text>
                     </View>
                 </View>
             </View>
-            <ScrollView style={{height:hp('60%')}}>
+            <ScrollView style={{ height: hp('60%') }}>
                 <View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
                         <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive <Text style={{ color: 'red', fontWeight: '500' }}>({selectedStudents.length})</Text></Text>
@@ -101,7 +85,7 @@ const ReviewSum = ({ route, navigation }) => {
                             {selectedStudents.map((student, index) => (
                                 <Text
                                     key={index}
-                                    style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500',textAlign:'right' }}
+                                    style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}
                                 >
                                     {student.fullName}
                                 </Text>
@@ -126,7 +110,8 @@ const ReviewSum = ({ route, navigation }) => {
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{payment}</Text>
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>0 đ</Text>
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>x{selectedStudents.length}</Text>
-                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{Price}</Text>
+                        {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                     </View>
                 </View>
                 <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
@@ -136,7 +121,8 @@ const ReviewSum = ({ route, navigation }) => {
                         <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>Total</Text>
                     </View>
                     <View>
-                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{(Price * (selectedStudents.length))} đ</Text>
+                        {/* <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                     </View>
                 </View>
                 <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />

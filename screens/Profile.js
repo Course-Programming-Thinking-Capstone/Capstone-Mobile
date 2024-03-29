@@ -1,5 +1,5 @@
 import { StyleSheet, View, Image, TouchableOpacity, ImageBackground, Text, Modal } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import cong from '../assets/Lesson/cong2.jpg'
 import Back from '../assets/Profile/back1.jpg'
 import teacher from '../assets/Lesson/teacher1.png'
@@ -9,6 +9,7 @@ import process from '../assets/Profile/process.png'
 import people from '../assets/Profile/people.png'
 import logoutIcon from '../assets/Profile/logout.png'
 import { logout } from '../Api/Log'
+import { getUserInfo } from '../Api/Parents';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Profile = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -17,6 +18,20 @@ const Profile = ({ navigation }) => {
   };
   const handleLogout = () => {
     logout(navigation);
+  };
+  useEffect(() => {
+    fetchInfo()
+  }, [])
+  const [userInfo, setUserInfo] = useState([])
+  const fetchInfo = async () => {
+    try {
+      const userData = await getUserInfo();
+      if (userData) {
+        setUserInfo(userData);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
   return (
     <View style={styles.Container}>
@@ -27,12 +42,12 @@ const Profile = ({ navigation }) => {
         </View>
       </ImageBackground>
       <View style={styles.Avt}>
-        <TouchableOpacity activeOpacity={1}>
-          <View >
+        <View style={{alignItems:'center'}}>
+          <TouchableOpacity activeOpacity={1}>
             <Image source={cong} style={styles.CircleMen} />
-          </View>
-        </TouchableOpacity>
-        <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginTop: hp('1%'), fontWeight: '500' }}>Thành Công</Text>
+          </TouchableOpacity>
+          <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginTop: hp('1%'), fontWeight: '500' }}>{userInfo.fullName}</Text>
+        </View>
       </View>
       <View style={{ paddingLeft: wp('5%'), paddingRight: wp('5%') }}>
         <TouchableOpacity activeOpacity={1}>

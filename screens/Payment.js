@@ -215,7 +215,10 @@ const Payment = ({ route, navigation }) => {
                                 fontWeight: 'bold',
                                 color: 'blue',
                                 fontSize: wp('3.8%')
-                            }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text>
+                            }}>
+                                {/* {parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ */}
+                                {Price}
+                                </Text>
                         </View>
                     </View>
                 </View>

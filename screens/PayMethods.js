@@ -63,10 +63,12 @@ const PayMethods = ({ navigation, route }) => {
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{Name}</Text>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{Price}</Text>
+            {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text> */}
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>x{selectedStudents.length}</Text>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>0 đ</Text>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{(Price * (selectedStudents.length))}</Text>
+            {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
           </View>
         </View>
       </View>

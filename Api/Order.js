@@ -24,7 +24,7 @@ export const CreateOrder = async (studentId, count) => {
 export const getOrder = async () => {
     try {
         const headers = await getApiHeaders();
-        const response = await axios.get(`${BASE_URL}/orders`, { headers });
+        const response = await axios.get(`${BASE_URL}/orders?status=AllStatus`, { headers });
         if (typeof response.data === 'object' && response.data !== null) {
             return response.data;
         } else {
@@ -55,6 +55,21 @@ export const getOrderDetail = async (success) => {
         const headers = await getApiHeaders();
         const orderId = success.orderId;
         const response = await axios.get(`${BASE_URL}/orders/detail/${orderId}`, { headers });
+        if (typeof response.data === 'object' && response.data !== null) {
+            return response.data;
+        } else {
+            console.error("Invalid data received from the server:", response.data);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        return null;
+    }
+};
+export const getOrderById = async (Id) => {
+    try {
+        const headers = await getApiHeaders();
+        const response = await axios.get(`${BASE_URL}/orders/detail/${Id}`, { headers });
         if (typeof response.data === 'object' && response.data !== null) {
             return response.data;
         } else {
