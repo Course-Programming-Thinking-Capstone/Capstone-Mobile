@@ -126,6 +126,9 @@ const Order = ({ route, navigation }) => {
                         keyExtractor={item => item.orderId.toString()}
                         renderItem={renderItem}
                         showsVerticalScrollIndicator={false}
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        windowSize={10}
                     />
                 )
                 )}
@@ -143,6 +146,9 @@ const Order = ({ route, navigation }) => {
                         keyExtractor={item => item.orderId.toString()}
                         renderItem={renderItem}
                         showsVerticalScrollIndicator={false}
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        windowSize={10}
                     />)
                 )}
             </View>
@@ -159,6 +165,9 @@ const Order = ({ route, navigation }) => {
                         keyExtractor={item => item.orderId.toString()}
                         renderItem={renderItem}
                         showsVerticalScrollIndicator={false}
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        windowSize={10}
                     />
                 )
                 )}
@@ -176,6 +185,9 @@ const Order = ({ route, navigation }) => {
                         keyExtractor={item => item.orderId.toString()}
                         renderItem={renderItem}
                         showsVerticalScrollIndicator={false}
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        windowSize={10}
                     />)
                 )}
             </View>
@@ -192,6 +204,9 @@ const Order = ({ route, navigation }) => {
                         keyExtractor={item => item.orderId.toString()}
                         renderItem={renderItem}
                         showsVerticalScrollIndicator={false}
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        windowSize={10}
                     />
                 )
                 )}

@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native'
+import { Image, StyleSheet, Text, View, TouchableOpacity, Modal, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import success1 from '../assets/Payment/Success.png'
 import teacher from '../assets/Lesson/teacher1.png'
@@ -37,7 +37,7 @@ const Success = ({ navigation, route }) => {
                         <Text style={{ color: '#FF8A00', fontWeight: '600', fontSize: wp('6.5%'), marginBottom: hp('1%') }}>Thanks you purchased</Text>
                     </View>
                 ) : data.status === 'Process' ? (
-                    <View style={{alignItems:'center'}}>
+                    <View style={{ alignItems: 'center' }}>
                         <Image style={styles.Icon} source={wait} />
                         <Text style={{ color: '#FF8A00', fontWeight: '600', fontSize: wp('6.5%'), marginBottom: hp('1%') }}>Your Order Not Payment!</Text>
                     </View>
@@ -96,59 +96,61 @@ const Success = ({ navigation, route }) => {
                             <Image source={close} style={styles.buttonClose} />
                         </TouchableOpacity>
                         <View style={styles.Popup}>
-                            <View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Children Receive <Text style={{ color: 'red', fontWeight: '500' }}>({selectedStudents.length})</Text></Text>
-                                    <View>
-                                        {selectedStudents.map((student, index) => (
-                                            <Text
-                                                key={index}
-                                                style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}
-                                            >
-                                                {student.fullName}
-                                            </Text>
-                                        ))}
+                            <ScrollView showsVerticalScrollIndicator={true}>
+                                <View style={{paddingRight:wp('3%')}}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+                                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Children Receive <Text style={{ color: 'red', fontWeight: '500' }}>({selectedStudents.length})</Text></Text>
+                                        <View>
+                                            {selectedStudents.map((student, index) => (
+                                                <Text
+                                                    key={index}
+                                                    style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}
+                                                >
+                                                    {student.fullName}
+                                                </Text>
+                                            ))}
+                                        </View>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+                                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Receive Method</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Zalo , Email</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+                                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Status Order</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.status}</Text>
                                     </View>
                                 </View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Receive Method</Text>
-                                    <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Zalo , Email</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Status Order</Text>
-                                    <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.status}</Text>
-                                </View>
-                            </View>
-                            <View style={{ width: wp('83%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
+                                <View style={{ width: wp('83%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
 
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                <View>
-                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Payment Method</Text>
-                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Voucher</Text>
-                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Quantity</Text>
-                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Amount</Text>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%'),paddingRight:wp('3%') }}>
+                                    <View>
+                                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Payment Method</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Voucher</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Quantity</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Amount</Text>
+                                    </View>
+                                    <View>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.paymentType}</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>0 đ</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>x{selectedStudents.length}</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{Price}</Text>
+                                        {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
+                                    </View>
                                 </View>
-                                <View>
-                                    <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.paymentType}</Text>
-                                    <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>0 đ</Text>
-                                    <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>x{selectedStudents.length}</Text>
-                                    <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{Price}</Text>
-                                    {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
-                                </View>
-                            </View>
-                            <View style={{ width: wp('83%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
+                                <View style={{ width: wp('83%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
 
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                <View>
-                                    <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Total</Text>
-                                </View>
-                                <View>
-                                    <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length))} đ</Text>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%'),paddingRight:wp('3%') }}>
+                                    <View>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Total</Text>
+                                    </View>
+                                    <View>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length))} đ</Text>
 
-                                    {/* <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
+                                        {/* <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={{ width: wp('83%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
+                                <View style={{ width: wp('83%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
+                            </ScrollView>
                         </View>
                     </View>
                 </Modal>
@@ -248,11 +250,10 @@ const styles = StyleSheet.create({
     Popup: {
         backgroundColor: 'white',
         width: wp('90%'),
-        height: isSmallPhone || isSmallTablet ? hp('55%') : hp('60%'),
+        height: isSmallPhone || isSmallTablet ? hp('50%') : hp('60%'),
         borderRadius: 10,
         justifyContent: 'center',
         paddingLeft: wp('3%'),
-        paddingRight: wp('3%')
     },
     Btn: {
         backgroundColor: '#40BFFF',
