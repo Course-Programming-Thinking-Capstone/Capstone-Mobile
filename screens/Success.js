@@ -4,6 +4,7 @@ import success1 from '../assets/Payment/Success.png'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import close from '../assets/welcome/close1.png'
+import wait from '../assets/Payment/pend1.png'
 import { getOrderDetail } from '../Api/Order';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -30,8 +31,17 @@ const Success = ({ navigation, route }) => {
     return (
         <View style={styles.Container}>
             <View style={{ alignItems: 'center', marginTop: hp('10%') }}>
-                <Image style={styles.Icon} source={success1} />
-                <Text style={{ color: '#FF8A00', fontWeight: '600', fontSize: wp('6.5%'), marginBottom: hp('1%') }}>Thanks you purchased</Text>
+                {data.status === 'Success' ? (
+                    <View>
+                        <Image style={styles.Icon} source={success1} />
+                        <Text style={{ color: '#FF8A00', fontWeight: '600', fontSize: wp('6.5%'), marginBottom: hp('1%') }}>Thanks you purchased</Text>
+                    </View>
+                ) : data.status === 'Process' ? (
+                    <View style={{alignItems:'center'}}>
+                        <Image style={styles.Icon} source={wait} />
+                        <Text style={{ color: '#FF8A00', fontWeight: '600', fontSize: wp('6.5%'), marginBottom: hp('1%') }}>Your Order Not Payment!</Text>
+                    </View>
+                ) : null}
             </View>
             <View>
                 <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginBottom: hp('1%'), fontWeight: '500' }}>{(Price * (selectedStudents.length))} đ</Text>
@@ -88,12 +98,12 @@ const Success = ({ navigation, route }) => {
                         <View style={styles.Popup}>
                             <View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive <Text style={{ color: 'red', fontWeight: '500' }}>({selectedStudents.length})</Text></Text>
+                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Children Receive <Text style={{ color: 'red', fontWeight: '500' }}>({selectedStudents.length})</Text></Text>
                                     <View>
                                         {selectedStudents.map((student, index) => (
                                             <Text
                                                 key={index}
-                                                style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}
+                                                style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}
                                             >
                                                 {student.fullName}
                                             </Text>
@@ -101,8 +111,12 @@ const Success = ({ navigation, route }) => {
                                     </View>
                                 </View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Receive Method</Text>
-                                    <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>Zalo , Email</Text>
+                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Receive Method</Text>
+                                    <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Zalo , Email</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+                                    <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Status Order</Text>
+                                    <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.status}</Text>
                                 </View>
                             </View>
                             <View style={{ width: wp('83%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
@@ -234,7 +248,7 @@ const styles = StyleSheet.create({
     Popup: {
         backgroundColor: 'white',
         width: wp('90%'),
-        height: isSmallPhone || isSmallTablet ? hp('55%') : hp('50%'),
+        height: isSmallPhone || isSmallTablet ? hp('55%') : hp('60%'),
         borderRadius: 10,
         justifyContent: 'center',
         paddingLeft: wp('3%'),
