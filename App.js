@@ -7,7 +7,7 @@ import welcome from './screens/Welcome'
 import Login from './screens/Login'
 import SignUp from './screens/SignUp'
 import HomePage from './screens/HomePage';
-import Schedule from './assets/HomePage/schedule.png';
+import Schedule1 from './assets/HomePage/schedule.png';
 import Search from './screens/Search'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -35,6 +35,7 @@ import ChildDetail from './screens/ChildDetail';
 import StudyProcess from './screens/StudyProcess';
 import KidHome from './screens/KidHome';
 import KidCourse from './screens/KidCourse';
+import Schedule from './screens/Schedule';
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -121,18 +122,19 @@ function KidTab() {
           />
         ), headerShown: false
       }} />
-      <Tab.Screen name="Schedule" component={Order} options={{
+      <Tab.Screen name="Schedule" component={Schedule} options={{
         tabBarIcon: ({ color, size }) => (
           <Image
-            source={Schedule}
+            source={Schedule1}
             style={{ width: size, height: size }}
           />
         ),
         headerTitle: () => (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), marginLeft: wp('32%'), fontWeight: 'bold', color: '#223263' }}>My Order</Text>
+            <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>My Schedule</Text>
           </View>
-        )
+        ),
+        headerTitleAlign: 'center',
       }} />
       <Tab.Screen name="Profile" component={Profile} options={{
         tabBarIcon: ({ color, size }) => (

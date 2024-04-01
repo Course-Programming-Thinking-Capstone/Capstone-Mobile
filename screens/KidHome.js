@@ -1,5 +1,5 @@
-import { KeyboardAvoidingView,StyleSheet, Text, View, ImageBackground, Image, TextInput, ScrollView, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { KeyboardAvoidingView, StyleSheet, Text, View, ImageBackground, Image, TextInput, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import hello from '../assets/HomePage/hello.png'
 import background from '../assets/HomePage/gif5.gif'
@@ -11,6 +11,7 @@ import teacher from '../assets/Lesson/teacher1.png'
 import ProgressBar from 'react-native-progress/Bar';
 import right from '../assets/HomePage/right.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import { getUserInfo } from '../Api/Parents';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const KidHome = () => {
     const navigation = useNavigation();
@@ -23,11 +24,23 @@ const KidHome = () => {
         { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 VND', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg') },
         { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1.500.000 VND', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg') },
     ];
-
+    useEffect(() => {
+        fetchInfo()
+    }, [])
     const numberOfItems = 2;
     const limitedCourse = Course.slice(0, numberOfItems);
     const limitedDone = Done.slice(0, numberOfItems);
-
+    const [userInfo, setUserInfo] = useState([])
+    const fetchInfo = async () => {
+        try {
+            const userData = await getUserInfo();
+            if (userData) {
+                setUserInfo(userData);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
     const renderCourse = ({ item }) => (
         <TouchableOpacity onPress={() => { navigation.navigate('Course') }}>
             <View style={styles.Course}>
@@ -50,7 +63,7 @@ const KidHome = () => {
                         <Text style={{
                             marginLeft: wp('3%'),
                             color: '#40BFFF',
-                        }}>20/25</Text>
+                        }}>20/25</Text> 
                     </View>
                 </View>
             </View>
@@ -100,7 +113,7 @@ const KidHome = () => {
                                     fontSize: wp('5%'),
                                     color: 'white',
                                     fontWeight: 'bold'
-                                }}>Hi, John</Text>
+                                }}>Hi, {userInfo.fullName}</Text>
                                 <Image source={hello} style={{ width: wp('6%'), height: hp('3%'), marginLeft: wp('2%') }} />
                             </View>
                             <Text style={styles.Text}>Let's start learning!</Text>
@@ -131,7 +144,7 @@ const KidHome = () => {
                         <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>Continue Learning</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('PopularCourse') }}>
                             <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
-                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%'),marginLeft:wp('2%') }} />
+                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%'), marginLeft: wp('2%') }} />
                         </TouchableOpacity>
                     </View>
                     <FlatList
@@ -146,7 +159,7 @@ const KidHome = () => {
                         <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>Course Completed</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('PopularCourse') }}>
                             <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
-                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%'),marginLeft:wp('2%') }} />
+                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%'), marginLeft: wp('2%') }} />
                         </TouchableOpacity>
                     </View>
                     <FlatList
