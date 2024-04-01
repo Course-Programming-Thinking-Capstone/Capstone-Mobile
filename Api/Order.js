@@ -81,3 +81,19 @@ export const getOrderById = async (Id) => {
         return null;
     }
 };
+export const cancerlOrder = async (Id, selected) => {
+    try {
+        const headers = await getApiHeaders();
+        const response = await axios.post(`${BASE_URL}/orders/request-cancel`, {
+            orderId: Id,
+            reason: selected,
+        }, { headers });
+        if (response.status === 200) {
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error("Error adding new child:", error);
+        return false;
+    }
+};

@@ -1,15 +1,18 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView,Alert,Modal } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView, Alert, Modal } from 'react-native'
 import React, { useState } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import { SelectList } from 'react-native-dropdown-select-list'
 import { Checkbox } from 'react-native-paper';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import { cancerlOrder } from '../Api/Order';
+import Loading from '../Loading/Loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const CancelOrder = ({ route, navigation }) => {
-  const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar } = route.params;
+  const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id } = route.params;
   const [checked1, setChecked] = React.useState(false);
   const [selected, setSelected] = React.useState("");
+  const [loading, setLoading] = useState(false);
   const data = [
     { key: '1', value: 'Muốn mua khóa học khác' },
     { key: '2', value: 'Muốn thay đổi hình thức thanh toán' },
@@ -27,6 +30,20 @@ const CancelOrder = ({ route, navigation }) => {
       Alert.alert('Alert', 'Please select a reason for cancellation.');
     } else {
       toggleModal()
+    }
+  };
+  const requestCancel = async () => {
+    try {
+      setLoading(true)
+      const success = await cancerlOrder(Id, selected);
+      if (success) {
+        setLoading(false);
+        navigation.navigate('CancelDetail', { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id })
+      } else {
+        Alert.alert('Đăng ký thất bại !!!');
+      }
+    } catch (error) {
+      console.error("Error handling add children:", error);
     }
   };
   return (
@@ -67,7 +84,7 @@ const CancelOrder = ({ route, navigation }) => {
       </View>
       <Text style={{ marginTop: hp('1%'), marginBottom: ('2%'), fontSize: wp('4%'), fontWeight: '500' }}>More Information (Optional)</Text>
       <View style={styles.TxtInput}>
-        <TextInput multiline placeholder='Write more reasons here' textBreakStrategy="simple" />
+        <TextInput multiline placeholder='Write more reasons here' textBreakStrategy="simple"  />
       </View>
       <Text style={{ marginTop: hp('1%'), marginBottom: ('2%'), fontSize: wp('4.2%'), fontWeight: '500' }}> Order cancellation policy </Text>
       <View style={[styles.TxtInput, { borderStyle: 'dashed', height: hp('28%'), paddingLeft: wp('5%'), paddingRight: wp('1.5%'), borderColor: '#FF8A00', paddingTop: hp('0.5%'), marginBottom: hp('1%') }]}>
@@ -85,6 +102,7 @@ const CancelOrder = ({ route, navigation }) => {
           onPress={() => {
             setChecked(!checked1);
           }}
+          onValueChange={() => se}
         />
         <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}>Tôi đã đọc và đồng ý chính sách của KidsPro</Text>
       </View>
@@ -104,7 +122,7 @@ const CancelOrder = ({ route, navigation }) => {
       </View>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Modal visible={isModalVisible} transparent={true} statusBarTranslucent={true} animationType={'fade'}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
             <View style={styles.Popup}>
               {/* <View style={{ alignItems: 'center' }}>
                 <Image source={warn} style={{ width: wp('22.5%'), height: hp('10%') }} />
@@ -114,8 +132,12 @@ const CancelOrder = ({ route, navigation }) => {
                 <TouchableOpacity style={[styles.Btn, { marginRight: wp('5%') }]} onPress={toggleModal}>
                   <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>No</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { navigation.navigate('CancelDetail', { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar }) }} style={[styles.Btn, { backgroundColor: 'red' }]}>
-                  <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Yes</Text>
+                <TouchableOpacity onPress={requestCancel} style={[styles.Btn, { backgroundColor: 'red' }]}>
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Yes</Text>
+                  )}
                 </TouchableOpacity>
               </View>
             </View>
@@ -166,7 +188,7 @@ const styles = StyleSheet.create({
   },
   TxtInput: {
     borderWidth: 1,
-    height: isSmallPhone || isSmallTablet ? hp('10%') : hp('13%'),  
+    height: isSmallPhone || isSmallTablet ? hp('10%') : hp('13%'),
     width: wp('90%'),
     paddingLeft: wp('1%'),
     borderColor: '#E9E9E9',

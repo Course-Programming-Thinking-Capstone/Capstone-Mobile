@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
@@ -28,7 +28,7 @@ const OrderDetail = ({ route, navigation }) => {
             {loading ? (
                 <Loading />
             ) : (
-                <View style={{flex:1}}>
+                <View style={{ flex: 1 }}>
                     <View style={styles.Course}>
                         <Image source={test} style={styles.CourseImage} />
                         <View>
@@ -60,10 +60,10 @@ const OrderDetail = ({ route, navigation }) => {
                     <View>
                         <View >
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive<Text style={{color:'red', fontWeight:'600'}}> ({data.numberChildren})</Text></Text>
+                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive<Text style={{ color: 'red', fontWeight: '600' }}> ({data.numberChildren})</Text></Text>
                                 <View>
                                     {data.students && data.students.map((student, index) => (
-                                        <Text key={index} style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500',textAlign:'right' }}>{student.studentName}</Text>
+                                        <Text key={index} style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{student.studentName}</Text>
                                     ))}
                                 </View>
                             </View>
@@ -100,17 +100,19 @@ const OrderDetail = ({ route, navigation }) => {
                         </View>
                         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
                     </View>
+                    <TouchableOpacity style={styles.Button}>
+                        <Text onPress={() => {
+                            navigation.navigate('Home');
+                        }} style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Back To Homepage</Text>
+                    </TouchableOpacity>
                     <View style={[styles.Enroll, { borderColor: Status === 'Cancelled' ? 'white' : 'white' }]}>
                         <TouchableOpacity style={[styles.Button, { borderColor: Status === 'Cancelled' ? 'white' : 'white', backgroundColor: Status === 'Pending' ? 'red' : Status === 'Success' ? '#FF8A00' : Status === 'Cancelled' ? 'white' : 'white' }]}
                             onPress={() => {
                                 if (Status === 'Pending') {
-                                    // Nếu status là 'Cancelled', navigate qua trang Cancel
-                                    navigation.navigate('CancelOrder', { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar });
+                                    navigation.navigate('CancelOrder', { Name: data.courseName, LessImage, Lecture, Status, Price: data.price, Payment, Child, Avatar, Id: data.orderId });
                                 } else if (Status === 'Success') {
-                                    // Nếu status là 'Success', navigate qua trang Success
                                     navigation.navigate('LessonDetails', { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar });
                                 }
-                                // Các xử lý khác nếu cần thiết
                             }}
 
                         >
