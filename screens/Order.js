@@ -15,6 +15,7 @@ const Order = ({ route, navigation }) => {
     const [pending, setPending] = useState([]);
     const [process, setProcess] = useState([]);
     const [success, setSuccess] = useState([]);
+    const [request, setRequest] = useState([]);
     const [refunded, setRefunded] = useState([]);
 
     useEffect(() => {
@@ -48,6 +49,7 @@ const Order = ({ route, navigation }) => {
         const pendingData = [];
         const processData = [];
         const successData = [];
+        const requestData = [];
         const refundedData = [];
 
         for (const item of orderData) {
@@ -57,6 +59,8 @@ const Order = ({ route, navigation }) => {
                 processData.push(item);
             } else if (item.orderStatus === 'Success') {
                 successData.push(item);
+            } else if (item.orderStatus === 'RequestRefund') {
+                requestData.push(item);
             } else if (item.orderStatus === 'Refunded') {
                 refundedData.push(item);
             }
@@ -65,6 +69,7 @@ const Order = ({ route, navigation }) => {
         setPending(pendingData);
         setProcess(processData);
         setSuccess(successData);
+        setRequest(requestData)
         setRefunded(refundedData);
     };
 
@@ -106,34 +111,14 @@ const Order = ({ route, navigation }) => {
 
     const [index, setIndex] = useState(0);
     const [routes] = useState([
-        { key: 'all', title: 'All' },
         { key: 'process', title: 'Process' },
         { key: 'pending', title: 'Pending' },
         { key: 'success', title: 'Success' },
+        { key: 'request', title: 'Request' },
         { key: 'refunded', title: 'Refunded' },
     ]);
 
     const renderScene = SceneMap({
-        all: () => (
-            <View style={{ marginTop: hp('1%') }}>
-                {loading ? (
-                    <Loading />
-                ) : (orderList.length === 0 ? (
-                    <Text style={{ textAlign: 'center', marginTop: hp('15%') }}>No data available !</Text>
-                ) : (
-                    <FlatList
-                        data={orderList}
-                        keyExtractor={item => item.orderId.toString()}
-                        renderItem={renderItem}
-                        showsVerticalScrollIndicator={false}
-                        initialNumToRender={10}
-                        maxToRenderPerBatch={10}
-                        windowSize={10}
-                    />
-                )
-                )}
-            </View>
-        ),
         process: () => (
             <View style={{ marginTop: hp('1%') }}>
                 {loading ? (
@@ -182,6 +167,25 @@ const Order = ({ route, navigation }) => {
                 ) : (
                     <FlatList
                         data={success}
+                        keyExtractor={item => item.orderId.toString()}
+                        renderItem={renderItem}
+                        showsVerticalScrollIndicator={false}
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        windowSize={10}
+                    />)
+                )}
+            </View>
+        ),
+        request: () => (
+            <View style={{ marginTop: hp('1%') }}>
+                {loading ? (
+                    <Loading />
+                ) : (request.length === 0 ? (
+                    <Text style={{ textAlign: 'center', marginTop: hp('15%') }}>No data available !</Text>
+                ) : (
+                    <FlatList
+                        data={request}
                         keyExtractor={item => item.orderId.toString()}
                         renderItem={renderItem}
                         showsVerticalScrollIndicator={false}

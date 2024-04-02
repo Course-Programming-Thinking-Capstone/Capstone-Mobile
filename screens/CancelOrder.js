@@ -25,7 +25,6 @@ const CancelOrder = ({ route, navigation }) => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  console.log(Id);
   const handleCancelOrder = () => {
     if (!selected) {
       Alert.alert('Alert', 'Please select a reason for cancellation.');

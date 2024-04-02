@@ -300,6 +300,7 @@ export default function App() {
             </View>
           ),
           headerTitleAlign: 'center',
+          headerLeft: () => null
         }} />
         <Stack.Screen name="ChildProcess" component={ChildProcess} options={{
           tabBarIcon: ({ color, size }) => (

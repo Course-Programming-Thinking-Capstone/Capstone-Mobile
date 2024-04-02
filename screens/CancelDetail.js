@@ -1,14 +1,32 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
+import { getOrderById } from '../Api/Order';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const CancelDetail = ({ route, navigation }) => {
-  const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar } = route.params;
+  const { Name, LessImage, Lecture, Status, Price, Payment, Child, Id } = route.params;
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetchOrderDetail()
+  }, [])
+  const [data, setData] = useState([])
+  const fetchOrderDetail = async () => {
+    try {
+      const orderDetail = await getOrderById(Id);
+      if (orderDetail) {
+        console.log(orderDetail);
+        setData(orderDetail);
+        setLoading(false);
+      }
+    } catch (error) {
+    }
+  };
   return (
     <View style={styles.Container}>
       <View style={styles.Course}>
         <Image source={LessImage} style={styles.CourseImage} />
+        <Text></Text>
         <View>
           <View style={{
             borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, width: wp('35%'),
@@ -36,13 +54,17 @@ const CancelDetail = ({ route, navigation }) => {
         </View>
       </View>
       <View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-          <View>
-            <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive</Text>
-            <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Receive Method</Text>
+        <View >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+            <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive<Text style={{ color: 'red', fontWeight: '600' }}> ({data.numberChildren})</Text></Text>
+            <View>
+              {data.students && data.students.map((student, index) => (
+                <Text key={index} style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{student.studentName}</Text>
+              ))}
+            </View>
           </View>
-          <View style={{ alignItems: 'flex-end' }}>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{Child}</Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+            <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Receive Method</Text>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>Zalo , Email</Text>
           </View>
         </View>
@@ -56,10 +78,10 @@ const CancelDetail = ({ route, navigation }) => {
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Quantity</Text>
           </View>
           <View>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{Payment}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{data.paymentType}</Text>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>0 đ</Text>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{Price}</Text>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>x1</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{Price}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>x{data.numberChildren}</Text>
           </View>
         </View>
         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
@@ -69,7 +91,7 @@ const CancelDetail = ({ route, navigation }) => {
             <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>Total</Text>
           </View>
           <View>
-            <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{Price}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{data.totalPrice}</Text>
           </View>
         </View>
         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
@@ -77,7 +99,7 @@ const CancelDetail = ({ route, navigation }) => {
       <View style={styles.Enroll}>
         <TouchableOpacity style={styles.Button}>
           <Text onPress={() => {
-            navigation.navigate('MyTabs', { screen: 'Home' });
+            navigation.navigate('Home');
           }} style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Back To Homepage</Text>
         </TouchableOpacity>
       </View>
