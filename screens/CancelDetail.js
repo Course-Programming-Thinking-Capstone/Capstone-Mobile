@@ -77,7 +77,7 @@ const CancelDetail = ({ route, navigation }) => {
       <View style={styles.Enroll}>
         <TouchableOpacity style={styles.Button}>
           <Text onPress={() => {
-            navigation.navigate('MyTabs', { screen: 'HomePage' });
+            navigation.navigate('MyTabs', { screen: 'Home' });
           }} style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Back To Homepage</Text>
         </TouchableOpacity>
       </View>

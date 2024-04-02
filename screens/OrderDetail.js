@@ -100,11 +100,6 @@ const OrderDetail = ({ route, navigation }) => {
                         </View>
                         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
                     </View>
-                    <TouchableOpacity style={styles.Button}>
-                        <Text onPress={() => {
-                            navigation.navigate('Home');
-                        }} style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Back To Homepage</Text>
-                    </TouchableOpacity>
                     <View style={[styles.Enroll, { borderColor: Status === 'Cancelled' ? 'white' : 'white' }]}>
                         <TouchableOpacity style={[styles.Button, { borderColor: Status === 'Cancelled' ? 'white' : 'white', backgroundColor: Status === 'Pending' ? 'red' : Status === 'Success' ? '#FF8A00' : Status === 'Cancelled' ? 'white' : 'white' }]}
                             onPress={() => {

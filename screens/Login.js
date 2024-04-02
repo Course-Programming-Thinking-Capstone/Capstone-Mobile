@@ -1,16 +1,10 @@
-import { ActivityIndicator, Button, StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, Text, View, Image, ImageBackground, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState, useRef } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import background from '../assets/Login/giphy.gif'
-import ig from '../assets/Login/ig.png'
-import face from '../assets/Login/face1.jpg'
-import google from '../assets/Login/google.png'
 import mail from '../assets/Login/email2.png'
 import pass from '../assets/Login/padlock.png'
 import CheckBox from 'expo-checkbox';
-import axios from 'axios'
-import { BASE_URL } from '../Api/Api'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loading from '../Loading/Loading'
 import { login } from '../Api/Log'
 import logo from '../assets/kidLogo.png'

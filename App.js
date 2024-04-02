@@ -1,8 +1,7 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import { Text, View, Image} from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import back1 from './assets/welcome/back.png'
 import welcome from './screens/Welcome'
 import Login from './screens/Login'
 import SignUp from './screens/SignUp'
@@ -10,7 +9,6 @@ import HomePage from './screens/HomePage';
 import Schedule1 from './assets/HomePage/schedule.png';
 import Search from './screens/Search'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import lessonDetails from './screens/LessonDetails';
 import MyCourse from './screens/MyCourse';
@@ -185,11 +183,6 @@ export default function App() {
           ),
           headerTitle: () => (
             <View style={{}}>
-              {/* <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'white', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>
-              <TouchableOpacity onPress={goBack}>
-                <Image style={{ width: wp('5%'), height: hp('3%') }} source={back1} />
-              </TouchableOpacity>
-            </View> */}
               <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Popular Course</Text>
             </View>
           ),
@@ -204,11 +197,6 @@ export default function App() {
           ),
           headerTitle: () => (
             <View style={{}}>
-              {/* <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'white', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>
-              <TouchableOpacity onPress={goBack}>
-                <Image style={{ width: wp('5%'), height: hp('3%') }} source={back1} />
-              </TouchableOpacity>
-            </View> */}
               <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Top Mentor</Text>
             </View>
           ),
@@ -223,11 +211,6 @@ export default function App() {
           ),
           headerTitle: () => (
             <View style={{}}>
-              {/* <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'white', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>
-              <TouchableOpacity onPress={goBack}>
-                <Image style={{ width: wp('5%'), height: hp('3%') }} source={back1} />
-              </TouchableOpacity>
-            </View> */}
               <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Course</Text>
             </View>
           ),
