@@ -46,6 +46,14 @@ const CancelOrder = ({ route, navigation }) => {
       console.error("Error handling add children:", error);
     }
   };
+  const handlePress = () => {
+    if (!loading) { 
+      requestCancel();
+    }
+    else{
+      Alert.alert("please wait")
+    }
+  };
   return (
     <View style={styles.Container}>
       <View style={styles.Course}>
@@ -132,7 +140,7 @@ const CancelOrder = ({ route, navigation }) => {
                 <TouchableOpacity style={[styles.Btn, { marginRight: wp('5%') }]} onPress={toggleModal}>
                   <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>No</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={requestCancel} style={[styles.Btn, { backgroundColor: 'red' }]}>
+                <TouchableOpacity onPress={handlePress} style={[styles.Btn, { backgroundColor: 'red' }]}>
                   {loading ? (
                     <Loading />
                   ) : (
