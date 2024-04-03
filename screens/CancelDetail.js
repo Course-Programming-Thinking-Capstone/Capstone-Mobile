@@ -15,7 +15,6 @@ const CancelDetail = ({ route, navigation }) => {
     try {
       const orderDetail = await getOrderById(Id);
       if (orderDetail) {
-        console.log(orderDetail);
         setData(orderDetail);
         setLoading(false);
       }
@@ -91,7 +90,7 @@ const CancelDetail = ({ route, navigation }) => {
             <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>Total</Text>
           </View>
           <View>
-            <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{data.totalPrice}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{data.totalPrice} đ</Text>
           </View>
         </View>
         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
