@@ -1,7 +1,8 @@
-import { StyleSheet, Modal, Text, View, TouchableOpacity, Image, TextInput, FlatList, Alert, ScrollView } from 'react-native'
+import { StyleSheet, Modal, Text, View, TouchableWithoutFeedback, Image, TextInput, FlatList, Alert, ScrollView, Touchable, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import boy from '../assets/Profile/boy.png'
+import boy from '../assets/Profile/boy1.png'
+import girl from '../assets/Profile/girl1.png'
 import lich from '../assets/Profile/lich.png'
 import right from '../assets/HomePage/right.png'
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -65,7 +66,7 @@ const ChildProcess = ({ navigation }) => {
         }
     };
     const renderItem = ({ item }) => (
-        <TouchableOpacity activeOpacity={0.8} onPress={() => {
+        <TouchableWithoutFeedback activeOpacity={0.8} onPress={() => {
             navigation.navigate('ChildDetail', {
                 name: item.fullName,
                 age: item.age,
@@ -85,15 +86,17 @@ const ChildProcess = ({ navigation }) => {
                 borderColor: '#e9f2eb',
             }}>
                 <View style={{ flexDirection: 'row' }}>
-                    <View >
+                    {item.gender === 'Male' ? (
                         <Image source={boy} style={styles.CircleMen} />
-                    </View>
+                    ) : (
+                        <Image source={girl} style={styles.CircleMen} />
+                    )}
                     <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500', alignSelf: 'center', marginLeft: wp('5%'), width: wp('25%') }}>{item.fullName}</Text>
                 </View>
                 <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500', alignSelf: 'center', marginLeft: wp('5%') }}>{item.age} years old</Text>
                 <Image source={right} style={{ width: wp('6%'), height: hp('3.5%'), alignSelf: 'center', marginRight: wp('3%') }} />
             </View>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
     )
     const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -208,13 +211,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     CircleMen: {
-        width: wp('15.5%'),
-        height: hp('7.5%'),
-        borderRadius: 30,
-        borderWidth: 2,
+        width: wp('14%'),
+        height: hp('6.5%'),
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#EFEFEF'
+        backgroundColor: '#EFEFEF',
     },
     Enroll: {
         backgroundColor: 'white',

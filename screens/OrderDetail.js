@@ -33,7 +33,7 @@ const OrderDetail = ({ route, navigation }) => {
                         <Image source={test} style={styles.CourseImage} />
                         <View>
                             <View style={{
-                                borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, width: wp('21.9%'),
+                                borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, width: data.status === 'RequestRefund' ? wp('28.9%'):wp('21.9'),
                                 backgroundColor: Status === 'Pending' ? '#FF8A00' : Status === 'Success' ? '#6DCE63' : Status === 'Cancelled' ? 'red' : 'red',
                             }}>
                                 <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>{data.status}</Text>

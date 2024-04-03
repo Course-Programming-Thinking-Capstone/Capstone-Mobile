@@ -83,7 +83,7 @@ const Order = ({ route, navigation }) => {
                     <View style={{
                         borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10,
                         backgroundColor: item.orderStatus === 'Pending' ? '#FF8A00' : item.orderStatus === 'process' ? '#6DCE63' : item.orderStatus === 'refunded' ? 'red' : 'red',
-                        width: wp('21.9%'), width: wp('21.9%')
+                        width: item.orderStatus === 'RequestRefund' ? wp('28.9%'):wp('21.9'),
                     }}>
                         <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>{item.orderStatus}</Text>
                     </View>
