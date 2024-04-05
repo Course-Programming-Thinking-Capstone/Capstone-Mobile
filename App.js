@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image} from 'react-native'
+import { Text, View, Image } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import welcome from './screens/Welcome'
@@ -34,6 +34,7 @@ import StudyProcess from './screens/StudyProcess';
 import KidHome from './screens/KidHome';
 import KidCourse from './screens/KidCourse';
 import Schedule from './screens/Schedule';
+import StudyCourse from './screens/StudyCourse';
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -369,6 +370,20 @@ export default function App() {
           headerTitle: () => (
             <View>
               <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Search Course</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center',
+        }} />
+        <Stack.Screen name="StudyCourse" component={StudyCourse} options={{
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Study Course</Text>
             </View>
           ),
           headerTitleAlign: 'center',

@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import open from '../assets/Details/open2.png'
-import lock from '../assets/Details/padlock.png'
 import certi from '../assets/MyCourse/certificate.jpg'
 import { WebView } from 'react-native-webview';
 import close from '../assets/welcome/close1.png'
@@ -13,7 +12,7 @@ import quiz from '../assets/Profile/quiz.png'
 import game from '../assets/Profile/control.png'
 import drop from '../assets/MyCourse/drop.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-const Course = () => {
+const Course = ({navigation}) => {
   const lessons1 = [
     { id: '01', name: 'Introduction programming ', time: '10:00', status: 'video' },
     { id: '02', name: 'Make a Tower Defense Game', time: '5:00', status: 'read' },
@@ -38,7 +37,7 @@ const Course = () => {
     { key: 'certificate', title: 'Certificate' },
   ]);
   const render = ({ item }) => (
-    <View style={styles.LessBorder}>
+    <TouchableOpacity onPress={()=>{navigation.navigate('StudyCourse')}} style={styles.LessBorder}>
       <View style={styles.LessId}>
         <Text>{item.id}</Text>
       </View>
@@ -73,7 +72,7 @@ const Course = () => {
         }} source={game} />
       )
       }
-    </View>
+    </TouchableOpacity>
   );
   const [showVideo, setShowVideo] = useState(false);
   const VideoWebView = () => {
