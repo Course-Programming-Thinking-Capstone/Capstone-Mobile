@@ -2,9 +2,10 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-n
 import React, { useEffect, useState } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
-import { getOrderById } from '../Api/Order';
+import { CreateOrder, CreatePayment, getOrderById } from '../Api/Order';
 import test from '../assets/Lesson/kid1.jpg'
 import Loading from '../Loading/Loading'
+import { Linking } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const OrderDetail = ({ route, navigation }) => {
     const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id } = route.params;
@@ -23,6 +24,37 @@ const OrderDetail = ({ route, navigation }) => {
         } catch (error) {
         }
     };
+    const postOrder = async () => {
+        try {
+            // setLoading1(true);
+            const studentId = data.students.map(student => student.studentId);
+            const count = data.numberChildren
+            const success = await CreateOrder(studentId, count);
+            if (success) {
+                const paymentDetail = await CreatePayment(success);
+                if (paymentDetail) {
+                    Linking.canOpenURL(paymentDetail.payUrl)
+                        .then((supported) => {
+                            if (supported) {
+                                Linking.openURL(paymentDetail.payUrl);
+                            } else {
+                                Alert.alert("Fails!");
+                            }
+                        })
+                        .catch((err) => {
+                            console.error('Lỗi khi kiểm tra hoặc mở ứng dụng:', err);
+                        });
+                    navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment: data.paymentType, success })
+                }
+            } else {
+                Alert.alert('thất bại !!!');
+            }
+        } catch (error) {
+            console.error("Error handling add children:", error);
+        } finally {
+            // setLoading1(false);
+        }
+    };
     return (
         <View style={styles.Container}>
             {loading ? (
@@ -33,8 +65,8 @@ const OrderDetail = ({ route, navigation }) => {
                         <Image source={test} style={styles.CourseImage} />
                         <View>
                             <View style={{
-                                borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, width: data.status === 'RequestRefund' ? wp('28.9%'):wp('21.9'),
-                                backgroundColor: Status === 'Pending' ? '#FF8A00' : Status === 'Success' ? '#6DCE63' : Status === 'Cancelled' ? 'red' : 'red',
+                                borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, width: data.status === 'RequestRefund' ? wp('28.9%') : wp('21.9'),
+                                backgroundColor: Status === 'Pending' ? '#FF8A00' : Status === 'Success' ? '#6DCE63' : Status === 'Process' ? 'lightblue' : 'red',
                             }}>
                                 <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>{data.status}</Text>
                             </View>
@@ -101,19 +133,22 @@ const OrderDetail = ({ route, navigation }) => {
                         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
                     </View>
                     <View style={[styles.Enroll, { borderColor: Status === 'Cancelled' ? 'white' : 'white' }]}>
-                        <TouchableOpacity style={[styles.Button, { borderColor: Status === 'Cancelled' ? 'white' : 'white', backgroundColor: Status === 'Pending' ? 'red' : Status === 'Success' ? '#FF8A00' : Status === 'Cancelled' ? 'white' : 'white' }]}
+                        <TouchableOpacity style={[styles.Button, { borderColor: Status === 'Cancelled' ? 'white' : 'white', backgroundColor: Status === 'Pending' ? 'red' : Status === 'Success' ? '#FF8A00' : Status === 'Process' ? 'white' : 'white' }]}
                             onPress={() => {
                                 if (Status === 'Pending') {
                                     navigation.navigate('CancelOrder', { Name: data.courseName, LessImage, Lecture, Status, Price: data.price, Payment, Child, Avatar, Id: data.orderId });
                                 } else if (Status === 'Success') {
                                     navigation.navigate('LessonDetails', { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar });
-                                }
+                                } 
+                                // else if (Status === 'Process') {
+                                //     postOrder()
+                                // }
                             }}
 
                         >
                             <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>{Status === 'Pending' ? 'Cancel Order' :
                                 Status === 'Success' ? 'Buy Again' :
-                                    Status === 'Cancelled' ? 'Cancelled' : 'Other Status'}</Text>
+                                    Status === 'Process' ? 'Payment Again' : 'Other Status'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -49,7 +49,7 @@ const Success = ({ navigation, route }) => {
     return (
         <View style={styles.Container}>
             {loading1 ? (
-                <View style={{alignItems:'center',justifyContent:"center",flex:1}}> 
+                <View style={{ alignItems: 'center', justifyContent: "center", flex: 1 }}>
                     <Loading />
                 </View>
             ) : (
@@ -69,7 +69,7 @@ const Success = ({ navigation, route }) => {
                     </View>
 
                     <View>
-                        <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginBottom: hp('1%'), fontWeight: '500' }}>{(Price * (selectedStudents.length))} đ</Text>
+                        <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginBottom: hp('1%'), fontWeight: '500' }}>{(data.price * (data.quantityPurchased))} đ</Text>
                         {/* <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginBottom: hp('1%'), fontWeight: '500' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                         <Text style={{ fontSize: wp('5%'), textAlign: 'center' }}>Your order code: {data.orderCode}</Text>
                     </View>
@@ -92,13 +92,13 @@ const Success = ({ navigation, route }) => {
                                     color: 'blue',
                                     fontSize: wp('3.8%')
                                 }}>
-                                    {Price}
+                                    {data.price}
                                     {/* {parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ */}
                                 </Text>
                             </View>
                             <View style={{ flexDirection: 'row', borderColor: "white", borderWidth: 1, paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('30%') }}>
                                 <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.8%'), marginLeft: wp('1.5%') }}>Quantity : </Text>
-                                <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.8%') }}>{selectedStudents.length}</Text>
+                                <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.8%') }}>{data.quantityPurchased}</Text>
                             </View>
                         </View>
                     </View>
@@ -127,14 +127,14 @@ const Success = ({ navigation, route }) => {
                             <ScrollView showsVerticalScrollIndicator={true}>
                                 <View style={{ paddingRight: wp('3%') }}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Children Receive <Text style={{ color: 'red', fontWeight: '500' }}>({selectedStudents.length})</Text></Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Children Receive <Text style={{ color: 'red', fontWeight: '500' }}>({data.quantityPurchased})</Text></Text>
                                         <View>
-                                            {selectedStudents.map((student, index) => (
+                                            {data && data.students && data.students.map((student, index) => (
                                                 <Text
                                                     key={index}
                                                     style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}
                                                 >
-                                                    {student.fullName}
+                                                    {student.studentName}
                                                 </Text>
                                             ))}
                                         </View>
@@ -160,8 +160,8 @@ const Success = ({ navigation, route }) => {
                                     <View>
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.paymentType}</Text>
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>0 đ</Text>
-                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>x{selectedStudents.length}</Text>
-                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{Price}</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>x{data.quantityPurchased}</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.price}</Text>
                                         {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                                     </View>
                                 </View>
@@ -172,7 +172,7 @@ const Success = ({ navigation, route }) => {
                                         <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Total</Text>
                                     </View>
                                     <View>
-                                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length))} đ</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(data.price * (data.quantityPurchased))} đ</Text>
 
                                         {/* <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                                     </View>

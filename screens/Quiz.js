@@ -48,10 +48,13 @@ const QuizScreen = ({ route, navigation }) => {
         const nextQuestionIndex = currentQuestionIndex + 1;
         if (nextQuestionIndex < totalQuestions) {
             setCurrentQuestionIndex(nextQuestionIndex);
+            // Di chuyển hàm handleAnswer vào đây để chỉ tính điểm khi người dùng nhấn Next để chuyển đến câu hỏi tiếp theo
+            handleAnswer(selectedOptions[currentQuestionIndex]);
         } else {
+            // Nếu là câu hỏi cuối cùng, hiển thị điểm
             setShowScore(true);
         }
-    };
+    }
     const handlePreviousQuestion = () => {
         const previousQuestionIndex = currentQuestionIndex - 1;
         if (previousQuestionIndex >= 0) {
@@ -86,6 +89,7 @@ const QuizScreen = ({ route, navigation }) => {
         setScore(correctAnswers);
         setShowScore(true);
     };
+    console.log("Score:", score);
     return (
         <View style={styles.container}>
             {showScore ? (
@@ -125,7 +129,6 @@ const QuizScreen = ({ route, navigation }) => {
                             <RadioButton
                                 value={option}
                                 status={selectedOptions[currentQuestionIndex] === option ? 'checked' : 'unchecked'} // Sử dụng selectedOptions để hiển thị lựa chọn của người dùng
-                                onPress={() => setSelectedOptions({ ...selectedOptions, [currentQuestionIndex]: option })} // Cập nhật lựa chọn của người dùng
                             />
                         </TouchableOpacity>
                     ))}

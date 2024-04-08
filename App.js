@@ -56,16 +56,16 @@ function MyTabs() {
           />
         ), headerShown: false
       }} />
-      <Tab.Screen name="My Course" component={MyCourse} options={{
+      <Tab.Screen name="Search" component={Search} options={{
         tabBarIcon: ({ color, size }) => (
           <Image
-            source={require('./assets/HomePage/course.png')}
+            source={require('./assets/HomePage/search.png')}
             style={{ width: size, height: size }}
           />
         ),
         headerTitle: () => (
           <View style={{}}>
-            <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>My Course</Text>
+            <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Search Course</Text>
           </View>
         ),
         headerTitleAlign: 'center'
