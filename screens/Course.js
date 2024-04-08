@@ -37,7 +37,7 @@ const Course = ({navigation}) => {
     { key: 'certificate', title: 'Certificate' },
   ]);
   const render = ({ item }) => (
-    <TouchableOpacity onPress={()=>{navigation.navigate('StudyCourse')}} style={styles.LessBorder}>
+    <TouchableOpacity onPress={()=>{navigation.navigate('StudyCourse',{lessons1,Id:item.id})}} style={styles.LessBorder}>
       <View style={styles.LessId}>
         <Text>{item.id}</Text>
       </View>

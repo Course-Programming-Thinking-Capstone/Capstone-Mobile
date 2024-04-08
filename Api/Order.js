@@ -7,6 +7,7 @@ export const CreateOrder = async (studentId, count) => {
         const response = await axios.post(`${BASE_URL}/orders`, {
             studentId: studentId,
             courseId: 4,
+            classId:1,
             voucherId: 0,
             paymentType: 2,
             quantity: count,
