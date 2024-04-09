@@ -11,6 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import CheckBox from 'expo-checkbox';
 import Loading from '../Loading/Loading'
 import lich from '../assets/Profile/lich.png'
+import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const Payment = ({ route, navigation }) => {
     const [name, setName] = useState('')
@@ -216,9 +217,8 @@ const Payment = ({ route, navigation }) => {
                                 color: 'blue',
                                 fontSize: wp('3.8%')
                             }}>
-                                {/* {parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ */}
-                                {Price}
-                                </Text>
+                                {formatPrice(Price)}
+                            </Text>
                         </View>
                     </View>
                 </View>

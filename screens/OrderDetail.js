@@ -6,6 +6,7 @@ import { PaymentAgain, getOrderById } from '../Api/Order';
 import test from '../assets/Lesson/kid1.jpg'
 import Loading from '../Loading/Loading'
 import { Linking } from 'react-native';
+import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const OrderDetail = ({ route, navigation }) => {
     const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id } = route.params;
@@ -77,7 +78,7 @@ const OrderDetail = ({ route, navigation }) => {
                                     fontWeight: 'bold',
                                     color: 'blue',
                                     fontSize: wp('3.8%')
-                                }}>{data.price}</Text>
+                                }}>{formatPrice(data.price)}</Text>
                             </View>
                         </View>
                     </View>
@@ -108,7 +109,7 @@ const OrderDetail = ({ route, navigation }) => {
                             <View>
                                 <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{data.paymentType}</Text>
                                 <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>0 đ</Text>
-                                <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{data.price} đ</Text>
+                                <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{formatPrice(data.price)}</Text>
                                 <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>x{data.numberChildren}</Text>
                             </View>
                         </View>
@@ -119,7 +120,7 @@ const OrderDetail = ({ route, navigation }) => {
                                 <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>Total</Text>
                             </View>
                             <View>
-                                <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{data.totalPrice}</Text>
+                                <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{formatPrice(data.totalPrice)}</Text>
                             </View>
                         </View>
                         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />

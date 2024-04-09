@@ -6,6 +6,7 @@ import warn from '../assets/Payment/warn.png'
 import Loading from '../Loading/Loading'
 import { Linking } from 'react-native';
 import { CreateOrder, CreatePayment } from '../Api/Order';
+import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const ReviewSum = ({ route, navigation }) => {
     const { Name, LessImage, Lecture, Price, payment, selectedStudents } = route.params;
@@ -71,7 +72,7 @@ const ReviewSum = ({ route, navigation }) => {
                             color: 'blue',
                             fontSize: wp('3.8%')
                         }}>
-                            {Price}
+                            {formatPrice(Price)}
                             {/* {parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ */}
                         </Text>
                     </View>
@@ -110,7 +111,7 @@ const ReviewSum = ({ route, navigation }) => {
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{payment}</Text>
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>0 đ</Text>
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>x{selectedStudents.length}</Text>
-                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{Price}</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{formatPrice(Price)}</Text>
                         {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                     </View>
                 </View>
@@ -121,7 +122,7 @@ const ReviewSum = ({ route, navigation }) => {
                         <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>Total</Text>
                     </View>
                     <View>
-                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{(Price * (selectedStudents.length))} đ</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{formatPrice(Price * (selectedStudents.length))}</Text>
                         {/* <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                     </View>
                 </View>

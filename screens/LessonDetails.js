@@ -20,7 +20,7 @@ import vu from '../assets/Lesson/vu.jpg'
 import thien from '../assets/Lesson/thien.jpg'
 import star1 from '../assets/Details/star2.png'
 import close from '../assets/welcome/close1.png'
-
+import { formatPrice } from '../FormatPrice/Format';
 import video from '../assets/MyCourse/video.png'
 import { WebView } from 'react-native-webview';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -376,7 +376,7 @@ const LessonDetails = ({ route }) => {
             <View style={styles.Enroll}>
                 <View>
                     <Text style={{ color: '#94867D', fontSize: wp('4%'), fontWeight: '700' }}>Total Price</Text>
-                    <Text style={{ color: '#327CF7', fontWeight: '800' }}>{Price} đ</Text>
+                    <Text style={{ color: '#327CF7', fontWeight: '800' }}>{formatPrice(Price)}</Text>
                     {/* <Text style={{ color: '#327CF7', fontWeight: '800' }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text> */}
                 </View>
                 <View style={styles.Button}>

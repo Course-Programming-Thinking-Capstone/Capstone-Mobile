@@ -10,6 +10,7 @@ import Loading from '../Loading/Loading'
 import { getOrderDetail } from '../Api/Order';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { useFocusEffect } from '@react-navigation/native';
+import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Success = ({ navigation, route }) => {
     const { Name, LessImage, Lecture, Price, payment, selectedStudents, success } = route.params;
@@ -69,7 +70,7 @@ const Success = ({ navigation, route }) => {
                     </View>
 
                     <View>
-                        <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginBottom: hp('1%'), fontWeight: '500' }}>{(data.price * (data.quantityPurchased))} đ</Text>
+                        <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginBottom: hp('1%'), fontWeight: '500' }}>{formatPrice(data.price * (data.quantityPurchased))}</Text>
                         {/* <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginBottom: hp('1%'), fontWeight: '500' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                         <Text style={{ fontSize: wp('5%'), textAlign: 'center' }}>Your order code: {data.orderCode}</Text>
                     </View>
@@ -92,7 +93,7 @@ const Success = ({ navigation, route }) => {
                                     color: 'blue',
                                     fontSize: wp('3.8%')
                                 }}>
-                                    {data.price}
+                                    {formatPrice(data.price)}
                                     {/* {parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ */}
                                 </Text>
                             </View>
@@ -161,7 +162,7 @@ const Success = ({ navigation, route }) => {
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.paymentType}</Text>
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>0 đ</Text>
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>x{data.quantityPurchased}</Text>
-                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.price}</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{formatPrice(data.price)}</Text>
                                         {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                                     </View>
                                 </View>
@@ -172,7 +173,7 @@ const Success = ({ navigation, route }) => {
                                         <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Total</Text>
                                     </View>
                                     <View>
-                                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(data.price * (data.quantityPurchased))} đ</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{formatPrice(data.price * (data.quantityPurchased))}</Text>
 
                                         {/* <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                                     </View>

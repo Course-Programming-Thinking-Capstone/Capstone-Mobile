@@ -6,6 +6,8 @@ import momo from '../assets/Payment/momo.png'
 import paypal from '../assets/Payment/paypal1.png'
 import apple from '../assets/Payment/apple1.png'
 import { RadioButton } from 'react-native-paper';
+import { formatPrice } from '../FormatPrice/Format';
+
 const PayMethods = ({ navigation, route }) => {
   const { Name, LessImage, Lecture, Avatar, Price, Id, info, contact, selectedStudents } = route.params;
   const [payment, setPayment] = React.useState('Momo');
@@ -63,11 +65,11 @@ const PayMethods = ({ navigation, route }) => {
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{Name}</Text>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{Price}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{formatPrice(Price)}</Text>
             {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text> */}
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>x{selectedStudents.length}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>x{selectedStudents.length}</Text> 
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>0 đ</Text>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{(Price * (selectedStudents.length))}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{formatPrice(Price * (selectedStudents.length))}</Text>
             {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
           </View>
         </View>

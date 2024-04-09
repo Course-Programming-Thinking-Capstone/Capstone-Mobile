@@ -8,6 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { getOrder } from '../Api/Order'
 import test from '../assets/Lesson/kid1.jpg'
 import Loading from '../Loading/Loading'
+import { formatPrice } from '../FormatPrice/Format';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 const Order = ({ route, navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -102,7 +103,7 @@ const Order = ({ route, navigation }) => {
                             fontWeight: 'bold',
                             color: 'blue',
                             fontSize: wp('3.8%')
-                        }}>{item.totalPrice}</Text>
+                        }}>{formatPrice(item.totalPrice)}</Text>
                     </View>
                 </View>
             </View>

@@ -19,6 +19,7 @@ import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { getCourse } from '../Api/Course';
 import { getUserInfo } from '../Api/Parents';
 import test from '../assets/Lesson/kid1.jpg'
+import { formatPrice } from '../FormatPrice/Format';
 const HomePage = ({ navigation }) => {
     const [course, setCourse] = useState([])
     useEffect(() => {
@@ -262,7 +263,7 @@ const HomePage = ({ navigation }) => {
                                     color: 'blue',
                                     fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
                                 }}>
-                                    {course.price}
+                                    {formatPrice(course.price)}
                                 </Text>
                             </View>
                         </TouchableOpacity>
