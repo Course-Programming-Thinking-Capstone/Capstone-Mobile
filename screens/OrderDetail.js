@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-n
 import React, { useEffect, useState } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
-import { CreateOrder, CreatePayment, getOrderById } from '../Api/Order';
+import { PaymentAgain, getOrderById } from '../Api/Order';
 import test from '../assets/Lesson/kid1.jpg'
 import Loading from '../Loading/Loading'
 import { Linking } from 'react-native';
@@ -26,28 +26,20 @@ const OrderDetail = ({ route, navigation }) => {
     };
     const postOrder = async () => {
         try {
-            // setLoading1(true);
-            const studentId = data.students.map(student => student.studentId);
-            const count = data.numberChildren
-            const success = await CreateOrder(studentId, count);
-            if (success) {
-                const paymentDetail = await CreatePayment(success);
-                if (paymentDetail) {
-                    Linking.canOpenURL(paymentDetail.payUrl)
-                        .then((supported) => {
-                            if (supported) {
-                                Linking.openURL(paymentDetail.payUrl);
-                            } else {
-                                Alert.alert("Fails!");
-                            }
-                        })
-                        .catch((err) => {
-                            console.error('Lỗi khi kiểm tra hoặc mở ứng dụng:', err);
-                        });
-                    navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment: data.paymentType, success })
-                }
-            } else {
-                Alert.alert('thất bại !!!');
+            const paymentDetail = await PaymentAgain(Id);
+            if (paymentDetail) {
+                Linking.canOpenURL(paymentDetail.payUrl)
+                    .then((supported) => {
+                        if (supported) {
+                            Linking.openURL(paymentDetail.payUrl);
+                        } else {
+                            Alert.alert("Fails!");
+                        }
+                    })
+                    .catch((err) => {
+                        console.error('Lỗi khi kiểm tra hoặc mở ứng dụng:', err);
+                    });
+                navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment: data.paymentType,success:data.orderId })
             }
         } catch (error) {
             console.error("Error handling add children:", error);
@@ -133,16 +125,16 @@ const OrderDetail = ({ route, navigation }) => {
                         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
                     </View>
                     <View style={[styles.Enroll, { borderColor: Status === 'Cancelled' ? 'white' : 'white' }]}>
-                        <TouchableOpacity style={[styles.Button, { borderColor: Status === 'Cancelled' ? 'white' : 'white', backgroundColor: Status === 'Pending' ? 'red' : Status === 'Success' ? '#FF8A00' : Status === 'Process' ? 'white' : 'white' }]}
+                        <TouchableOpacity style={[styles.Button, { borderColor: Status === 'Cancelled' ? 'white' : 'white', backgroundColor: Status === 'Pending' ? 'red' : Status === 'Success' ? '#FF8A00' : Status === 'Process' ? 'blue' : 'white' }]}
                             onPress={() => {
                                 if (Status === 'Pending') {
                                     navigation.navigate('CancelOrder', { Name: data.courseName, LessImage, Lecture, Status, Price: data.price, Payment, Child, Avatar, Id: data.orderId });
                                 } else if (Status === 'Success') {
                                     navigation.navigate('LessonDetails', { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar });
-                                } 
-                                // else if (Status === 'Process') {
-                                //     postOrder()
-                                // }
+                                }
+                                else if (Status === 'Process') {
+                                    postOrder()
+                                }
                             }}
 
                         >

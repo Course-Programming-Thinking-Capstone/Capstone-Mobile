@@ -89,7 +89,6 @@ const QuizScreen = ({ route, navigation }) => {
         setScore(correctAnswers);
         setShowScore(true);
     };
-    console.log("Score:", score);
     return (
         <View style={styles.container}>
             {showScore ? (
@@ -151,7 +150,7 @@ const QuizScreen = ({ route, navigation }) => {
             )}
             {showNextBackButtons && (
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: hp('2%') }}>
-                    <TouchableOpacity onPress={handlePreviousQuestion} disabled={currentQuestionIndex === 0} style={[styles.MoveBtn, { backgroundColor: currentQuestionIndex === 0 ? 'lightblue' : '#007bff' }]}>
+                    <TouchableOpacity onPress={handlePreviousQuestion} disabled={currentQuestionIndex === 0} style={[styles.MoveBtn, { backgroundColor: currentQuestionIndex === 0 ? 'lightblue' : '#40BFFF' }]}>
                         <Text style={styles.buttonText}>Back</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleNextOrSubmit} style={styles.MoveBtn}>
