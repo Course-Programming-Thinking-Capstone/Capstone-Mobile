@@ -123,8 +123,8 @@ const QuizScreen = ({ route, navigation }) => {
                     </View>
                     <Text style={styles.questionText}>{questions[currentQuestionIndex].question}</Text>
                     {questions[currentQuestionIndex].options.map((option, index) => (
-                        <TouchableOpacity onPress={() => { setSelectedOptions({ ...selectedOptions, [currentQuestionIndex]: option }), handleAnswer(option) }} key={index} style={styles.optionContainer}>
-                            <Text style={{ fontSize: wp('4%') }}>{option}</Text>
+                        <TouchableOpacity onPress={() => { setSelectedOptions({ ...selectedOptions, [currentQuestionIndex]: option }), handleAnswer(option) }} key={index} style={[styles.optionContainer,selectedOptions[currentQuestionIndex] === option && { backgroundColor: '#e9f0f9' }]}>
+                            <Text style={selectedOptions[currentQuestionIndex] === option && { color:'black', fontSize:wp('4%'),fontWeight:'500' }}>{option}</Text>
                             <RadioButton
                                 value={option}
                                 status={selectedOptions[currentQuestionIndex] === option ? 'checked' : 'unchecked'} // Sử dụng selectedOptions để hiển thị lựa chọn của người dùng

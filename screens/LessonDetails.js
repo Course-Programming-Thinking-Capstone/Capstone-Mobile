@@ -344,7 +344,7 @@ const LessonDetails = ({ route }) => {
     };
     // usePreventScreenCapture(); 
     return (
-        <View style={styles.Container}>
+        <View style={styles.Container}> 
             <ImageBackground source={LessImage} style={{ width: wp('100%'), height: hp('40%') }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: wp('6%'), paddingRight: wp('6%'), marginTop: hp('5%') }}>
                     <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'white', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>

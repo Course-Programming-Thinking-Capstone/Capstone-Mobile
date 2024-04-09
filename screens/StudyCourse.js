@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, ImageBackground, Text, View, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Linking, ImageBackground, Text, View, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Audio, Video } from 'expo-av';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -72,9 +72,14 @@ const StudyCourse = ({ route, navigation }) => {
             }
         </TouchableOpacity>
     );
+    const handlePress = () => {
+        Linking.openURL('https://kidspro-capstone.github.io/Capstone-Game-WebGL/');
+    };
     useEffect(() => {
         if (currentId === '03') {
-            navigation.navigate('Quiz',{lessons1});
+            navigation.navigate('Quiz', { lessons1 });
+        } else if (currentId === '04') {
+            navigation.navigate('GameIntro');
         }
     }, [currentId]);
     return (
