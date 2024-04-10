@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Image,Linkin
 import React from 'react'
 import game from '../assets/Game/game5.jpg'
 import back1 from '../assets/welcome/back.png'
+import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const GameIntro = ({ navigation }) => {
     const goBack = () => {
@@ -51,7 +52,8 @@ const styles = StyleSheet.create({
     DetailForm: {
         backgroundColor: 'white',
         position: 'absolute',
-        top: hp('65%'), width: wp('100%'),
+        top: isSmallPhone || isSmallTablet ? hp('55%') : hp('65%'),
+        width: wp('100%'),
         height: hp('68.5%'),
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
