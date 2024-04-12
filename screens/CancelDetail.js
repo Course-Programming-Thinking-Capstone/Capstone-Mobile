@@ -2,7 +2,9 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
+import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { getOrderById } from '../Api/Order';
+import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const CancelDetail = ({ route, navigation }) => {
   const { Name, LessImage, Lecture, Status, Price, Payment, Child, Id } = route.params;
@@ -24,7 +26,7 @@ const CancelDetail = ({ route, navigation }) => {
   return (
     <View style={styles.Container}>
       <View style={styles.Course}>
-        <Image source={LessImage} style={styles.CourseImage} />
+        <Image source={{ uri: LessImage}} style={styles.CourseImage} />
         <Text></Text>
         <View>
           <View style={{
@@ -33,7 +35,7 @@ const CancelDetail = ({ route, navigation }) => {
           }}>
             <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center', width: wp('30%') }}>Wait for approving</Text>
           </View>
-          <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{Name}</Text>
+          <Text style={{ marginLeft: wp('1.5%'), fontSize: isSmallPhone || isSmallTablet ? wp('3.3%') : wp('4%'), fontWeight: '500',width:wp('50%') }}>{Name}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
             <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
             <Text style={{
@@ -48,7 +50,7 @@ const CancelDetail = ({ route, navigation }) => {
               fontWeight: 'bold',
               color: 'blue',
               fontSize: wp('3.8%')
-            }}>{Price}</Text>
+            }}>{formatPrice(Price)}</Text>
           </View>
         </View>
       </View>
@@ -79,7 +81,7 @@ const CancelDetail = ({ route, navigation }) => {
           <View>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{data.paymentType}</Text>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>0 đ</Text>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{Price}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{formatPrice(Price)}</Text>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>x{data.numberChildren}</Text>
           </View>
         </View>
@@ -90,7 +92,7 @@ const CancelDetail = ({ route, navigation }) => {
             <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>Total</Text>
           </View>
           <View>
-            <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{data.totalPrice} đ</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{formatPrice(data.totalPrice)}</Text>
           </View>
         </View>
         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />

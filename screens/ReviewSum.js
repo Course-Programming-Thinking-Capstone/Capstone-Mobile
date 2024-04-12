@@ -9,7 +9,7 @@ import { CreateOrder, CreatePayment } from '../Api/Order';
 import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const ReviewSum = ({ route, navigation }) => {
-    const { Name, LessImage, Lecture, Price, payment, selectedStudents } = route.params;
+    const { Name, LessImage, Lecture, Price, payment, selectedStudents,Id,className,classCourseId } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading1, setLoading1] = useState(false);
     const toggleModal = () => {
@@ -21,7 +21,7 @@ const ReviewSum = ({ route, navigation }) => {
             setLoading1(true);
             const studentId = selectedStudents.map(student => student.id);
             const count = selectedStudents.length
-            const success = await CreateOrder(studentId, count);
+            const success = await CreateOrder(studentId, count,Id,classCourseId);
             if (success) {
                 const paymentDetail = await CreatePayment(success);
                 if (paymentDetail) {
@@ -36,7 +36,7 @@ const ReviewSum = ({ route, navigation }) => {
                         .catch((err) => {
                             console.error('Lỗi khi kiểm tra hoặc mở ứng dụng:', err);
                         });
-                    navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment, selectedStudents, success })
+                    navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment, selectedStudents, success,className })
                 }
             } else {
                 Alert.alert('thất bại !!!');
@@ -51,12 +51,12 @@ const ReviewSum = ({ route, navigation }) => {
     return (
         <View style={styles.Container}>
             <View style={styles.Course}>
-                <Image source={LessImage} style={styles.CourseImage} />
+                <Image source={{ uri: LessImage }} style={styles.CourseImage} />
                 <View>
                     <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
                         <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%') }}>Best Seller</Text>
                     </View>
-                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{Name}</Text>
+                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500',width:wp('60%') }}>{Name}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                         <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                         <Text style={{
@@ -78,7 +78,7 @@ const ReviewSum = ({ route, navigation }) => {
                     </View>
                 </View>
             </View>
-            <ScrollView style={{ height: hp('60%') }}>
+            <ScrollView style={{ height: hp('48%') }}>
                 <View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
                         <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive <Text style={{ color: 'red', fontWeight: '500' }}>({selectedStudents.length})</Text></Text>
@@ -92,6 +92,10 @@ const ReviewSum = ({ route, navigation }) => {
                                 </Text>
                             ))}
                         </View>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Class Code</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{className}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
                         <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Receive Method</Text>
@@ -126,7 +130,6 @@ const ReviewSum = ({ route, navigation }) => {
                         {/* <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                     </View>
                 </View>
-                <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
             </ScrollView >
             <View style={styles.Enroll}>
                 <TouchableOpacity style={styles.Button} onPress={toggleModal}>

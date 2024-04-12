@@ -7,6 +7,7 @@ import test from '../assets/Lesson/kid1.jpg'
 import Loading from '../Loading/Loading'
 import { Linking } from 'react-native';
 import { formatPrice } from '../FormatPrice/Format';
+import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const OrderDetail = ({ route, navigation }) => {
     const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id } = route.params;
@@ -55,7 +56,7 @@ const OrderDetail = ({ route, navigation }) => {
             ) : (
                 <View style={{ flex: 1 }}>
                     <View style={styles.Course}>
-                        <Image source={test} style={styles.CourseImage} />
+                        <Image source={{ uri: data.pictureUrl }} style={styles.CourseImage} />
                         <View>
                             <View style={{
                                 borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, width: data.status === 'RequestRefund' ? wp('28.9%') : wp('21.9'),
@@ -63,15 +64,15 @@ const OrderDetail = ({ route, navigation }) => {
                             }}>
                                 <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>{data.status}</Text>
                             </View>
-                            <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{data.courseName}</Text>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
+                            <Text style={{ marginLeft: wp('1.5%'), width: wp('50%'),fontSize: isSmallPhone || isSmallTablet ? wp('3.3%') : wp('4%'), fontWeight: '500' }}>{data.courseName}</Text>
+                            {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                                 <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                                 <Text style={{
                                     fontWeight: 'bold',
                                     color: '#40BFFF',
                                     fontSize: wp('3.8%')
                                 }}>{Lecture}</Text>
-                            </View>
+                            </View> */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                                 <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                                 <Text style={{
@@ -129,7 +130,7 @@ const OrderDetail = ({ route, navigation }) => {
                         <TouchableOpacity style={[styles.Button, { borderColor: Status === 'Cancelled' ? 'white' : 'white', backgroundColor: Status === 'Pending' ? 'red' : Status === 'Success' ? '#FF8A00' : Status === 'Process' ? 'blue' : 'white' }]}
                             onPress={() => {
                                 if (Status === 'Pending') {
-                                    navigation.navigate('CancelOrder', { Name: data.courseName, LessImage, Lecture, Status, Price: data.price, Payment, Child, Avatar, Id: data.orderId });
+                                    navigation.navigate('CancelOrder', { Name: data.courseName, LessImage:data.pictureUrl, Lecture, Status, Price: data.price, Payment, Child, Avatar, Id: data.orderId });
                                 } else if (Status === 'Success') {
                                     navigation.navigate('LessonDetails', { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar });
                                 }

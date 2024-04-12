@@ -241,20 +241,14 @@ const HomePage = ({ navigation }) => {
                     </View>
                     <View style={{ paddingLeft: wp('1%'), marginBottom: hp('0.5%') }}>
                         <TouchableOpacity style={styles.Course} onPress={() => {
-                            navigation.navigate('LessonDetails', { Name: course.name, LessImage: course.image, Lecture: course.teacher, Avatar: course.avatar, Price: course.price, Id: course.id })
+                            navigation.navigate('LessonDetails', { Name: course.name, LessImage: course.pictureUrl, Lecture: course.teacher, Avatar: course.avatar, Price: course.price, Id: course.id })
                         }}>
-                            <Image source={test} style={styles.Image} />
+                            <Image source={{ uri: course.pictureUrl }} style={styles.Image} />
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                                 <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                                <Text style={styles.Name}>{course.name}</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                                <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                                <Text style={{
-                                    fontWeight: 'bold',
-                                    color: '#40BFFF',
-                                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
-                                }}>{course.teacher}</Text>
+                                <Text style={[styles.Name, { fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%'), width: wp('40%') }]}>
+                                    {course.name}
+                                </Text>
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                                 <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />

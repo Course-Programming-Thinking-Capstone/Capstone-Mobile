@@ -37,6 +37,7 @@ import Schedule from './screens/Schedule';
 import StudyCourse from './screens/StudyCourse';
 import QuizScreen from './screens/Quiz';
 import GameIntro from './screens/GameIntro';
+import AccountDetail from './screens/AccountDetail';
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -410,6 +411,9 @@ export default function App() {
           }}
         />
         <Stack.Screen name="GameIntro" component={GameIntro}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="AccountDetail" component={AccountDetail}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

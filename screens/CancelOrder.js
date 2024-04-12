@@ -6,6 +6,7 @@ import { SelectList } from 'react-native-dropdown-select-list'
 import { Checkbox } from 'react-native-paper';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { cancerlOrder } from '../Api/Order';
+import { formatPrice } from '../FormatPrice/Format';
 import Loading from '../Loading/Loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const CancelOrder = ({ route, navigation }) => {
@@ -57,12 +58,12 @@ const CancelOrder = ({ route, navigation }) => {
   return (
     <View style={styles.Container}>
       <View style={styles.Course}>
-        <Image source={LessImage} style={styles.CourseImage} />
+        <Image source={{ uri: LessImage }} style={styles.CourseImage} />
         <View>
           <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
             <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>Best Seller</Text>
           </View>
-          <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{Name}</Text>
+          <Text style={{ marginLeft: wp('1.5%'), fontSize: isSmallPhone || isSmallTablet ? wp('3.3%') : wp('4%'), fontWeight: '500',width:wp('50%') }}>{Name}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
             <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
             <Text style={{
@@ -77,7 +78,7 @@ const CancelOrder = ({ route, navigation }) => {
               fontWeight: 'bold',
               color: 'blue',
               fontSize: wp('3.8%')
-            }}>{Price}</Text>
+            }}>{formatPrice(Price)}</Text>
           </View>
         </View>
       </View>

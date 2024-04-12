@@ -50,7 +50,7 @@ const Profile = ({ navigation }) => {
         </View>
       </View>
       <View style={{ paddingLeft: wp('5%'), paddingRight: wp('5%') }}>
-        <TouchableOpacity activeOpacity={1}>
+        <TouchableOpacity activeOpacity={1} onPress={()=>{navigation.navigate('AccountDetail')}}>
           <View style={{
             flexDirection: 'row', backgroundColor: '#e9f2eb', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('2%'), shadowColor: 'black',
             shadowOpacity: 0.9,

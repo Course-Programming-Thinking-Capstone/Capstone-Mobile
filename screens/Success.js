@@ -13,7 +13,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Success = ({ navigation, route }) => {
-    const { Name, LessImage, Lecture, Price, payment, selectedStudents, success } = route.params;
+    const { Name, LessImage, Lecture, className, success } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading1, setLoading1] = useState(false);
     const toggleModal = () => {
@@ -35,6 +35,7 @@ const Success = ({ navigation, route }) => {
         };
     }, []);
     const [data, setData] = useState([])
+    console.log("Test:",data);
     const fetchOrderDetail = async () => {
         try {
             setLoading1(true);
@@ -75,9 +76,9 @@ const Success = ({ navigation, route }) => {
                         <Text style={{ fontSize: wp('5%'), textAlign: 'center' }}>Your order code: {data.orderCode}</Text>
                     </View>
                     <View style={styles.Course}>
-                        <Image source={LessImage} style={styles.CourseImage} />
+                        <Image source={{ uri: data.pictureUrl }} style={styles.CourseImage} />
                         <View>
-                            <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{Name}</Text>
+                            <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500',width:wp('60%') }}>{data.courseName}</Text>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                                 <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                                 <Text style={{
@@ -147,6 +148,10 @@ const Success = ({ navigation, route }) => {
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
                                         <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Status Order</Text>
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.status}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+                                        <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>Class Code</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.classCode}</Text>
                                     </View>
                                 </View>
                                 <View style={{ width: wp('83%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />

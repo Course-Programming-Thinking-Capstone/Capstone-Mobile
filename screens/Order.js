@@ -79,7 +79,7 @@ const Order = ({ route, navigation }) => {
             navigation.navigate('OrderDetail', { Id: item.orderId, Status: item.orderStatus });
         }}>
             <View style={styles.Course}>
-                <Image source={test} style={styles.CourseImage} />
+                <Image source={{ uri: item.pictureUrl }} style={styles.CourseImage} />
                 <View>
                     <View style={{
                         borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10,
@@ -88,7 +88,7 @@ const Order = ({ route, navigation }) => {
                     }}>
                         <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>{item.orderStatus}</Text>
                     </View>
-                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500', width: wp('50%') }}>{item.courseName}</Text>
+                    <Text style={{ marginLeft: wp('1.5%'),fontSize: isSmallPhone || isSmallTablet ? wp('3.3%') : wp('4%'), fontWeight: '500', width: wp('50%') }}>{item.courseName}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                         <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                         <Text style={{

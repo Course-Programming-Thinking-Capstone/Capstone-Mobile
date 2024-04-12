@@ -9,7 +9,7 @@ import { RadioButton } from 'react-native-paper';
 import { formatPrice } from '../FormatPrice/Format';
 
 const PayMethods = ({ navigation, route }) => {
-  const { Name, LessImage, Lecture, Avatar, Price, Id, info, contact, selectedStudents } = route.params;
+  const { Name, LessImage, Lecture, Avatar, Price, Id, info, contact, selectedStudents,className ,classCourseId} = route.params;
   const [payment, setPayment] = React.useState('Momo');
   return (
     <View style={styles.Container}>
@@ -57,14 +57,14 @@ const PayMethods = ({ navigation, route }) => {
         <Text style={{ fontWeight: '500', fontSize: wp('4%'), marginVertical: hp('1%') }}>Order payment</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View>
-            <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Course</Text>
+            <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Class Code:</Text>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Price</Text>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Quantity</Text>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Discount</Text>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Total</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{Name}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{className}</Text>
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{formatPrice(Price)}</Text>
             {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text> */}
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>x{selectedStudents.length}</Text> 
@@ -75,7 +75,7 @@ const PayMethods = ({ navigation, route }) => {
         </View>
       </View>
       <View style={styles.Enroll}>
-        <TouchableOpacity style={styles.Checkout} onPress={() => { navigation.navigate('ReviewSum', { Name, LessImage, Lecture, Avatar, Price, Id, payment, info, selectedStudents }) }}>
+        <TouchableOpacity style={styles.Checkout} onPress={() => { navigation.navigate('ReviewSum', { Name, LessImage, Lecture, Avatar, Price, Id, payment, info, selectedStudents,className ,classCourseId}) }}>
           <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Continue</Text>
         </TouchableOpacity>
       </View>

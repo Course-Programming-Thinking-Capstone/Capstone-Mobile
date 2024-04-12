@@ -19,7 +19,7 @@ const Payment = ({ route, navigation }) => {
     const [displayText, setDisplayText] = useState('Date of Birth');
     const [checked, setChecked] = React.useState('Thanh An');
     const [info, setInfo] = React.useState('Email');
-    const { Name, LessImage, Lecture, Avatar, Price, Id } = route.params;
+    const { Name, LessImage, Lecture, Avatar, Price, Id,payment,classCourseId } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
     const textInputRef = useRef(null);
     const toggleModal = () => {
@@ -131,7 +131,7 @@ const Payment = ({ route, navigation }) => {
         if (selectedStudents.length === 0) {
             Alert.alert('Alert', 'Please select at least one student.');
         } else {
-            navigation.navigate('PayMethods', { Name, LessImage, Lecture, Avatar, Price, info, checked, selectedStudents, contact });
+            navigation.navigate('PayMethods', { Name, LessImage, Lecture, Avatar, Price, info, checked, selectedStudents, contact ,Id,className:payment,classCourseId});
         }
     };
     return (
@@ -196,12 +196,12 @@ const Payment = ({ route, navigation }) => {
                     marginTop: hp('2%')
                 }}>Course Information:</Text>
                 <View style={styles.Course}>
-                    <Image source={LessImage} style={styles.CourseImage} />
+                    <Image source={{ uri: LessImage }} style={styles.CourseImage} />
                     <View>
                         <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
                             <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%') }}>Best Seller</Text>
                         </View>
-                        <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{Name}</Text>
+                        <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500',width:wp('55%') }}>{Name}</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                             <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                             <Text style={{

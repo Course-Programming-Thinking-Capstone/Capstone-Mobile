@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { getApiHeaders } from '../Api/Headers';
 import { BASE_URL } from '../Api/Api'
-export const CreateOrder = async (studentId, count) => {
+export const CreateOrder = async (studentId, count,Id,classCourseId) => {
     try {
         const headers = await getApiHeaders();
         const response = await axios.post(`${BASE_URL}/orders`, {
             studentId: studentId,
-            courseId: 4,
-            classId:1,
+            courseId: Id,
+            classId:classCourseId,
             voucherId: 0,
             paymentType: 2,
             quantity: count,
@@ -25,7 +25,7 @@ export const CreateOrder = async (studentId, count) => {
 export const getOrder = async () => {
     try {
         const headers = await getApiHeaders();
-        const response = await axios.get(`${BASE_URL}/orders?status=AllStatus`, { headers });
+        const response = await axios.get(`${BASE_URL}/orders/mobile?status=AllStatus`, { headers });
         if (typeof response.data === 'object' && response.data !== null) {
             return response.data;
         } else {

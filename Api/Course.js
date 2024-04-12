@@ -4,7 +4,7 @@ import { BASE_URL } from '../Api/Api'
 export const getCourse = async () => {
     try {
         const headers = await getApiHeaders();
-        const response = await axios.get(`${BASE_URL}/courses/4`, { headers });
+        const response = await axios.get(`${BASE_URL}/courses/23`, { headers }); 
         if (typeof response.data === 'object' && response.data !== null) {
             return response.data;
         } else {

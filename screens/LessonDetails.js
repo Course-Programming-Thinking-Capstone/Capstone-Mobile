@@ -1,5 +1,5 @@
-import { ImageBackground, Modal, StyleSheet, Text, View, Image, TouchableWithoutFeedback, TouchableOpacity, TextInput, ScrollView, FlatList, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import { ImageBackground, Modal, StyleSheet, Text, View, Image, Alert, TouchableOpacity, TextInput, ScrollView, FlatList, Pressable } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from "@react-navigation/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import teacher from '../assets/Lesson/teacher1.png'
@@ -19,7 +19,6 @@ import an from '../assets/Lesson/an.jpg'
 import vu from '../assets/Lesson/vu.jpg'
 import thien from '../assets/Lesson/thien.jpg'
 import star1 from '../assets/Details/star2.png'
-import close from '../assets/welcome/close1.png'
 import { formatPrice } from '../FormatPrice/Format';
 import video from '../assets/MyCourse/video.png'
 import { WebView } from 'react-native-webview';
@@ -27,8 +26,23 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { usePreventScreenCapture } from 'expo-screen-capture';
 import PayMethods from './PayMethods';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import { getCourse } from '../Api/Course';
+import { RadioButton } from 'react-native-paper';
+import close from '../assets/welcome/close1.png'
+import Loading from '../Loading/Loading'
 const LessonDetails = ({ route }) => {
     const [showVideo, setShowVideo] = useState(false);
+    const [payment, setPayment] = React.useState();
+    const [classCourseId, setClassCourseId] = React.useState();
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [loading, setLoading] = useState(true);
+    console.log("test Id: ",classCourseId);
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+    useEffect(() => {
+        fetchClass()
+    }, []);
     const lessons1 = [
         { id: '01', name: 'Introduction programming ', time: '10:00', status: 'Open' },
         { id: '02', name: 'Make a Tower Defense Game', time: '5:00', status: 'Close' },
@@ -123,67 +137,83 @@ const LessonDetails = ({ route }) => {
     const closeModal = () => {
         setShowVideo(false);
     };
+    const [courseData, setCourseData] = useState([])
+    const [classDetail, setClassDetail] = useState([])
+    const fetchClass = async () => {
+        try {
+            const courseData = await getCourse();
+            if (courseData && courseData.classes) {
+                setClassDetail(courseData.classes);
+                setCourseData(courseData)
+                setLoading(false);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    const renderClassItem = ({ item }) => (
+        <View style={{ marginBottom: hp('1%'), marginRight: wp('2%') }}>
+            <TouchableOpacity key={item.classId} onPress={toggleModal} style={[styles.NameKid]}>
+                <RadioButton
+                    value={item.classCode}
+                    status={payment === item.classCode ? 'checked' : 'unchecked'}
+                    onPress={() => [setPayment(item.classCode),setClassCourseId(item.classId)]}
+                />
+                <Text style={{ marginLeft: wp('5%') }}>{item.classCode}</Text>
+            </TouchableOpacity>
+        </View>
+    );
+    const handleContinue = () => {
+        if (payment === 'Momo') {
+            Alert.alert('Alert', 'Please select at class !');
+        } else {
+            navigation.navigate('Payment', { Name, LessImage, Lecture, Avatar, Price, Id,payment,classCourseId })
+        }
+    };
     const renderScene = SceneMap({
         about: () => (
             <View style={{
                 paddingRight: wp('7%')
             }}>
                 <ScrollView style={{ width: wp('100%'), marginBottom: hp('3%') }}>
-                    <Text style={{ fontSize: wp('4%'), fontWeight: '500', marginTop: hp('1%') }}>About Course</Text>
-                    <Text style={{ marginTop: hp('1%'), color: '#94867D', lineHeight: hp('3%'), width: wp('90%'), fontSize: wp('4%') }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</Text>
-                    <Text style={{ marginTop: hp('1%'), fontSize: wp('4%'), fontWeight: '500', marginBottom: hp('1%') }}>Tutor</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => {
-                            navigation.navigate('MentorDetails', { Lecture, Avatar, Id })
-                        }}>
-                            <View style={{ marginRight: wp('3%') }}>
-                                <Image source={Avatar} style={styles.CircleMen} />
-                            </View>
-                            <View style={{ marginRight: wp('10%') }}>
-                                <Text style={{ fontSize: wp('4.5%'), fontWeight: '700' }}>{Lecture}</Text>
-                                <Text style={{ fontSize: wp('3.5%'), color: '#94867D', fontWeight: '500' }}>Mobile Developer</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{ flexDirection: 'row', position: 'absolute', right: wp('5%') }}>
-                            <View style={styles.Circle}>
-                                <Image source={tele} style={{ width: wp('5%'), height: hp('3%') }} />
-                            </View>
-                            <View style={styles.Circle}>
-                                <Image source={mess} style={{ width: wp('5%'), height: hp('3%') }} />
-                            </View>
-                        </View>
-                    </View>
-                    <Text style={{ marginTop: hp('1%'), fontSize: wp('4%'), fontWeight: '500', marginBottom: hp('1%') }}>Info</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    {loading ? (
+                        <Loading />
+                    ) : (
                         <View>
-                            <View>
-                                <Text style={{ color: '#94867D' }}>Students</Text>
-                                <Text style={{ marginBottom: hp('2%'), fontWeight: '500' }}>156,213</Text>
-                            </View>
-                            <View>
-                                <Text style={{ color: '#94867D' }}>Last Update</Text>
-                                <Text style={{ marginBottom: hp('2%'), fontWeight: '500' }}>Feb 2, 2023</Text>
-                            </View>
-                            <View>
-                                <Text style={{ color: '#94867D' }}>Level</Text>
-                                <Text style={{ marginBottom: hp('2%'), fontWeight: '500' }}>Beginner</Text>
+                            <Text style={{ fontSize: wp('4%'), fontWeight: '500', marginTop: hp('1%') }}>About Course</Text>
+                            <Text style={{ marginTop: hp('1%'), color: '#94867D', lineHeight: hp('3%'), width: wp('90%'), fontSize: wp('4%') }}>{courseData.description}</Text>
+                            <Text style={{ marginTop: hp('2%'), fontSize: wp('4%'), fontWeight: '500', marginBottom: hp('2%') }}>Class Available</Text>
+                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                                <FlatList
+                                    data={classDetail}
+                                    renderItem={renderClassItem}
+                                    keyExtractor={(item) => item.classId.toString()}
+                                    scrollEnabled={false}
+                                    numColumns={2}
+                                />
+                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Modal visible={isModalVisible} transparent={false} statusBarTranslucent={true} animationType="slide">
+                                        <View style={{
+                                            flex: 1, justifyContent: 'center', alignItems: 'center',
+                                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                        }}>
+                                            <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
+                                                <Image source={close} style={styles.buttonClose} />
+                                            </TouchableOpacity>
+                                            <View style={styles.Popup}>
+                                                {/* <Text>{item.courseName}</Text>
+                            <Text>Class Code: {item.classCode}</Text>
+                            <Text>Teacher: {item.teacher}</Text>
+                            <Text>Days: {item.days.join(', ')}</Text>
+                            <Text>Time: {item.slotStart} - {item.slotEnd}</Text> */}
+                                            </View>
+                                        </View>
+                                    </Modal>
+                                </View>
                             </View>
                         </View>
-                        <View style={{ paddingRight: wp('10%') }}>
-                            <View>
-                                <Text style={{ color: '#94867D' }}>Language</Text>
-                                <Text style={{ marginBottom: hp('2%'), fontWeight: '500' }}>English</Text>
-                            </View>
-                            <View>
-                                <Text style={{ color: '#94867D' }}>Subtitle</Text>
-                                <Text style={{ marginBottom: hp('2%'), fontWeight: '500' }}>English,VietNam</Text>
-                            </View>
-                            <View>
-                                <Text style={{ color: '#94867D' }}>Access</Text>
-                                <Text style={{ marginBottom: hp('2%'), fontWeight: '500' }}>Mobile, Desktop</Text>
-                            </View>
-                        </View>
-                    </View>
+                    )}
                 </ScrollView>
             </View >
         ),
@@ -344,8 +374,8 @@ const LessonDetails = ({ route }) => {
     };
     // usePreventScreenCapture(); 
     return (
-        <View style={styles.Container}> 
-            <ImageBackground source={LessImage} style={{ width: wp('100%'), height: hp('40%') }}>
+        <View style={styles.Container}>
+            <ImageBackground source={{ uri: LessImage }} style={{ width: wp('100%'), height: hp('40%') }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: wp('6%'), paddingRight: wp('6%'), marginTop: hp('5%') }}>
                     <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'white', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>
                         <TouchableOpacity onPress={goBack}>
@@ -380,7 +410,7 @@ const LessonDetails = ({ route }) => {
                     {/* <Text style={{ color: '#327CF7', fontWeight: '800' }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text> */}
                 </View>
                 <View style={styles.Button}>
-                    <Text onPress={() => { navigation.navigate('Payment', { Name, LessImage, Lecture, Avatar, Price, Id }) }} style={{ fontWeight: '800', color: 'white' }}>Enroll Now</Text>
+                    <Text onPress={handleContinue} style={{ fontWeight: '800', color: 'white' }}>Enroll Now</Text>
                 </View>
             </View>
 
@@ -524,4 +554,35 @@ const styles = StyleSheet.create({
         top: hp('25%'),
         right: wp('1%')
     },
+    NameKid: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 0.5,
+        width: wp('42.5%'),
+        borderRadius: 10,
+        height: hp('8%'),
+        borderColor: '#E9E9E9',
+        alignItems: 'center',
+        shadowColor: 'black',
+        shadowOpacity: 0.9,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 20,
+        elevation: 5,
+        backgroundColor: 'white',
+        marginLeft: wp('1%'),
+        marginBottom: hp('2%'),
+    },
+    Popup: {
+        backgroundColor: 'white',
+        width: wp('90%'),
+        height: hp('55%'),
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    closeButton: {
+        position: 'absolute',
+        top: hp('20%'),
+        right: wp('2%')
+    }
 })
