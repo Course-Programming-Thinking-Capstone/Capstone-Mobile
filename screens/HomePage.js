@@ -31,7 +31,6 @@ const HomePage = ({ navigation }) => {
             const courseData = await getAllCourse();
             if (courseData) {
                 setCourse(courseData.results);
-                console.log("Cong test:", courseData.results);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -56,8 +55,10 @@ const HomePage = ({ navigation }) => {
         { id: '5', name: 'Lập trình with C', teacher: 'CongLT', price: '1500000' },
         { id: '6', name: 'Lập trình with C', teacher: 'CongLT', price: '1500000' },
     ];
-    const numberOfItems = 4; // Render component number
+    const numberOfItems = 4;
     const limitedNear = Near.slice(0, numberOfItems);
+    const numberCourse = 4;
+    const limitedCourse = course.slice(0, numberCourse);
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.Course} onPress={() => {
             navigation.navigate('LessonDetails', { Name: item.name, LessImage: item.image, Lecture: item.teacher, Avatar: item.avatar, Price: item.price, Id: item.id })
@@ -99,6 +100,25 @@ const HomePage = ({ navigation }) => {
             </TouchableOpacity>
         </View>
     );
+    const renderCourse = ({ item }) => (
+        <TouchableOpacity style={styles.Course} onPress={() => {
+            navigation.navigate('LessonDetails', {
+                Name: item.name,
+                LessImage: item.pictureUrl,
+                Price: item.price,
+                Id: item.id
+            })
+        }}>
+            <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+                <Text style={styles.Name}>{item.name}</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+                <Text style={styles.Price}>{item.isFree ? 'Free' : `$${item.price}`}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+
     return (
         <View style={styles.Container}>
             <ImageBackground source={background} style={styles.backPic}>
@@ -240,37 +260,14 @@ const HomePage = ({ navigation }) => {
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
-                    <View style={{ paddingLeft: wp('1%'), marginBottom: hp('0.5%') }}>
-                        {course.map(courseItem => (
-                            <TouchableOpacity style={styles.Course} key={courseItem.id} onPress={() => {
-                                navigation.navigate('LessonDetails', {
-                                    Name: courseItem.name,
-                                    LessImage: courseItem.pictureUrl,
-                                    Lecture: courseItem.teacher,
-                                    Avatar: courseItem.avatar,
-                                    Price: courseItem.price,
-                                    Id: courseItem.id 
-                                })
-                            }}>
-                                <Image source={{ uri: courseItem.pictureUrl }} style={styles.Image} />
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                                    <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                                    <Text style={[styles.Name, { fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%'), width: wp('40%') }]}>
-                                        {courseItem.name}
-                                    </Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                                    <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                                    <Text style={{
-                                        fontWeight: 'bold',
-                                        color: 'blue',
-                                        fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
-                                    }}>
-                                        {formatPrice(courseItem.price)}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        ))}
+                    <View style={{ paddingLeft: wp('1%'), marginBottom: hp('0.5%'), flexDirection: 'row' }}>
+                        <FlatList
+                            data={limitedCourse}
+                            renderItem={renderCourse}
+                            keyExtractor={item => item.id.toString()}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                        />
                     </View>
                 </View>
             </ScrollView>
