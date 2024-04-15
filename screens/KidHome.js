@@ -13,6 +13,7 @@ import right from '../assets/HomePage/right.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { getUserInfo } from '../Api/Parents';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { getStudentCourse } from '../Api/Children'
 const KidHome = () => {
     const navigation = useNavigation();
     const Course = [
@@ -41,30 +42,46 @@ const KidHome = () => {
             console.error("Error fetching data:", error);
         }
     };
+    const [studentCourse, setStudentCourse] = useState([])
+    useEffect(() => {
+        fetchCourse()
+    }, [])
+
+    const fetchCourse = async () => {
+        try {
+            const contactData = await getStudentCourse();
+            if (contactData) {
+                setStudentCourse(contactData);
+                // setLoading(false);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
     const renderCourse = ({ item }) => (
-        <TouchableOpacity onPress={() => { navigation.navigate('Course') }}>
+        <TouchableOpacity onPress={() => { navigation.navigate('Course', { CourseId: item.courseId }) }}>
             <View style={styles.Course}>
-                <Image source={item.image} style={styles.CourseImage} />
+                <Image source={{ uri: item.courseImage }} style={styles.CourseImage} />
                 <View>
                     <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
                         <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%') }}>Best Seller</Text>
                     </View>
-                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{item.name}</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                        <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500', width: wp('50%') }}>{item.courseName}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%'), marginLeft: wp('2%') }}>
+                        <Text>Class Code:</Text>
                         <Text style={{
                             fontWeight: 'bold',
                             color: '#40BFFF',
-                            fontSize: wp('3.8%')
-                        }}>{item.teacher}</Text>
+                            fontSize: wp('3.8%'), marginLeft: wp('2%')
+                        }}>{item.classCode}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: wp('1.5%') }}>
+                    {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: wp('1.5%') }}>
                         <ProgressBar progress={0.8} width={wp('35%')} borderWidth={1} height={(hp('1%'))} />
                         <Text style={{
                             marginLeft: wp('3%'),
                             color: '#40BFFF',
-                        }}>20/25</Text> 
-                    </View>
+                        }}>20/25</Text>
+                    </View> */}
                 </View>
             </View>
         </TouchableOpacity>
@@ -142,20 +159,20 @@ const KidHome = () => {
                 <View style={{ flex: 1, paddingLeft: wp('5%') }}>
                     <View style={{ flexDirection: "row", justifyContent: 'space-between', paddingRight: isSmallPhone || isSmallTablet ? wp('5%') : wp('5%'), marginTop: hp('1%'), alignItems: 'center' }}>
                         <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>Continue Learning</Text>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('PopularCourse') }}>
+                        {/* <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('PopularCourse') }}>
                             <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%'), marginLeft: wp('2%') }} />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                     <FlatList
-                        data={limitedCourse}
-                        keyExtractor={item => item.id}
+                        data={studentCourse}
+                        keyExtractor={item => item.classId}
                         renderItem={renderCourse}
                         showsHorizontalScrollIndicator={false}
                         contentContainerStyle={styles.List}
                         scrollEnabled={false}
                     />
-                    <View style={{ flexDirection: "row", justifyContent: 'space-between', paddingRight: isSmallPhone || isSmallTablet ? wp('5%') : wp('5%'), marginTop: hp('1%'), alignItems: 'center' }}>
+                    {/* <View style={{ flexDirection: "row", justifyContent: 'space-between', paddingRight: isSmallPhone || isSmallTablet ? wp('5%') : wp('5%'), marginTop: hp('1%'), alignItems: 'center' }}>
                         <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>Course Completed</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('PopularCourse') }}>
                             <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
@@ -169,7 +186,7 @@ const KidHome = () => {
                         showsHorizontalScrollIndicator={false}
                         contentContainerStyle={styles.List}
                         scrollEnabled={false}
-                    />
+                    /> */}
                 </View>
             </ScrollView>
         </View>

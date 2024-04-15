@@ -1,133 +1,167 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { RadioButton } from 'react-native-paper'; // Import RadioButton component
-import quiz1 from '../assets/Quiz/quiz1.jpg';
-import quiz2 from '../assets/Quiz/quiz2.jpg';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import cong from '../assets/Lesson/cong2.jpg'
-
-
+import close from '../assets/welcome/close1.png'
+import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 const QuizScreen = ({ route, navigation }) => {
-    const { lessons1 } = route.params;
+    const { QuizDetail, CourseId } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
-    const [userAnswers, setUserAnswers] = useState(new Array(totalQuestions).fill(null));
-    const [selectedOptions, setSelectedOptions] = useState(new Array(totalQuestions).fill(null)); // Lưu trữ lựa chọn của người dùng cho mỗi câu hỏi
+    const [answerModal, setAnswerModal] = useState(false);
+    const [userAnswers, setUserAnswers] = useState(new Array(QuizDetail.numberOfQuestion).fill(null));
+    const [selectedOptions, setSelectedOptions] = useState(new Array(QuizDetail.numberOfQuestion).fill(null)); // Lưu trữ lựa chọn của người dùng cho mỗi câu hỏi
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
         setShowNextBackButtons(true)
     };
-    const questions = [
-        {
-            question: 'What is the capital of France?',
-            options: ['Paris', 'London', 'Berlin', 'Rome'],
-            correctAnswer: 'Paris',
-            picture: quiz1
-        },
-        {
-            question: 'What is 2 + 2?',
-            options: ['3', '4', '5', '6'],
-            correctAnswer: '4',
-            picture: quiz2
-        },
-    ];
+    const toggleAnswerModal = () => {
+        setAnswerModal(!answerModal);
+    };
+
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [score, setScore] = useState(0);
     const [showScore, setShowScore] = useState(false);
     const [showNextBackButtons, setShowNextBackButtons] = useState(true);
-    const totalQuestions = questions.length;
+
     const handleAnswer = (selectedOption) => {
         const updatedUserAnswers = [...userAnswers];
         updatedUserAnswers[currentQuestionIndex] = selectedOption;
         setUserAnswers(updatedUserAnswers);
-
-        if (selectedOption === questions[currentQuestionIndex].correctAnswer) {
+        const correctIndex = QuizDetail.questions[currentQuestionIndex].options.findIndex(option => option.isCorrect);
+        if (selectedOption === QuizDetail.questions[currentQuestionIndex].options[correctIndex].content) {
             setScore(score + 1);
         }
     };
+
     const handleNextQuestion = () => {
         const nextQuestionIndex = currentQuestionIndex + 1;
-        if (nextQuestionIndex < totalQuestions) {
+        if (nextQuestionIndex < QuizDetail.numberOfQuestion) {
             setCurrentQuestionIndex(nextQuestionIndex);
-            // Di chuyển hàm handleAnswer vào đây để chỉ tính điểm khi người dùng nhấn Next để chuyển đến câu hỏi tiếp theo
             handleAnswer(selectedOptions[currentQuestionIndex]);
         } else {
-            // Nếu là câu hỏi cuối cùng, hiển thị điểm
             setShowScore(true);
         }
     }
+
     const handlePreviousQuestion = () => {
         const previousQuestionIndex = currentQuestionIndex - 1;
         if (previousQuestionIndex >= 0) {
             setCurrentQuestionIndex(previousQuestionIndex);
         }
     };
+
     const restartQuiz = () => {
         setCurrentQuestionIndex(0);
         setScore(0);
         setShowScore(false);
-        setUserAnswers(new Array(totalQuestions).fill(null));
+        setUserAnswers(new Array(QuizDetail.numberOfQuestion).fill(null));
         setModalVisible(false);
         setSelectedOptions([])
         setShowNextBackButtons(true);
     };
-    const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+
+    const progress = ((currentQuestionIndex + 1) / QuizDetail.numberOfQuestion) * 100;
+
     const handleNextOrSubmit = () => {
-        if (currentQuestionIndex < totalQuestions - 1) {
+        if (currentQuestionIndex < QuizDetail.numberOfQuestion - 1) {
             handleNextQuestion();
         } else {
             toggleModal();
             setShowNextBackButtons(false);
         }
     };
+
     const handleSubmitQuiz = () => {
         let correctAnswers = 0;
         userAnswers.forEach((answer, index) => {
-            if (answer === questions[index].correctAnswer) {
+            const correctIndex = QuizDetail.questions[index].options.findIndex(option => option.isCorrect);
+            if (answer === QuizDetail.questions[index].options[correctIndex].content) {
                 correctAnswers++;
             }
         });
         setScore(correctAnswers);
         setShowScore(true);
     };
+
     return (
         <View style={styles.container}>
             {showScore ? (
                 <View style={styles.scoreContainer}>
                     <View style={styles.FormScore}>
-                        <Text style={{ marginBottom: hp('2%'), fontSize: wp('5%'), fontWeight: '600' }}>HIGH SCORE !</Text>
-                        <TouchableOpacity activeOpacity={1}>
-                            <Image source={cong} style={styles.CircleMen} />
-                        </TouchableOpacity>
-                        <Text style={{ marginBottom: hp('2%'), fontSize: wp('5%'), fontWeight: '600' }}>Thành An</Text>
-                        <Text style={{ fontSize: wp('4.5%'), fontWeight: '700', color: 'orange' }}>Your Score: {score}đ</Text>
+                        <View style={{ alignItems: "center" }}>
+                            <Text style={{ marginBottom: hp('2%'), fontSize: wp('5%'), fontWeight: '600' }}>HIGH SCORE !</Text>
+                            <TouchableOpacity activeOpacity={1}>
+                                <Image source={cong} style={styles.CircleMen} />
+                            </TouchableOpacity>
+                            <Text style={{ marginBottom: hp('1%'), fontSize: wp('5%'), fontWeight: '600' }}>{QuizDetail.createdByName}</Text>
+                            <Text style={{ fontSize: wp('4.5%'), fontWeight: '700', color: 'orange' }}>Your Score: {score}đ</Text>
+                            <TouchableOpacity onPress={toggleAnswerModal} style={[styles.Btn, { backgroundColor: 'orange', marginTop: hp('1%'), width: wp("40%") }]}>
+                                <Text style={{ color: 'white', fontWeight: '600' }}>Show Answer</Text>
+                            </TouchableOpacity>
+                        </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: hp('2%') }}>
                             <TouchableOpacity onPress={restartQuiz} style={[styles.Btn, { backgroundColor: 'red', marginRight: wp('3%') }]}>
                                 <Text style={{ color: 'white', fontWeight: '600' }}>Restart Quiz</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Course') }}>
+                            <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Course', { CourseId }) }}>
                                 <Text style={{ color: 'white', fontWeight: '600' }}>Main menu</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <Modal visible={answerModal} transparent={true} statusBarTranslucent={true}>
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+                            <TouchableOpacity style={styles.closeButton} onPress={toggleAnswerModal}>
+                                <Image source={close} style={styles.buttonClose} />
+                            </TouchableOpacity>
+                            <View style={[styles.Popup, { height: hp('55%') }]}>
+                                <View showsVerticalScrollIndicator={true}>
+                                    <Text style={{ fontSize: wp('6%'), textAlign: 'center', fontWeight: '700', color: '#FF8A00', marginBottom: hp('1.5%') }}>Quiz Results</Text>
+                                    {QuizDetail.questions.map((question, index) => (
+                                        <View key={`question-${index}`} style={{ marginVertical: hp('1%'), marginHorizontal: wp('3%') }}>
+                                            <Text style={{ fontWeight: '700', textAlign: 'center', fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), }}>Q{question.order}.{question.title}</Text>
+                                            {question.options.map((option, optionIndex) => (
+                                                option.isCorrect ? (
+                                                    <View key={`option-${index}-${optionIndex}`} style={styles.BorderAnswer}>
+                                                        <Text style={{ color: 'orange', fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '700', paddingRight: wp('2%') }}>Answer {option.order}: {option.content}</Text>
+                                                    </View>
+                                                ) : null
+                                            ))}
+                                        </View>
+                                    ))}
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
                 </View>
             ) : (
                 <View style={styles.quizContainer}>
                     <View style={styles.progressContainer}>
                         <Text style={{ fontSize: wp('5%'), fontWeight: 700 }}>MULTIPLE CHOICE QUESTIONS</Text>
-                        <View style={{ marginTop: hp('2%') }}>
-                            <Image source={questions[currentQuestionIndex].picture} style={{ width: wp('90%'), height: hp('30%'), borderRadius: 20 }} />
-                        </View>
-                        <View style={styles.progressBar}>
+                        {/* <View style={styles.progressBar}>
                             <View style={{ width: `${progress}%`, backgroundColor: 'green', height: 10 }} />
-                        </View>
+                        </View> */}
                     </View>
-                    <Text style={styles.questionText}>{questions[currentQuestionIndex].question}</Text>
-                    {questions[currentQuestionIndex].options.map((option, index) => (
-                        <TouchableOpacity onPress={() => { setSelectedOptions({ ...selectedOptions, [currentQuestionIndex]: option }), handleAnswer(option) }} key={index} style={[styles.optionContainer,selectedOptions[currentQuestionIndex] === option && { backgroundColor: '#e9f0f9' }]}>
-                            <Text style={selectedOptions[currentQuestionIndex] === option && { color:'black', fontSize:wp('4%'),fontWeight:'500' }}>{option}</Text>
+                    <View style={styles.QuizTitle}>
+                        <Text style={styles.questionText}>{QuizDetail.questions[currentQuestionIndex].title}</Text>
+                    </View>
+                    {QuizDetail.questions[currentQuestionIndex].options.map((option, index) => (
+                        <TouchableOpacity
+                            onPress={() => {
+                                setSelectedOptions({ ...selectedOptions, [currentQuestionIndex]: option.content });
+                                handleAnswer(option.content);
+                            }}
+                            key={`${option.order}-${index}`}
+                            style={[styles.optionContainer, selectedOptions[currentQuestionIndex] === option.content && { backgroundColor: '#40BFFF' }]}
+                        >
+                            <Text style={selectedOptions[currentQuestionIndex] === option.content && { color: 'white', fontSize: wp('4%'), fontWeight: '600' }}>{option.content}</Text>
                             <RadioButton
-                                value={option}
-                                status={selectedOptions[currentQuestionIndex] === option ? 'checked' : 'unchecked'} // Sử dụng selectedOptions để hiển thị lựa chọn của người dùng
+                                value={option.content}
+                                status={selectedOptions[currentQuestionIndex] === option.content ? 'checked' : 'unchecked'}
+                                onPress={() => {
+                                    setSelectedOptions({ ...selectedOptions, [currentQuestionIndex]: option.content });
+                                    handleAnswer(option.content);
+                                }}
                             />
                         </TouchableOpacity>
                     ))}
@@ -153,8 +187,16 @@ const QuizScreen = ({ route, navigation }) => {
                     <TouchableOpacity onPress={handlePreviousQuestion} disabled={currentQuestionIndex === 0} style={[styles.MoveBtn, { backgroundColor: currentQuestionIndex === 0 ? 'lightblue' : '#40BFFF' }]}>
                         <Text style={styles.buttonText}>Back</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleNextOrSubmit} style={styles.MoveBtn}>
-                        <Text style={styles.buttonText}>{currentQuestionIndex < totalQuestions - 1 ? 'Next' : 'Submit'}</Text>
+                    <TouchableOpacity
+                        onPress={handleNextOrSubmit}
+                        style={[
+                            styles.MoveBtn,
+                            { backgroundColor: currentQuestionIndex < QuizDetail.numberOfQuestion - 1 ? 'orange' : 'red' }
+                        ]}
+                    >
+                        <Text style={styles.buttonText}>
+                            {currentQuestionIndex < QuizDetail.numberOfQuestion - 1 ? 'Next' : 'Submit'}
+                        </Text>
                     </TouchableOpacity>
                 </View>
             )}
@@ -174,10 +216,14 @@ const styles = StyleSheet.create({
     },
     scoreContainer: {
         flex: 1,
+        marginTop: hp('2%')
     },
     questionText: {
-        fontSize: wp('5%'),
+        fontSize: wp('6%'),
         marginBottom: 20,
+        color: 'white',
+        fontWeight: '600',
+        textAlign: 'center'
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -266,11 +312,53 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         shadowColor: 'black',
         shadowOpacity: 0.9,
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: { width: 0, height: 5 },
         shadowRadius: 20,
         elevation: 5,
         backgroundColor: 'white',
-        marginTop: hp('2%')
+        borderColor: 'white',
+    },
+    QuizTitle: {
+        backgroundColor: '#40BFFF',
+        height: hp('30%'),
+        borderRadius: 10,
+        width: wp('90%'),
+        marginBottom: hp('3%'),
+        alignItems: 'center',
+        justifyContent: "center",
+        shadowColor: 'black',
+        shadowOpacity: 0.9,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 20,
+        elevation: 5,
+        borderColor: 'lightblue',
+        paddingLeft: wp('3%'),
+        paddingRight: wp('3%')
+    },
+    buttonClose: {
+        width: wp('4%'),
+        height: hp('2%'),
+    },
+    closeButton: {
+        position: 'absolute',
+        top: hp('20%'),
+        right: wp('4%')
+    },
+    BorderAnswer: {
+        alignItems: 'center',
+        marginTop: hp('1%'),
+        borderWidth: 1,
+        paddingVertical: hp('1.5%'),
+        borderRadius: 10,
+        borderColor: 'white',
+        shadowColor: 'black',
+        shadowOpacity: 0.9,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 20,
+        elevation: 5,
+        borderColor: 'white',
+        paddingLeft: wp('3%'),
+        paddingRight: wp('3%'), backgroundColor: 'white'
     }
 });
 

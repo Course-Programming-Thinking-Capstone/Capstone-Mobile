@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Linking, ImageBackground, Text, View, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Audio, Video } from 'expo-av';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -9,8 +9,13 @@ import quiz from '../assets/Profile/quiz.png'
 import game from '../assets/Profile/control.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import background from '../assets/MyCourse/b1.jpg'
+import { WebView } from 'react-native-webview';
 const StudyCourse = ({ route, navigation }) => {
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [currentId, setCurrentId] = useState(route.params.Id);
+    const [currentType, setCurrentType] = useState(route.params.currentType); // Thêm state để lưu trữ loại của bài học hiện tại
+    const { lessons1, Content, CourseVideo } = route.params;
+    console.log("Cong test; ", CourseVideo);
     const handleFullscreenUpdate = async (fullscreenUpdate) => {
         if (fullscreenUpdate === 0 || fullscreenUpdate === 1) {
             setIsFullscreen(true);
@@ -26,31 +31,31 @@ const StudyCourse = ({ route, navigation }) => {
             ScreenOrientation.unlockAsync();
         };
     }, []);
-    const [currentId, setCurrentId] = useState(route.params.Id);
-    const { lessons1 } = route.params;
 
-    const handleItemPress = (itemId) => {
+    const handleItemPress = (itemId, itemType) => {
         setCurrentId(itemId);
+        setCurrentType(itemType);
     };
 
     const filteredLessons = lessons1.filter(item => item.id !== currentId);
+
     const render = ({ item }) => (
-        <TouchableOpacity onPress={() => handleItemPress(item.id)} style={styles.LessBorder}>
+        <TouchableOpacity key={item.id} onPress={() => handleItemPress(item.id, item.type)} style={styles.LessBorder}>
             <View style={styles.LessId}>
-                <Text>{item.id}</Text>
+                <Text>{item.order}</Text>
             </View>
             <View>
-                <Text style={{ fontWeight: '600', fontSize: wp('4%') }}>{item.name}</Text>
-                <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{item.time}</Text>
+                <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{item.name}</Text>
+                <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{item.duration}:00</Text>
             </View>
-            {item.status === 'video' ? (
+            {item.type === 'Video' && currentType === 'Video' ? (
                 <TouchableOpacity onPress={() => setShowVideo(true)} style={{ position: 'absolute', right: wp('2%') }}>
                     <Image style={{
                         width: wp('9%'),
                         height: hp('4.51%'),
                     }} source={open} />
                 </TouchableOpacity>
-            ) : item.status === 'read' ? (
+            ) : item.type === 'Document' && currentType === 'Document' ? (
                 <Image style={{
                     width: wp('9%'),
                     height: hp('4.5%'),
@@ -72,22 +77,27 @@ const StudyCourse = ({ route, navigation }) => {
             }
         </TouchableOpacity>
     );
-    const handlePress = () => {
-        Linking.openURL('https://kidspro-capstone.github.io/Capstone-Game-WebGL/');
-    };
-    useEffect(() => {
-        if (currentId === '03') {
-            navigation.navigate('Quiz', { lessons1 });
-        } else if (currentId === '04') {
-            navigation.navigate('GameIntro');
+
+    const sanitizedContent = Content?.replace(/<\/?([hp])[^>]*>/g, '')
+    function convertDriveUrlToDirectUrl(driveUrl) {
+        const regex = /\/file\/d\/(.+?)\/preview/;
+        const match = driveUrl?.match(regex);
+        if (match && match.length > 1) {
+            const fileId = match[1];
+            return `https://drive.google.com/uc?id=${fileId}`;
+        } else {
+            return null;
         }
-    }, [currentId]);
+    }
+
+    const driveUrl = CourseVideo;
+    const directUrl = convertDriveUrlToDirectUrl(driveUrl);
     return (
         <ScrollView style={styles.container}>
             <View style={{ width: '100%', height: '100%' }}>
-                {currentId === '01' ? (
+                {currentType === 'Video' ? (
                     <Video
-                        source={{ uri: 'https://drive.google.com/uc?id=1_p3K5wsmfZcKzYAzXsmxq50zPRyAVMBO' }}
+                        source={{ uri: directUrl }}
                         rate={1.0}
                         volume={1.0}
                         isMuted={false}
@@ -98,15 +108,11 @@ const StudyCourse = ({ route, navigation }) => {
                         useNativeControls
                         onFullscreenUpdate={(event) => handleFullscreenUpdate(event.fullscreenUpdate)}
                     />
-                ) : currentId === '02' ? (
-                    <View>
-                        <View>
-                            <ImageBackground source={background} style={styles.backPic}></ImageBackground>
-                        </View>
-                        <View style={{ marginLeft: wp('3.5%'), marginTop: hp('2%') }}>
-                            <Text style={{ textAlign: 'left', fontSize: wp('4%'), lineHeight: hp('3.5%') }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Text>
-                        </View>
-                    </View>
+                ) : currentType === 'Document' ? (
+                    <ScrollView style={{ flex: 1, paddingLeft: wp('5%'), paddingRight: wp('2%') }}>
+                        <Text style={{ lineHeight: hp('3%'), textAlign: 'left', fontSize: wp('4.5%') }}>{sanitizedContent}</Text>
+                    </ScrollView>
+
                 ) : null}
                 <View style={{ marginTop: hp('2%'), marginLeft: wp('2%'), marginRight: wp('2%') }}>
                     <Text style={{ marginBottom: hp('2%'), fontSize: wp('4%'), marginLeft: wp('2%'), fontWeight: '500', color: 'blue' }}>Next Lesson:</Text>
@@ -119,10 +125,13 @@ const StudyCourse = ({ route, navigation }) => {
                         scrollEnabled={false}
                     />
                 </View>
+
             </View>
         </ScrollView>
     );
 };
+
+
 
 
 

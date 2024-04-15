@@ -35,7 +35,6 @@ const Success = ({ navigation, route }) => {
         };
     }, []);
     const [data, setData] = useState([])
-    console.log("Test:",data);
     const fetchOrderDetail = async () => {
         try {
             setLoading1(true);

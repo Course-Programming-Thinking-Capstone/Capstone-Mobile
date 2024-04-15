@@ -6,8 +6,7 @@ import ProgressBar from 'react-native-progress/Bar';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useNavigation } from "@react-navigation/native";
 import right from '../assets/HomePage/right.png'
-const MyCourse = () => {
-
+const MyCourse = ({ route }) => {
     const navigation = useNavigation();
     const Course = [
         { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg') },
@@ -110,7 +109,7 @@ const MyCourse = () => {
             )}
         />
     );
-    
+
     return (
         <View style={styles.Container}>
             <TabView
@@ -146,9 +145,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.9,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 20,
-        elevation:5,
-        backgroundColor:'white'
-        
+        elevation: 5,
+        backgroundColor: 'white'
+
     },
     CourseImage: {
         width: wp('30%'),
@@ -156,8 +155,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginRight: wp('3%')
     },
-    List:{
-        paddingLeft:wp('1%'),
-        paddingBottom:hp('1%')
+    List: {
+        paddingLeft: wp('1%'),
+        paddingBottom: hp('1%')
     }
 })

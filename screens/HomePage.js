@@ -16,7 +16,7 @@ import tag from '../assets/Lesson/tag.png'
 import learning from '../assets/Lesson/learning.png'
 import background from '../assets/HomePage/gif5.gif'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-import { getCourse } from '../Api/Course';
+import { getAllCourse } from '../Api/Course';
 import { getUserInfo } from '../Api/Parents';
 import test from '../assets/Lesson/kid1.jpg'
 import { formatPrice } from '../FormatPrice/Format';
@@ -28,9 +28,10 @@ const HomePage = ({ navigation }) => {
     }, [])
     const fetchCourse = async () => {
         try {
-            const courseData = await getCourse();
+            const courseData = await getAllCourse();
             if (courseData) {
-                setCourse(courseData);
+                setCourse(courseData.results);
+                console.log("Cong test:", courseData.results);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -231,7 +232,7 @@ const HomePage = ({ navigation }) => {
                         />
                     </View>
                 </View>
-                <View >
+                <View>
                     <View style={styles.Title}>
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>5 - 6 years old</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -240,27 +241,36 @@ const HomePage = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={{ paddingLeft: wp('1%'), marginBottom: hp('0.5%') }}>
-                        <TouchableOpacity style={styles.Course} onPress={() => {
-                            navigation.navigate('LessonDetails', { Name: course.name, LessImage: course.pictureUrl, Lecture: course.teacher, Avatar: course.avatar, Price: course.price, Id: course.id })
-                        }}>
-                            <Image source={{ uri: course.pictureUrl }} style={styles.Image} />
-                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                                <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                                <Text style={[styles.Name, { fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%'), width: wp('40%') }]}>
-                                    {course.name}
-                                </Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                                <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                                <Text style={{
-                                    fontWeight: 'bold',
-                                    color: 'blue',
-                                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
-                                }}>
-                                    {formatPrice(course.price)}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
+                        {course.map(courseItem => (
+                            <TouchableOpacity style={styles.Course} key={courseItem.id} onPress={() => {
+                                navigation.navigate('LessonDetails', {
+                                    Name: courseItem.name,
+                                    LessImage: courseItem.pictureUrl,
+                                    Lecture: courseItem.teacher,
+                                    Avatar: courseItem.avatar,
+                                    Price: courseItem.price,
+                                    Id: courseItem.id 
+                                })
+                            }}>
+                                <Image source={{ uri: courseItem.pictureUrl }} style={styles.Image} />
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
+                                    <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                                    <Text style={[styles.Name, { fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%'), width: wp('40%') }]}>
+                                        {courseItem.name}
+                                    </Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
+                                    <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                                    <Text style={{
+                                        fontWeight: 'bold',
+                                        color: 'blue',
+                                        fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
+                                    }}>
+                                        {formatPrice(courseItem.price)}
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        ))}
                     </View>
                 </View>
             </ScrollView>

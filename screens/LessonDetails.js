@@ -32,11 +32,11 @@ import close from '../assets/welcome/close1.png'
 import Loading from '../Loading/Loading'
 const LessonDetails = ({ route }) => {
     const [showVideo, setShowVideo] = useState(false);
-    const [payment, setPayment] = React.useState();
-    const [classCourseId, setClassCourseId] = React.useState();
+    const [payment, setPayment] = React.useState('');
+    const [classCourseId, setClassCourseId] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
-    console.log("test Id: ",classCourseId);
+    console.log("test Id: ", classCourseId);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -158,17 +158,17 @@ const LessonDetails = ({ route }) => {
                 <RadioButton
                     value={item.classCode}
                     status={payment === item.classCode ? 'checked' : 'unchecked'}
-                    onPress={() => [setPayment(item.classCode),setClassCourseId(item.classId)]}
+                    onPress={() => [setPayment(item.classCode), setClassCourseId(item.classId)]}
                 />
                 <Text style={{ marginLeft: wp('5%') }}>{item.classCode}</Text>
             </TouchableOpacity>
         </View>
     );
     const handleContinue = () => {
-        if (payment === 'Momo') {
-            Alert.alert('Alert', 'Please select at class !');
+        if (!payment || !classCourseId) {
+            Alert.alert('Alert', 'Please select a class!');
         } else {
-            navigation.navigate('Payment', { Name, LessImage, Lecture, Avatar, Price, Id,payment,classCourseId })
+            navigation.navigate('Payment', { Name, LessImage, Lecture, Avatar, Price, Id, payment, classCourseId });
         }
     };
     const renderScene = SceneMap({

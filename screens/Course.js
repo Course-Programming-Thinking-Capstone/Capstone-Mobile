@@ -1,5 +1,5 @@
 import { StyleSheet, Modal, Text, View, ScrollView, FlatList, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import open from '../assets/Details/open2.png'
@@ -8,11 +8,16 @@ import { WebView } from 'react-native-webview';
 import close from '../assets/welcome/close1.png'
 import lesson from '../assets/Profile/book2.png'
 import answer from '../assets/Profile/reading.png'
-import quiz from '../assets/Profile/quiz.png'
+import quizPic from '../assets/Profile/quiz.png'
 import game from '../assets/Profile/control.png'
 import drop from '../assets/MyCourse/drop.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-const Course = ({navigation}) => {
+import { getCourseById } from '../Api/Course';
+import Loading from '../Loading/Loading'
+const Course = ({ navigation, route }) => {
+  const { CourseId } = route.params;
+  const [loading, setLoading] = useState(true);
+
   const lessons1 = [
     { id: '01', name: 'Introduction programming ', time: '10:00', status: 'video' },
     { id: '02', name: 'Make a Tower Defense Game', time: '5:00', status: 'read' },
@@ -36,44 +41,7 @@ const Course = ({navigation}) => {
     { key: 'lessons', title: 'Lessons' },
     { key: 'certificate', title: 'Certificate' },
   ]);
-  const render = ({ item }) => (
-    <TouchableOpacity onPress={()=>{navigation.navigate('StudyCourse',{lessons1,Id:item.id})}} style={styles.LessBorder}>
-      <View style={styles.LessId}>
-        <Text>{item.id}</Text>
-      </View>
-      <View>
-        <Text style={{ fontWeight: '600', fontSize: wp('4%') }}>{item.name}</Text>
-        <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{item.time}</Text>
-      </View>
-      {item.status === 'video' ? (
-        <TouchableOpacity onPress={() => setShowVideo(true)} style={{ position: 'absolute', right: wp('2%') }}>
-          <Image style={{
-            width: wp('9%'),
-            height: hp('4.51%'),
-          }} source={open} />
-        </TouchableOpacity>
-      ) : item.status === 'read' ? (
-        <Image style={{
-          width: wp('9%'),
-          height: hp('4.5%'),
-          position: 'absolute', right: wp('2%')
-        }} source={answer} />
-      ) : item.status === 'quiz' ? (
-        <Image style={{
-          width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
-          height: hp('4.5%'),
-          position: 'absolute', right: wp('2%')
-        }} source={quiz} />
-      ) : (
-        <Image style={{
-          width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
-          height: hp('4.5%'),
-          position: 'absolute', right: wp('2%')
-        }} source={game} />
-      )
-      }
-    </TouchableOpacity>
-  );
+
   const [showVideo, setShowVideo] = useState(false);
   const VideoWebView = () => {
     return (
@@ -88,66 +56,123 @@ const Course = ({navigation}) => {
   const closeModal = () => {
     setShowVideo(false);
   };
-  const [showLessons, setShowLessons] = useState(false);
-  const [showLessons1, setShowLessons1] = useState(false);
-  const [showLessons2, setShowLessons2] = useState(false);
+  const [section, setSectionDetail] = useState([]);
+  useEffect(() => {
+    fetchCourseById()
+  }, [])
+
+  const fetchCourseById = async () => {
+    try {
+      const sectionDetail = await getCourseById(CourseId);
+      if (sectionDetail) {
+        setSectionDetail(sectionDetail.sections);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const [showLessons, setShowLessons] = useState({});
+  const render = ({ item }) => (
+    <View key={item.id}>
+      <TouchableOpacity onPress={() => setShowLessons(prevState => ({ ...prevState, [item.id]: !prevState[item.id] }))} style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]}>
+        <View style={{ flexDirection: 'row', alignItems: "center" }}>
+          <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4%'), marginLeft: wp('1.5%'), width: isSmallPhone || isSmallTablet ? wp('80%') : wp('78%'), textAlign: "left", height: hp('5%') }}>Section {item.order} <Text>- {item.name} </Text></Text>
+        </View>
+        <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), marginRight: wp('5%') }} />
+      </TouchableOpacity>
+      {showLessons[item.id] &&
+        <View>
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              {item.lessons?.map(lesson => (
+                <TouchableOpacity key={lesson.id} onPress={() => { navigation.navigate('StudyCourse', { lessons1: item.lessons, CourseVideo: lesson.resourceUrl, Id: lesson.id, currentType: lesson.type, Content: lesson.content }) }} style={styles.LessBorder}>
+                  {/* Sử dụng key={lesson.id} */}
+                  <View style={styles.LessId}>
+                    <Text>{lesson.order}</Text>
+                  </View>
+                  <View>
+                    <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{lesson.name}</Text>
+                    <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{lesson.duration}:00</Text>
+                  </View>
+                  {lesson.type === 'Video' ? (
+                    <TouchableOpacity onPress={() => setShowVideo(true)} style={{ position: 'absolute', right: wp('2%') }}>
+                      <Image style={{
+                        width: wp('9%'),
+                        height: hp('4.51%'),
+                      }} source={open} />
+                    </TouchableOpacity>
+                  ) : lesson.type === 'Document' ? (
+                    <Image style={{
+                      width: wp('9%'),
+                      height: hp('4.5%'),
+                      position: 'absolute', right: wp('2%')
+                    }} source={answer} />
+                  ) : (
+                    <Image style={{
+                      width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
+                      height: hp('4.5%'),
+                      position: 'absolute', right: wp('2%')
+                    }} source={game} />
+                  )
+                  }
+                </TouchableOpacity>
+              ))}
+              {item.quizzes?.map(quiz => (
+                <TouchableOpacity key={quiz.id} style={styles.LessBorder} onPress={() => { navigation.navigate('Quiz', { QuizDetail: quiz, CourseId }) }}>
+                  <View style={styles.LessId}>
+                    <Text>{quiz.order}</Text>
+                  </View>
+                  <View>
+                    <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{quiz.title}</Text>
+                    <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{quiz.duration}:00</Text>
+                  </View>
+                  <Image style={{
+                    width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
+                    height: hp('4.5%'),
+                    position: 'absolute', right: wp('2%')
+                  }} source={quizPic} />
+                </TouchableOpacity>
+              ))}
+            </>
+          )}
+        </View>
+      }
+    </View>
+  );
+
   const renderScene = SceneMap({
     lessons: () => (
       <View style={{ marginTop: hp('2%') }}>
-        <Modal visible={showVideo} animationType="slide" transparent={true} statusBarTranslucent={true}>
-          <View style={styles.modalContainer}>
-            <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-              <Image source={close} style={styles.buttonClose} />
+        {loading ? (
+          <Loading />
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false} >
+            <View>
+              <FlatList
+                data={section}
+                renderItem={render}
+                keyExtractor={item => item.id.toString()}
+                numColumns={1}
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={false}
+              />
+            </View>
+            <TouchableOpacity style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]} onPress={() => { navigation.navigate('GameIntro') }}>
+              <Text style={{ textAlign: 'center', color: 'blue', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('1.5%'), width: wp('80%') }}>Game Programming</Text>
             </TouchableOpacity>
-            <VideoWebView />
-          </View>
-        </Modal>
-        <ScrollView showsVerticalScrollIndicator={false} >
-          <TouchableOpacity onPress={() => setShowLessons(!showLessons)} style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]}>
-            <View style={{ flexDirection: 'row', alignItems: "center" }}>
-              <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('1.5%'),width:wp('51%') }}>Section 1 <Text>- Introduction </Text></Text>
-              <Text style={{ color: 'blue', fontWeight: 'bold', marginRight: wp('2%') }}>( 15 Min )</Text>
-            </View>
-            <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), marginRight: wp('5%') }} />
-          </TouchableOpacity>
-          <View>
-            {showLessons && <View>
-              <FlatList
-                data={lessons1}
-                renderItem={render}
-                keyExtractor={item => item.id}
-                numColumns={1}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={false}
-              />
-            </View>}
-          </View>
-
-          <TouchableOpacity onPress={() => setShowLessons1(!showLessons1)} style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]}>
-            <View style={{ flexDirection: 'row', alignItems: "center" }}>
-              <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('1.5%'),width:wp('51%') }}>Section 2 <Text>- Programming </Text></Text>
-              <Text style={{ color: 'blue', fontWeight: 'bold', marginRight: wp('2%') }}>( 45 Min )</Text>
-            </View>
-            <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), marginRight: wp('5%') }} />
-          </TouchableOpacity>
-          <View>
-            {showLessons1 && <View>
-              <FlatList
-                data={lessons2}
-                renderItem={render}
-                keyExtractor={item => item.id}
-                numColumns={1}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={false}
-              />
-            </View>}
-          </View>
-        </ScrollView>
+          </ScrollView>
+        )}
       </View>
     ),
     certificate: () => (
-      <View>
-        <Image source={certi} style={{ width: wp('90%'), height: hp('75%'), borderWidth: 3, borderColor: 'blue', borderRadius: 10, marginTop: hp('5%') }} />
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        {/* <Image source={certi} style={{ width: wp('90%'), height: hp('75%'), borderWidth: 3, borderColor: 'blue', borderRadius: 10, marginTop: hp('5%') }} /> */}
+        <Text style={{ fontSize: wp('4%'), fontWeight: '500' }}>Please complete your course!</Text>
       </View>
     ),
   });
@@ -202,7 +227,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     backgroundColor: 'white',
     marginLeft: wp('0.5%'),
-    marginRight: wp('0.5%')
+    marginRight: wp('0.5%'),
   },
   LessId: {
     borderRadius: 30,
