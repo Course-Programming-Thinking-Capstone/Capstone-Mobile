@@ -14,8 +14,10 @@ import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { getUserInfo } from '../Api/Parents';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { getStudentCourse } from '../Api/Children'
+import Loading from '../Loading/Loading'
 const KidHome = () => {
     const navigation = useNavigation();
+    const [loading, setLoading] = useState(true);
     const Course = [
         { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg') },
         { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 VND', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg') },
@@ -52,7 +54,7 @@ const KidHome = () => {
             const contactData = await getStudentCourse();
             if (contactData) {
                 setStudentCourse(contactData);
-                // setLoading(false);
+                setLoading(false);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -155,40 +157,25 @@ const KidHome = () => {
                     </View>
                 </SafeAreaView>
             </ImageBackground>
-            <ScrollView>
-                <View style={{ flex: 1, paddingLeft: wp('5%') }}>
-                    <View style={{ flexDirection: "row", justifyContent: 'space-between', paddingRight: isSmallPhone || isSmallTablet ? wp('5%') : wp('5%'), marginTop: hp('1%'), alignItems: 'center' }}>
-                        <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>Continue Learning</Text>
-                        {/* <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('PopularCourse') }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
-                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%'), marginLeft: wp('2%') }} />
-                        </TouchableOpacity> */}
+            {loading ? (
+                <Loading />
+            ) : (
+                <ScrollView>
+                    <View style={{ flex: 1, paddingLeft: wp('5%') }}>
+                        <View style={{ flexDirection: "row", justifyContent: 'space-between', paddingRight: isSmallPhone || isSmallTablet ? wp('5%') : wp('5%'), marginTop: hp('1%'), alignItems: 'center' }}>
+                            <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>Continue Learning</Text>
+                        </View>
+                        <FlatList
+                            data={studentCourse}
+                            keyExtractor={item => item.classId}
+                            renderItem={renderCourse}
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={styles.List}
+                            scrollEnabled={false}
+                        />
                     </View>
-                    <FlatList
-                        data={studentCourse}
-                        keyExtractor={item => item.classId}
-                        renderItem={renderCourse}
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={styles.List}
-                        scrollEnabled={false}
-                    />
-                    {/* <View style={{ flexDirection: "row", justifyContent: 'space-between', paddingRight: isSmallPhone || isSmallTablet ? wp('5%') : wp('5%'), marginTop: hp('1%'), alignItems: 'center' }}>
-                        <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>Course Completed</Text>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('PopularCourse') }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
-                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%'), marginLeft: wp('2%') }} />
-                        </TouchableOpacity>
-                    </View>
-                    <FlatList
-                        data={limitedDone}
-                        keyExtractor={item => item.id}
-                        renderItem={renderDone}
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={styles.List}
-                        scrollEnabled={false}
-                    /> */}
-                </View>
-            </ScrollView>
+                </ScrollView>
+            )}
         </View>
     )
 }

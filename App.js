@@ -393,22 +393,22 @@ export default function App() {
             headerTitleAlign: 'center',
           }}
         />
-        <Stack.Screen name="Quiz" component={QuizScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Image
-                source={require('./assets/HomePage/course.png')}
-                style={{ width: size, height: size }}
-              />
-            ),
-            headerTitle: () => (
-              <View>
-                <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Quiz</Text>
-              </View>
-            ),
-            headerTitleAlign: 'center',
-            headerLeft: () => null
-          }}
+        <Stack.Screen name="Quiz" component={QuizScreen} options={{ headerShown: false }}
+          // options={{
+          //   tabBarIcon: ({ color, size }) => (
+          //     <Image
+          //       source={require('./assets/HomePage/course.png')}
+          //       style={{ width: size, height: size }}
+          //     />
+          //   ),
+          //   headerTitle: () => (
+          //     <View>
+          //       <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Quiz</Text>
+          //     </View>
+          //   ),
+          //   headerTitleAlign: 'center',
+          //   headerLeft: () => null
+          // }}
         />
         <Stack.Screen name="GameIntro" component={GameIntro}
           options={{ headerShown: false }}

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, Modal, ScrollView, ImageBackground } from 'react-native';
 import { RadioButton } from 'react-native-paper'; // Import RadioButton component
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import cong from '../assets/Lesson/cong2.jpg'
 import close from '../assets/welcome/close1.png'
+import bgc from '../assets/Quiz/bgc1.jpg'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 const QuizScreen = ({ route, navigation }) => {
     const { QuizDetail, CourseId } = route.params;
@@ -85,7 +86,7 @@ const QuizScreen = ({ route, navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <ImageBackground source={bgc} style={styles.container}>
             {showScore ? (
                 <View style={styles.scoreContainer}>
                     <View style={styles.FormScore}>
@@ -135,13 +136,7 @@ const QuizScreen = ({ route, navigation }) => {
                     </Modal>
                 </View>
             ) : (
-                <View style={styles.quizContainer}>
-                    <View style={styles.progressContainer}>
-                        <Text style={{ fontSize: wp('5%'), fontWeight: 700 }}>MULTIPLE CHOICE QUESTIONS</Text>
-                        {/* <View style={styles.progressBar}>
-                            <View style={{ width: `${progress}%`, backgroundColor: 'green', height: 10 }} />
-                        </View> */}
-                    </View>
+                <View style={styles.quizContainer} >
                     <View style={styles.QuizTitle}>
                         <Text style={styles.questionText}>{QuizDetail.questions[currentQuestionIndex].title}</Text>
                     </View>
@@ -200,7 +195,7 @@ const QuizScreen = ({ route, navigation }) => {
                     </TouchableOpacity>
                 </View>
             )}
-        </View>
+        </ImageBackground>
     );
 };
 
@@ -213,13 +208,14 @@ const styles = StyleSheet.create({
     quizContainer: {
         flex: 1,
         alignItems: 'center',
+        justifyContent:'center'
     },
     scoreContainer: {
         flex: 1,
-        marginTop: hp('2%')
+        marginTop:hp('10%')
     },
     questionText: {
-        fontSize: wp('6%'),
+        fontSize: wp('6.5%'),
         marginBottom: 20,
         color: 'white',
         fontWeight: '600',
@@ -317,23 +313,17 @@ const styles = StyleSheet.create({
         elevation: 5,
         backgroundColor: 'white',
         borderColor: 'white',
+        marginTop:hp('16%')
     },
     QuizTitle: {
-        backgroundColor: '#40BFFF',
+        backgroundColor: 'rgba(127, 108, 212, 0.7)',
         height: hp('30%'),
         borderRadius: 10,
         width: wp('90%'),
         marginBottom: hp('3%'),
         alignItems: 'center',
         justifyContent: "center",
-        shadowColor: 'black',
-        shadowOpacity: 0.9,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 20,
-        elevation: 5,
-        borderColor: 'lightblue',
-        paddingLeft: wp('3%'),
-        paddingRight: wp('3%')
+        marginTop:hp('10%')
     },
     buttonClose: {
         width: wp('4%'),
