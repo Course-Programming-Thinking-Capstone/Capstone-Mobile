@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { Audio, Video } from 'expo-av';
+import { Video } from 'expo-av';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import open from '../assets/Details/open2.png'
@@ -8,12 +8,10 @@ import answer from '../assets/Profile/reading.png'
 import quiz from '../assets/Profile/quiz.png'
 import game from '../assets/Profile/control.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-import background from '../assets/MyCourse/b1.jpg'
-import { WebView } from 'react-native-webview';
 const StudyCourse = ({ route, navigation }) => {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentId, setCurrentId] = useState(route.params.Id);
-    const [currentType, setCurrentType] = useState(route.params.currentType); // Thêm state để lưu trữ loại của bài học hiện tại
+    const [currentType, setCurrentType] = useState(route.params.currentType);
     const { lessons1, Content, CourseVideo } = route.params;
     console.log("Cong test; ", CourseVideo);
     const handleFullscreenUpdate = async (fullscreenUpdate) => {
@@ -48,14 +46,14 @@ const StudyCourse = ({ route, navigation }) => {
                 <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{item.name}</Text>
                 <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{item.duration}:00</Text>
             </View>
-            {item.type === 'Video' && currentType === 'Video' ? (
+            {(item.type === 'Video' && currentType === 'Video') || (currentType !== 'Video') ? (
                 <TouchableOpacity onPress={() => setShowVideo(true)} style={{ position: 'absolute', right: wp('2%') }}>
                     <Image style={{
                         width: wp('9%'),
                         height: hp('4.51%'),
                     }} source={open} />
                 </TouchableOpacity>
-            ) : item.type === 'Document' && currentType === 'Document' ? (
+            ) : (item.type === 'Document' && currentType === 'Document') || (currentType !== 'Document') ? (
                 <Image style={{
                     width: wp('9%'),
                     height: hp('4.5%'),

@@ -114,7 +114,7 @@ const HomePage = ({ navigation }) => {
                 <Text style={styles.Name}>{item.name}</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                <Text style={styles.Price}>{item.isFree ? 'Free' : `$${item.price}`}</Text>
+                <Text style={styles.Price}>{item.isFree ? 'Free' : formatPrice(item.price)}</Text>
             </View>
         </TouchableOpacity>
     );

@@ -36,7 +36,6 @@ const LessonDetails = ({ route }) => {
     const [classCourseId, setClassCourseId] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
-    console.log("test Id: ", classCourseId);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -202,11 +201,6 @@ const LessonDetails = ({ route }) => {
                                                 <Image source={close} style={styles.buttonClose} />
                                             </TouchableOpacity>
                                             <View style={styles.Popup}>
-                                                {/* <Text>{item.courseName}</Text>
-                            <Text>Class Code: {item.classCode}</Text>
-                            <Text>Teacher: {item.teacher}</Text>
-                            <Text>Days: {item.days.join(', ')}</Text>
-                            <Text>Time: {item.slotStart} - {item.slotEnd}</Text> */}
                                             </View>
                                         </View>
                                     </Modal>
@@ -215,7 +209,7 @@ const LessonDetails = ({ route }) => {
                         </View>
                     )}
                 </ScrollView>
-            </View >
+            </View > 
         ),
         lessons: () => (
             <View >

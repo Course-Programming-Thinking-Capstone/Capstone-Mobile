@@ -1,12 +1,14 @@
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Image,Linking } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Image, Linking } from 'react-native'
 import React from 'react'
 import game from '../assets/Game/game5.jpg'
 import back1 from '../assets/welcome/back.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-const GameIntro = ({ navigation }) => {
+const GameIntro = ({ navigation, route }) => {
+    const { CourseId } = route.params;
+    console.log("COng test:",CourseId);
     const goBack = () => {
-        navigation.navigate('Course');
+        navigation.navigate('Course',{CourseId});
     };
     const handlePress = () => {
         Linking.openURL('https://kidspro-capstone.github.io/Capstone-Game-WebGL/');
@@ -22,7 +24,7 @@ const GameIntro = ({ navigation }) => {
                     </View>
                 </View>
                 <View style={styles.DetailForm}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('3%'),paddingLeft:wp('2.4%'),paddingRight:wp('2%') }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('3%'), paddingLeft: wp('2.4%'), paddingRight: wp('2%') }}>
                         <View>
                             <Text style={styles.TxtGame}>KidPro Gaming</Text>
                         </View>
@@ -34,7 +36,7 @@ const GameIntro = ({ navigation }) => {
                         <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4.2%'), textAlign: 'left' }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </Text>
                     </View>
                     <TouchableOpacity style={styles.BtnPlay} onPress={handlePress}>
-                        <Text style={{color:'white',fontSize:wp('4.5%')}}>Play Now !</Text>
+                        <Text style={{ color: 'white', fontSize: wp('4.5%') }}>Play Now !</Text>
                     </TouchableOpacity>
                 </View>
             </ImageBackground>

@@ -162,7 +162,7 @@ const Course = ({ navigation, route }) => {
                 scrollEnabled={false}
               />
             </View>
-            <TouchableOpacity style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]} onPress={() => { navigation.navigate('GameIntro') }}>
+            <TouchableOpacity style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]} onPress={() => { navigation.navigate('GameIntro', {CourseId}) }}>
               <Text style={{ textAlign: 'center', color: 'blue', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('1.5%'), width: wp('80%') }}>Game Programming</Text>
             </TouchableOpacity>
           </ScrollView>
