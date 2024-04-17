@@ -13,7 +13,6 @@ const StudyCourse = ({ route, navigation }) => {
     const [currentId, setCurrentId] = useState(route.params.Id);
     const [currentType, setCurrentType] = useState(route.params.currentType);
     const { lessons1, Content, CourseVideo } = route.params;
-    console.log("Cong test; ", CourseVideo);
     const handleFullscreenUpdate = async (fullscreenUpdate) => {
         if (fullscreenUpdate === 0 || fullscreenUpdate === 1) {
             setIsFullscreen(true);
@@ -59,19 +58,7 @@ const StudyCourse = ({ route, navigation }) => {
                     height: hp('4.5%'),
                     position: 'absolute', right: wp('2%')
                 }} source={answer} />
-            ) : item.status === 'quiz' ? (
-                <Image style={{
-                    width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
-                    height: hp('4.5%'),
-                    position: 'absolute', right: wp('2%')
-                }} source={quiz} />
-            ) : (
-                <Image style={{
-                    width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
-                    height: hp('4.5%'),
-                    position: 'absolute', right: wp('2%')
-                }} source={game} />
-            )
+            ) : null
             }
         </TouchableOpacity>
     );
@@ -128,13 +115,6 @@ const StudyCourse = ({ route, navigation }) => {
         </ScrollView>
     );
 };
-
-
-
-
-
-
-
 export default StudyCourse
 
 const styles = StyleSheet.create({

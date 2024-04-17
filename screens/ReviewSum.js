@@ -9,7 +9,7 @@ import { CreateOrder, CreatePayment } from '../Api/Order';
 import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const ReviewSum = ({ route, navigation }) => {
-    const { Name, LessImage, Lecture, Price, payment, selectedStudents,Id,className,classCourseId } = route.params;
+    const { Name, LessImage, Lecture, Price, payment, selectedStudents, Id, className, classCourseId } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading1, setLoading1] = useState(false);
     const toggleModal = () => {
@@ -21,7 +21,7 @@ const ReviewSum = ({ route, navigation }) => {
             setLoading1(true);
             const studentId = selectedStudents.map(student => student.id);
             const count = selectedStudents.length
-            const success = await CreateOrder(studentId, count,Id,classCourseId);
+            const success = await CreateOrder(studentId, count, Id, classCourseId);
             if (success) {
                 const paymentDetail = await CreatePayment(success);
                 if (paymentDetail) {
@@ -36,7 +36,7 @@ const ReviewSum = ({ route, navigation }) => {
                         .catch((err) => {
                             console.error('Lỗi khi kiểm tra hoặc mở ứng dụng:', err);
                         });
-                    navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment, selectedStudents, success,className })
+                    navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment, selectedStudents, success, className })
                 }
             } else {
                 Alert.alert('thất bại !!!');
@@ -56,7 +56,7 @@ const ReviewSum = ({ route, navigation }) => {
                     <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
                         <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%') }}>Best Seller</Text>
                     </View>
-                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500',width:wp('60%') }}>{Name}</Text>
+                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500', width: wp('60%') }}>{Name}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                         <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                         <Text style={{
@@ -140,9 +140,6 @@ const ReviewSum = ({ route, navigation }) => {
                 <Modal visible={isModalVisible} transparent={true} statusBarTranslucent={true}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
                         <View style={styles.Popup}>
-                            {/* <View style={{ alignItems: 'center' }}>
-                <Image source={warn} style={{ width: wp('22.5%'), height: hp('10%') }} />
-              </View> */}
                             <Text style={{ fontSize: wp('5%'), textAlign: 'center', marginTop: hp('1%'), fontWeight: '700', color: '#FF8A00' }}>Do you want to check out ?</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: hp('3.5%') }}>
                                 <TouchableOpacity style={[styles.Btn, { marginRight: wp('5%') }]} onPress={toggleModal}>

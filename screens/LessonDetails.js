@@ -36,8 +36,9 @@ const LessonDetails = ({ route }) => {
     const [classCourseId, setClassCourseId] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
-    const toggleModal = () => {
+    const toggleModal = (selectedClass) => {
         setModalVisible(!isModalVisible);
+        setSelectedClass(selectedClass);
     };
     useEffect(() => {
         fetchClass()
@@ -136,6 +137,7 @@ const LessonDetails = ({ route }) => {
     const closeModal = () => {
         setShowVideo(false);
     };
+    const [selectedClass, setSelectedClass] = useState(null);
     const [courseData, setCourseData] = useState([])
     const [classDetail, setClassDetail] = useState([])
     const fetchClass = async () => {
@@ -153,7 +155,7 @@ const LessonDetails = ({ route }) => {
 
     const renderClassItem = ({ item }) => (
         <View style={{ marginBottom: hp('1%'), marginRight: wp('2%') }}>
-            <TouchableOpacity key={item.classId} onPress={toggleModal} style={[styles.NameKid]}>
+            <TouchableOpacity key={item.classId} onPress={() => toggleModal(item)} style={[styles.NameKid]}>
                 <RadioButton
                     value={item.classCode}
                     status={payment === item.classCode ? 'checked' : 'unchecked'}
@@ -197,10 +199,23 @@ const LessonDetails = ({ route }) => {
                                             flex: 1, justifyContent: 'center', alignItems: 'center',
                                             backgroundColor: 'rgba(0, 0, 0, 0.7)',
                                         }}>
-                                            <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
+                                            <TouchableOpacity style={[styles.closeButton, { top: hp('10%'), right: wp('5%') }]} onPress={toggleModal}>
                                                 <Image source={close} style={styles.buttonClose} />
                                             </TouchableOpacity>
                                             <View style={styles.Popup}>
+                                                <View style={{ backgroundColor: '#327CF7', height: hp('15%'), justifyContent: 'center',borderBottomLeftRadius:0,borderBottomRightRadius:0,borderRadius:10,marginBottom:hp('2%')}}>
+                                                    <Text style={{ textAlign: "center", color: 'white', fontWeight: '600', fontSize: wp('7%')}}>Class Detail</Text>
+                                                </View>
+                                                {selectedClass && (
+                                                    <View style={{ width: wp('90%'), paddingLeft: wp('3%') }}>
+                                                        <Text style={styles.ClassInfo}>Class Code:  <Text></Text><Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.classCode}</Text></Text>
+                                                        <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.dayStart}</Text></Text>
+                                                        <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.dayEnd}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.teacher}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Study Days:  <Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.days?.join(', ')}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.slotStart}-{selectedClass.slotEnd}</Text></Text>
+                                                    </View>
+                                                )}
                                             </View>
                                         </View>
                                     </Modal>
@@ -209,7 +224,7 @@ const LessonDetails = ({ route }) => {
                         </View>
                     )}
                 </ScrollView>
-            </View > 
+            </View >
         ),
         lessons: () => (
             <View >
@@ -364,9 +379,8 @@ const LessonDetails = ({ route }) => {
         ),
     });
     const goBack = () => {
-        navigation.goBack(); // Điều hướng quay lại trang trước đó
+        navigation.goBack();
     };
-    // usePreventScreenCapture(); 
     return (
         <View style={styles.Container}>
             <ImageBackground source={{ uri: LessImage }} style={{ width: wp('100%'), height: hp('40%') }}>
@@ -543,11 +557,6 @@ const styles = StyleSheet.create({
         width: wp('4%'),
         height: hp('2%'),
     },
-    closeButton: {
-        position: 'absolute',
-        top: hp('25%'),
-        right: wp('1%')
-    },
     NameKid: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -569,14 +578,34 @@ const styles = StyleSheet.create({
     Popup: {
         backgroundColor: 'white',
         width: wp('90%'),
-        height: hp('55%'),
+        height: hp('77%'),
         borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center'
     },
     closeButton: {
         position: 'absolute',
         top: hp('20%'),
         right: wp('2%')
+    },
+    ClassInfo: {
+        fontSize: wp('5.5%'),
+        fontWeight: '700',
+        color: '#327CF7',
+        textAlign: 'left',
+        lineHeight: hp('5.5%'),
+        borderWidth: 1.5,
+        width: wp('83%'),
+        marginBottom: hp('2%'),
+        borderRadius: 10,
+        paddingLeft: wp('2%'),
+        marginLeft: wp('1%'),
+        marginBottom: hp('2%'),
+        borderColor: 'lightblue',
+        paddingVertical: hp('1%'),
+        shadowColor: 'black',
+        shadowOpacity: 0.9,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 20,
+        elevation: 5,
+        backgroundColor: 'white',
     }
 })

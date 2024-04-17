@@ -3,9 +3,8 @@ import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../Api/Api'
 import { getApiHeaders } from '../Api/Headers';
-import { Dialog, ALERT_TYPE } from 'react-native-alert-notification';
 
-export const login = async (email, password, navigation, setLoading, setEmail, setPassword) => {
+export const login = async (email, password, navigation, setLoading, setEmail, setPassword, setModalVisible, setError) => {
     setLoading(true);
     try {
         const headers = await getApiHeaders();
@@ -43,12 +42,8 @@ export const login = async (email, password, navigation, setLoading, setEmail, s
         }
     } catch (error) {
         setLoading(false);
-        console.error('Error during login:', error);
-        if (error.response.data.accountStatus === "NotActivated") {
-            Alert.alert('Đăng nhập thất bại !!!');
-        } else {
-            Alert.alert('Đăng nhập thất bại !!!');
-        }
+        setError(error);
+        setModalVisible(true);
     }
 };
 

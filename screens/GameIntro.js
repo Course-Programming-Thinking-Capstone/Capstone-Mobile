@@ -15,7 +15,7 @@ const GameIntro = ({ navigation, route }) => {
     };
     return (
         <View style={styles.Container}>
-            <ImageBackground source={game} style={{ width: wp('100%'), height: hp('80%') }}>
+            <ImageBackground source={game} style={{ width: wp('100%'), height: isSmallPhone || isSmallTablet ? hp('63%') : hp('74%') }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: wp('6%'), paddingRight: wp('6%'), marginTop: hp('5%') }}>
                     <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'rgba(200, 200, 200, 0.4)', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>
                         <TouchableOpacity onPress={goBack}>

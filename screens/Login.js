@@ -9,17 +9,30 @@ import Loading from '../Loading/Loading'
 import { login } from '../Api/Log'
 import logo from '../assets/kidLogo.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import ErrorModal from '../Alert/Alert';
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isSelected, setSelection] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [error, setError] = useState(null);
   const textInputRef = useRef(null);
   const textInputRef1 = useRef(null);
-  const handleLogin = () => {
-    login(email, password, navigation, setLoading, setEmail, setPassword);
+
+  const handleLogin = async () => {
+    try {
+      await login(email, password, navigation, setLoading, setEmail, setPassword, setModalVisible, setError);
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
-  const [isSelected, setSelection] = useState(false);
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setError(null);
+  };
+
   return (
     <View style={styles.All}>
       <ImageBackground source={background} blurRadius={1.3} style={styles.backPic}>
@@ -35,21 +48,19 @@ const Login = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={styles.Email}
-            activeOpacity={1} // Loại bỏ hiệu ứng opacity khi nhấn
-            onPress={() => textInputRef.current.focus()} // Tập trung vào TextInput khi nhấn
+            activeOpacity={1}
+            onPress={() => textInputRef.current.focus()}
           >
             <Image source={mail} style={styles.Icon} />
             <TextInput
               ref={textInputRef}
-              style={{ flex: 1, marginLeft: wp('3%') }} // Đảm bảo TextInput mở rộng để lấp đầy vùng chứa của TouchableOpacity
+              style={{ flex: 1, marginLeft: wp('3%') }}
               placeholder="Email or Account"
               value={email}
               onChangeText={(text) => setEmail(text)}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => textInputRef1.current.focus()}
-            activeOpacity={1}
-          >
+          <TouchableOpacity onPress={() => textInputRef1.current.focus()} activeOpacity={1}>
             <View style={styles.Pass}>
               <Image source={pass} style={styles.Icon} />
               <TextInput
@@ -90,9 +101,11 @@ const Login = ({ navigation }) => {
           </View>
         </View>
       </ImageBackground>
+      <ErrorModal visible={modalVisible} errorMessage={error && error.response && error.response.data && error.response.data.message} onClose={handleCloseModal} />
     </View>
-  )
-}
+  );
+};
+
 
 export default Login
 
@@ -150,7 +163,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingLeft: wp('3%'),
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     shadowColor: 'black',
     shadowOpacity: 0.9,
     shadowOffset: { width: 0, height: 2 },
