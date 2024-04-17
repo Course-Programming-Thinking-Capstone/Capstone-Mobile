@@ -208,12 +208,12 @@ const LessonDetails = ({ route }) => {
                                                 </View>
                                                 {selectedClass && (
                                                     <View style={{ width: wp('90%'), paddingLeft: wp('3%') }}>
-                                                        <Text style={styles.ClassInfo}>Class Code:  <Text></Text><Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.classCode}</Text></Text>
-                                                        <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.dayStart}</Text></Text>
-                                                        <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.dayEnd}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.teacher}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Study Days:  <Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.days?.join(', ')}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: wp('5%'), fontWeight: '500', color: 'black' }}>{selectedClass.slotStart}-{selectedClass.slotEnd}</Text></Text>
+                                                        <Text style={styles.ClassInfo}>Class Code:  <Text></Text><Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.classCode}</Text></Text>
+                                                        <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayStart}</Text></Text>
+                                                        <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayEnd}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.teacher}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Study Days:  <Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.days?.join(', ')}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.slotStart}-{selectedClass.slotEnd}</Text></Text>
                                                     </View>
                                                 )}
                                             </View>
@@ -588,7 +588,7 @@ const styles = StyleSheet.create({
     },
     ClassInfo: {
         fontSize: wp('5.5%'),
-        fontWeight: '700',
+        fontWeight: '500',
         color: '#327CF7',
         textAlign: 'left',
         lineHeight: hp('5.5%'),

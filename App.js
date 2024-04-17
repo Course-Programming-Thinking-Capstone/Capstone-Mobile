@@ -38,6 +38,7 @@ import StudyCourse from './screens/StudyCourse';
 import QuizScreen from './screens/Quiz';
 import GameIntro from './screens/GameIntro';
 import AccountDetail from './screens/AccountDetail';
+import Notification from './screens/Notification';
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -394,27 +395,43 @@ export default function App() {
           }}
         />
         <Stack.Screen name="Quiz" component={QuizScreen} options={{ headerShown: false }}
-          // options={{
-          //   tabBarIcon: ({ color, size }) => (
-          //     <Image
-          //       source={require('./assets/HomePage/course.png')}
-          //       style={{ width: size, height: size }}
-          //     />
-          //   ),
-          //   headerTitle: () => (
-          //     <View>
-          //       <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Quiz</Text>
-          //     </View>
-          //   ),
-          //   headerTitleAlign: 'center',
-          //   headerLeft: () => null
-          // }}
+        // options={{
+        //   tabBarIcon: ({ color, size }) => (
+        //     <Image
+        //       source={require('./assets/HomePage/course.png')}
+        //       style={{ width: size, height: size }}
+        //     />
+        //   ),
+        //   headerTitle: () => (
+        //     <View>
+        //       <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Quiz</Text>
+        //     </View>
+        //   ),
+        //   headerTitleAlign: 'center',
+        //   headerLeft: () => null
+        // }}
         />
         <Stack.Screen name="GameIntro" component={GameIntro}
           options={{ headerShown: false }}
         />
         <Stack.Screen name="AccountDetail" component={AccountDetail}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Notification" component={Notification}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Image
+                source={require('./assets/HomePage/course.png')}
+                style={{ width: size, height: size }}
+              />
+            ),
+            headerTitle: () => (
+              <View>
+                <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Notification</Text>
+              </View>
+            ),
+            headerTitleAlign: 'center',
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
