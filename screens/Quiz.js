@@ -18,6 +18,7 @@ const QuizScreen = ({ route, navigation }) => {
     };
     const toggleAnswerModal = () => {
         setAnswerModal(!answerModal);
+        // console.log("Cong test quiz:",selectedOptions);
     };
 
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);

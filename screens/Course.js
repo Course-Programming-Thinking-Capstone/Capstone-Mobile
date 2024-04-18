@@ -89,11 +89,11 @@ const Course = ({ navigation, route }) => {
             <Loading />
           ) : (
             <>
-              {item.lessons?.map(lesson => (
-                <TouchableOpacity key={lesson.id} onPress={() => { navigation.navigate('StudyCourse', { lessons1: item.lessons, CourseVideo: lesson.resourceUrl, Id: lesson.id, currentType: lesson.type, Content: lesson.content }) }} style={styles.LessBorder}>
+              {item.lessons?.map((lesson, index) => (
+                <TouchableOpacity key={lesson.id} onPress={() => { navigation.navigate('StudyCourse', {lessons1: item.lessons, CourseVideo: lesson.resourceUrl, Id: lesson.id, currentType: lesson.type, Content: lesson.content }) }} style={styles.LessBorder}>
                   {/* Sử dụng key={lesson.id} */}
                   <View style={styles.LessId}>
-                    <Text>{lesson.order}</Text>
+                    <Text>{index+1}</Text>
                   </View>
                   <View>
                     <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{lesson.name}</Text>
@@ -122,10 +122,10 @@ const Course = ({ navigation, route }) => {
                   }
                 </TouchableOpacity>
               ))}
-              {item.quizzes?.map(quiz => (
+              {item.quizzes?.map((quiz, index) => (
                 <TouchableOpacity key={quiz.id} style={styles.LessBorder} onPress={() => { navigation.navigate('Quiz', { QuizDetail: quiz, CourseId }) }}>
                   <View style={styles.LessId}>
-                    <Text>{quiz.order}</Text>
+                  <Text>{item.lessons.length + index + 1}</Text>
                   </View>
                   <View>
                     <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{quiz.title}</Text>
@@ -162,7 +162,7 @@ const Course = ({ navigation, route }) => {
                 scrollEnabled={false}
               />
             </View>
-            <TouchableOpacity style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]} onPress={() => { navigation.navigate('GameIntro', {CourseId}) }}>
+            <TouchableOpacity style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]} onPress={() => { navigation.navigate('GameIntro', { CourseId }) }}>
               <Text style={{ textAlign: 'center', color: 'blue', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('1.5%'), width: wp('80%') }}>Game Programming</Text>
             </TouchableOpacity>
           </ScrollView>

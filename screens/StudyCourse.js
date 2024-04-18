@@ -8,11 +8,17 @@ import answer from '../assets/Profile/reading.png'
 import quiz from '../assets/Profile/quiz.png'
 import game from '../assets/Profile/control.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import { useWindowDimensions } from 'react-native';
+
+import HTML from 'react-native-render-html';
 const StudyCourse = ({ route, navigation }) => {
+    const { width: windowWidth } = useWindowDimensions();
+    const [selectedContent, setSelectedContent] = useState(route.params.Content);
+    const [selectedVideo, setSelectedVideo] = useState(route.params.CourseVideo);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentId, setCurrentId] = useState(route.params.Id);
     const [currentType, setCurrentType] = useState(route.params.currentType);
-    const { lessons1, Content, CourseVideo } = route.params;
+    const { lessons1 } = route.params;
     const handleFullscreenUpdate = async (fullscreenUpdate) => {
         if (fullscreenUpdate === 0 || fullscreenUpdate === 1) {
             setIsFullscreen(true);
@@ -28,16 +34,26 @@ const StudyCourse = ({ route, navigation }) => {
             ScreenOrientation.unlockAsync();
         };
     }, []);
-
-    const handleItemPress = (itemId, itemType) => {
+    const handleItemPress = (itemId, itemType, itemContent, itemVideo) => {
         setCurrentId(itemId);
         setCurrentType(itemType);
+        setSelectedContent(itemContent);
+        setSelectedVideo(itemVideo)
     };
-
+    function convertDriveUrlToDirectUrl(driveUrl) {
+        const regex = /\/file\/d\/(.+?)\/preview/;
+        const match = driveUrl?.match(regex);
+        if (match && match.length > 1) {
+            const fileId = match[1];
+            return `https://drive.google.com/uc?id=${fileId}`;
+        } else {
+            return null;
+        }
+    }
     const filteredLessons = lessons1.filter(item => item.id !== currentId);
-
+    const directUrl = currentType === 'Video' ? convertDriveUrlToDirectUrl(selectedVideo) : null;
     const render = ({ item }) => (
-        <TouchableOpacity key={item.id} onPress={() => handleItemPress(item.id, item.type)} style={styles.LessBorder}>
+        <TouchableOpacity key={item.id} onPress={() => handleItemPress(item.id, item.type, item.content, item.resourceUrl)} style={styles.LessBorder}>
             <View style={styles.LessId}>
                 <Text>{item.order}</Text>
             </View>
@@ -63,56 +79,49 @@ const StudyCourse = ({ route, navigation }) => {
         </TouchableOpacity>
     );
 
-    const sanitizedContent = Content?.replace(/<\/?([hp])[^>]*>/g, '')
-    function convertDriveUrlToDirectUrl(driveUrl) {
-        const regex = /\/file\/d\/(.+?)\/preview/;
-        const match = driveUrl?.match(regex);
-        if (match && match.length > 1) {
-            const fileId = match[1];
-            return `https://drive.google.com/uc?id=${fileId}`;
-        } else {
-            return null;
-        }
-    }
 
-    const driveUrl = CourseVideo;
-    const directUrl = convertDriveUrlToDirectUrl(driveUrl);
     return (
-        <ScrollView style={styles.container}>
-            <View style={{ width: '100%', height: '100%' }}>
-                {currentType === 'Video' ? (
-                    <Video
-                        source={{ uri: directUrl }}
-                        rate={1.0}
-                        volume={1.0}
-                        isMuted={false}
-                        resizeMode="cover"
-                        isLooping
-                        shouldPlay
-                        style={styles.video}
-                        useNativeControls
-                        onFullscreenUpdate={(event) => handleFullscreenUpdate(event.fullscreenUpdate)}
-                    />
-                ) : currentType === 'Document' ? (
-                    <ScrollView style={{ flex: 1, paddingLeft: wp('5%'), paddingRight: wp('2%') }}>
-                        <Text style={{ lineHeight: hp('3%'), textAlign: 'left', fontSize: wp('4.5%') }}>{sanitizedContent}</Text>
-                    </ScrollView>
-
-                ) : null}
-                <View style={{ marginTop: hp('2%'), marginLeft: wp('2%'), marginRight: wp('2%') }}>
-                    <Text style={{ marginBottom: hp('2%'), fontSize: wp('4%'), marginLeft: wp('2%'), fontWeight: '500', color: 'blue' }}>Next Lesson:</Text>
-                    <FlatList
-                        data={filteredLessons}
-                        renderItem={render}
-                        keyExtractor={item => item.id}
-                        numColumns={1}
-                        showsVerticalScrollIndicator={false}
-                        scrollEnabled={false}
-                    />
-                </View>
-
+        <View key={currentId} style={styles.container}>
+            <View style={{width:wp('100%'),height:hp('50%')}}>
+                <ScrollView style={{ flex: 1}}>
+                    {currentType === 'Video' ? (
+                        <Video
+                            source={{ uri: directUrl }}
+                            rate={1.0}
+                            volume={1.0}
+                            isMuted={false}
+                            resizeMode="cover"
+                            isLooping
+                            shouldPlay
+                            style={styles.video}
+                            useNativeControls
+                            onFullscreenUpdate={(event) => handleFullscreenUpdate(event.fullscreenUpdate)}
+                        />
+                    ) : currentType === 'Document' ? (
+                        <View style={{ paddingLeft: wp('2%')}}>
+                            <HTML source={{ html: selectedContent }} contentWidth={windowWidth}
+                                tagsStyles={{
+                                    p: { fontSize: wp('5%') },
+                                    h1: { fontSize: 24 },
+                                    h2: { fontSize: 20 },
+                                    h3: { fontSize: 18 },
+                                }} />
+                        </View>
+                    ) : null}
+                </ScrollView>
             </View>
-        </ScrollView>
+            <View style={{ marginLeft: wp('2%'), marginRight: wp('2%'),marginTop:hp('2%')  }}>
+                <Text style={{ marginBottom: hp('2%'), fontSize: wp('4%'), marginLeft: wp('2%'), fontWeight: '500', color: 'blue' }}>Next Lesson:</Text>
+                <FlatList
+                    data={filteredLessons}
+                    renderItem={render}
+                    keyExtractor={item => item.id}
+                    numColumns={1}
+                    showsVerticalScrollIndicator={false}
+                    scrollEnabled={false}
+                />
+            </View>
+        </View>
     );
 };
 export default StudyCourse

@@ -10,6 +10,7 @@ import people from '../assets/Profile/people.png'
 import logoutIcon from '../assets/Profile/logout.png'
 import { logout } from '../Api/Log'
 import { getUserInfo } from '../Api/Parents';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Profile = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -19,9 +20,21 @@ const Profile = ({ navigation }) => {
   const handleLogout = () => {
     logout(navigation);
   };
+  const [role, setRole] = useState('');
   useEffect(() => {
     fetchInfo()
+    retrieveRole();
   }, [])
+  const retrieveRole = async () => {
+    try {
+      const roleValue = await AsyncStorage.getItem('role');
+      if (roleValue !== null) {
+        setRole(roleValue);
+      }
+    } catch (error) {
+      console.error('Error retrieving role:', error);
+    }
+  };
   const [userInfo, setUserInfo] = useState([])
   const fetchInfo = async () => {
     try {
@@ -42,7 +55,7 @@ const Profile = ({ navigation }) => {
         </View>
       </ImageBackground>
       <View style={styles.Avt}>
-        <View style={{alignItems:'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <TouchableOpacity activeOpacity={1}>
             <Image source={cong} style={styles.CircleMen} />
           </TouchableOpacity>
@@ -50,7 +63,7 @@ const Profile = ({ navigation }) => {
         </View>
       </View>
       <View style={{ paddingLeft: wp('5%'), paddingRight: wp('5%') }}>
-        <TouchableOpacity activeOpacity={1} onPress={()=>{navigation.navigate('AccountDetail')}}>
+        <TouchableOpacity activeOpacity={1} onPress={() => { navigation.navigate('AccountDetail') }}>
           <View style={{
             flexDirection: 'row', backgroundColor: '#e9f2eb', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('2%'), shadowColor: 'black',
             shadowOpacity: 0.9,
@@ -84,23 +97,25 @@ const Profile = ({ navigation }) => {
             <Image source={right} style={{ width: wp('6%'), height: hp('3.5%'), alignSelf: 'center', marginRight: wp('3%') }} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => { navigation.navigate('ChildProcess') }}>
-          <View style={{
-            flexDirection: 'row', backgroundColor: '#e9f2eb', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('2%'), shadowColor: 'black',
-            shadowOpacity: 0.9,
-            shadowOffset: { width: 0, height: 2 },
-            shadowRadius: 20,
-            elevation: 5,
-          }}>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ borderColor: '#e9f2eb', borderRadius: 10, borderWidth: 2, width: wp('12%'), height: hp('6%'), backgroundColor: 'red', alignItems: 'center', marginLeft: wp('2%'), justifyContent: 'center' }}>
-                <Image source={process} style={{ width: wp('8.6%'), height: hp('4.5%') }} />
+        {role === 'Parent' && (
+          <TouchableOpacity activeOpacity={0.8} onPress={() => { navigation.navigate('ChildProcess') }}>
+            <View style={{
+              flexDirection: 'row', backgroundColor: '#e9f2eb', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('2%'), shadowColor: 'black',
+              shadowOpacity: 0.9,
+              shadowOffset: { width: 0, height: 2 },
+              shadowRadius: 20,
+              elevation: 5,
+            }}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ borderColor: '#e9f2eb', borderRadius: 10, borderWidth: 2, width: wp('12%'), height: hp('6%'), backgroundColor: 'red', alignItems: 'center', marginLeft: wp('2%'), justifyContent: 'center' }}>
+                  <Image source={process} style={{ width: wp('8.6%'), height: hp('4.5%') }} />
+                </View>
+                <Text style={{ fontSize: wp('4.5%'), fontWeight: '500', alignSelf: 'center', marginLeft: wp('5%') }}>My child's process</Text>
               </View>
-              <Text style={{ fontSize: wp('4.5%'), fontWeight: '500', alignSelf: 'center', marginLeft: wp('5%') }}>My child's process</Text>
+              <Image source={right} style={{ width: wp('6%'), height: hp('3.5%'), alignSelf: 'center', marginRight: wp('3%') }} />
             </View>
-            <Image source={right} style={{ width: wp('6%'), height: hp('3.5%'), alignSelf: 'center', marginRight: wp('3%') }} />
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        )}
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: hp('5%') }}>
           <TouchableOpacity onPress={toggleModal}>
             <View style={{ borderColor: '#e9f2eb', borderRadius: 10, borderWidth: 2, width: wp('13%'), height: hp('6.5%'), backgroundColor: 'orange', alignItems: 'center', marginLeft: wp('2%'), justifyContent: 'center' }}>

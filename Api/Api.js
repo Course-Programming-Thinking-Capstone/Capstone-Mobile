@@ -1,1 +1,1 @@
-export const BASE_URL = "https://kidproproduction.azurewebsites.net/api/v1";
+export const BASE_URL = "https://www.kidpro-production.somee.com/api/v1";

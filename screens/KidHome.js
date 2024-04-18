@@ -137,9 +137,9 @@ const KidHome = () => {
                             </View>
                             <Text style={styles.Text}>Let's start learning!</Text>
                         </View>
-                        <View style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingLeft: wp('2%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
+                        <TouchableOpacity onPress={()=>navigation.navigate('Notification')} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingLeft: wp('2%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
                             <Image source={noti} style={styles.Noti} />
-                        </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={styles.Search}>

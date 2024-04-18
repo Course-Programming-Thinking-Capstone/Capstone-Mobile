@@ -95,7 +95,7 @@ const OrderDetail = ({ route, navigation }) => {
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
                                 <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Receive Method</Text>
-                                <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>Zalo , Email</Text>
+                                <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>Email</Text>
                             </View>
                         </View>
                         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />

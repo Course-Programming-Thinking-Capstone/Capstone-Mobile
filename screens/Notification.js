@@ -110,5 +110,11 @@ const styles = StyleSheet.create({
         marginLeft: wp('2%'),
         width: wp('68%'),
         fontWeight: '700'
+    },
+    noDataText:{
+        textAlign:'center',
+        marginTop:hp('5%'),
+        fontWeight:'600',
+        fontSize:wp('4%')
     }
 })

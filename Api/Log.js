@@ -35,6 +35,7 @@ export const login = async (email, password, navigation, setLoading, setEmail, s
 
         if (response.status === 200) {
             await AsyncStorage.setItem('accessToken', response.data.accessToken);
+            await AsyncStorage.setItem('role', response.data.role);
             setLoading(false);
             navigation.navigate(nextPage);
             setEmail('');
