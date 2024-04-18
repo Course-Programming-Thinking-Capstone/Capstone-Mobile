@@ -111,10 +111,16 @@ const HomePage = ({ navigation }) => {
         }}>
             <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+                <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                 <Text style={styles.Name}>{item.name}</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                <Text style={styles.Price}>{item.isFree ? 'Free' : formatPrice(item.price)}</Text>
+                <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                <Text style={{
+                    fontWeight: 'bold',
+                    color: 'blue',
+                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
+                }}>{item.isFree ? 'Free' : formatPrice(item.price)}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -138,7 +144,7 @@ const HomePage = ({ navigation }) => {
                             </View>
                             <Text style={styles.Text}>Let's start learning!</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>{navigation.navigate('Notification')}} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingLeft: wp('2%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
+                        <TouchableOpacity onPress={() => { navigation.navigate('Notification') }} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingLeft: wp('2%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
                             <Image source={noti} style={styles.Noti} />
                         </TouchableOpacity>
                     </View>
@@ -260,13 +266,15 @@ const HomePage = ({ navigation }) => {
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
-                    <View style={{ paddingLeft: wp('1%'), marginBottom: hp('0.5%'), flexDirection: 'row' }}>
+                    <View style={{ paddingBottom: hp('1%'), flexDirection: 'row' }}>
                         <FlatList
                             data={limitedCourse}
                             renderItem={renderCourse}
                             keyExtractor={item => item.id.toString()}
                             horizontal
                             showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={styles.List}
+
                         />
                     </View>
                 </View>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList } from 'react-native'
 import search from '../assets/HomePage/search.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
@@ -6,6 +6,8 @@ import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import learning from '../assets/Lesson/learning.png'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { getAllCourse } from '../Api/Course';
+import { formatPrice } from '../FormatPrice/Format';
 const SearchLesson = ({ navigation }) => {
     const textInputRef = useRef(null);
     const Near = [
@@ -16,15 +18,29 @@ const SearchLesson = ({ navigation }) => {
         { id: '5', name: 'Lập trình with C', teacher: 'CongLT', price: '1500000', image: require('../assets/Lesson/kid3.jpg') },
         { id: '6', name: 'Lập trình with C', teacher: 'CongLT', price: '1500000', image: require('../assets/Lesson/kid1.jpg') },
     ];
+    const [course, setCourse] = useState([])
+    useEffect(() => {
+        fetchCourse()
+    }, [])
+    const fetchCourse = async () => {
+        try {
+            const courseData = await getAllCourse();
+            if (courseData) {
+                setCourse(courseData.results);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
     const [searchQuery, setSearchQuery] = useState('');
-    const [filteredData, setFilteredData] = useState(Near);
+    const [filteredData, setFilteredData] = useState(course);
 
     const handleSearch = (text) => {
         setSearchQuery(text);
         if (text === '') {
             setFilteredData([]);
         } else {
-            const newData = Near.filter((item) => {
+            const newData = course.filter((item) => {
                 const itemName = item.name.toLowerCase();
                 const searchText = text.toLowerCase();
                 return itemName.includes(searchText);
@@ -35,31 +51,26 @@ const SearchLesson = ({ navigation }) => {
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.Course} onPress={() => {
-            navigation.navigate('LessonDetails', { Name: item.name, LessImage: item.image, Lecture: item.teacher, Avatar: item.avatar, Price: item.price, Id: item.id })
+            navigation.navigate('LessonDetails', {
+                Name: item.name,
+                LessImage: item.pictureUrl,
+                Price: item.price,
+                Id: item.id
+            })
         }}>
-            <Image source={item.image} style={styles.CourseImage} />
+            <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
             <View>
-                <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
-                    <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%') }}>Best Seller</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+                    <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                    <Text style={styles.Name}>{item.name}</Text>
                 </View>
-                <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{item.name}</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                    <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                    <Text style={{
-                        fontWeight: 'bold',
-                        color: '#40BFFF',
-                        fontSize: wp('3.8%')
-                    }}>{item.teacher}</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
                     <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                     <Text style={{
                         fontWeight: 'bold',
                         color: 'blue',
                         fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
-                    }}>
-                        {parseFloat(item.price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ
-                    </Text>
+                    }}>{item.isFree ? 'Free' : formatPrice(item.price)}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -87,7 +98,6 @@ const SearchLesson = ({ navigation }) => {
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                     contentContainerStyle={styles.List}
-
                 />
             )}
         </View>
@@ -144,11 +154,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     Image: {
-        width: wp('50.3%'),
+        width: wp('40%'),
         height: hp('15%'),
         alignSelf: 'center',
         borderRadius: 8,
         borderWidth: 2,
+        marginRight:wp('2.5%')
     },
     Name: {
         width: wp('50%'),
