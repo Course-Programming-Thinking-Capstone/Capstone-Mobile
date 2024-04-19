@@ -10,7 +10,7 @@ import { formatPrice } from '../FormatPrice/Format';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const OrderDetail = ({ route, navigation }) => {
-    const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id } = route.params;
+    const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id ,Note} = route.params;
     useEffect(() => {
         fetchOrderDetail()
     }, [])
@@ -41,7 +41,7 @@ const OrderDetail = ({ route, navigation }) => {
                     .catch((err) => {
                         console.error('Lỗi khi kiểm tra hoặc mở ứng dụng:', err);
                     });
-                navigation.navigate('Success', { Name, LessImage, Lecture, Price, payment: data.paymentType,success:data.orderId })
+                navigation.navigate('Success', { success: Id })
             }
         } catch (error) {
             console.error("Error handling add children:", error);
@@ -64,7 +64,7 @@ const OrderDetail = ({ route, navigation }) => {
                             }}>
                                 <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>{data.status}</Text>
                             </View>
-                            <Text style={{ marginLeft: wp('1.5%'), width: wp('50%'),fontSize: isSmallPhone || isSmallTablet ? wp('3.3%') : wp('4%'), fontWeight: '500' }}>{data.courseName}</Text>
+                            <Text style={{ marginLeft: wp('1.5%'), width: wp('50%'), fontSize: isSmallPhone || isSmallTablet ? wp('3.3%') : wp('4%'), fontWeight: '500' }}>{data.courseName}</Text>
                             {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                                 <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                                 <Text style={{
@@ -86,7 +86,7 @@ const OrderDetail = ({ route, navigation }) => {
                     <View>
                         <View >
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive<Text style={{ color: 'red', fontWeight: '600' }}> ({data.numberChildren})</Text></Text>
+                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive<Text style={{ color: 'red', fontWeight: '600' }}> ({data.numberChildren}): </Text></Text>
                                 <View>
                                     {data.students && data.students.map((student, index) => (
                                         <Text key={index} style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{student.studentName}</Text>
@@ -94,8 +94,12 @@ const OrderDetail = ({ route, navigation }) => {
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Receive Method</Text>
+                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Receive Method: </Text>
                                 <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>Email</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>{Status === 'RequestRefund' ? 'Reason:' : null}</Text>
+                                <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{Status === 'RequestRefund' ? Note : null}</Text>
                             </View>
                         </View>
                         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
@@ -130,7 +134,7 @@ const OrderDetail = ({ route, navigation }) => {
                         <TouchableOpacity style={[styles.Button, { borderColor: Status === 'Cancelled' ? 'white' : 'white', backgroundColor: Status === 'Pending' ? 'red' : Status === 'Success' ? '#FF8A00' : Status === 'Process' ? 'blue' : 'white' }]}
                             onPress={() => {
                                 if (Status === 'Pending') {
-                                    navigation.navigate('CancelOrder', { Name: data.courseName, LessImage:data.pictureUrl, Lecture, Status, Price: data.price, Payment, Child, Avatar, Id: data.orderId });
+                                    navigation.navigate('CancelOrder', { Name: data.courseName, LessImage: data.pictureUrl, Lecture, Status, Price: data.price, Payment, Child, Avatar, Id: data.orderId });
                                 } else if (Status === 'Success') {
                                     navigation.navigate('LessonDetails', { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar });
                                 }

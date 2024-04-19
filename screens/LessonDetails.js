@@ -36,10 +36,6 @@ const LessonDetails = ({ route }) => {
     const [classCourseId, setClassCourseId] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
-    const toggleModal = (selectedClass) => {
-        setModalVisible(!isModalVisible);
-        setSelectedClass(selectedClass);
-    };
     useEffect(() => {
         fetchClass()
     }, []);
@@ -110,7 +106,6 @@ const LessonDetails = ({ route }) => {
         />
     );
     const navigation = useNavigation();
-    const { Name, LessImage, Lecture, Avatar, Price, Id } = route.params;
     const [index, setIndex] = useState(0);
     const [routes] = useState([
         { key: 'about', title: 'About' },
@@ -137,9 +132,14 @@ const LessonDetails = ({ route }) => {
     const closeModal = () => {
         setShowVideo(false);
     };
-    const [selectedClass, setSelectedClass] = useState(null);
     const [courseData, setCourseData] = useState([])
     const [classDetail, setClassDetail] = useState([])
+    const [selectedClass, setSelectedClass] = useState(null);
+    const [classInfo, setClassInfo] = useState([])
+    const toggleModal = (selectedClass) => {
+        setModalVisible(!isModalVisible);
+        setSelectedClass(selectedClass);
+    };
     const fetchClass = async () => {
         try {
             const courseData = await getCourse();
@@ -152,14 +152,13 @@ const LessonDetails = ({ route }) => {
             console.error("Error fetching data:", error);
         }
     };
-
     const renderClassItem = ({ item }) => (
         <View style={{ marginBottom: hp('1%'), marginRight: wp('2%') }}>
             <TouchableOpacity key={item.classId} onPress={() => toggleModal(item)} style={[styles.NameKid]}>
                 <RadioButton
                     value={item.classCode}
                     status={payment === item.classCode ? 'checked' : 'unchecked'}
-                    onPress={() => [setPayment(item.classCode), setClassCourseId(item.classId)]}
+                    onPress={() => [setPayment(item.classCode), setClassCourseId(item.classId),setClassInfo(item)]}
                 />
                 <Text style={{ marginLeft: wp('5%') }}>{item.classCode}</Text>
             </TouchableOpacity>
@@ -169,7 +168,7 @@ const LessonDetails = ({ route }) => {
         if (!payment || !classCourseId) {
             Alert.alert('Alert', 'Please select a class!');
         } else {
-            navigation.navigate('Payment', { Name, LessImage, Lecture, Avatar, Price, Id, payment, classCourseId });
+            navigation.navigate('Payment', { payment, classCourseId, courseData, classInfo });
         }
     };
     const renderScene = SceneMap({
@@ -178,51 +177,48 @@ const LessonDetails = ({ route }) => {
                 paddingRight: wp('7%')
             }}>
                 <ScrollView style={{ width: wp('100%'), marginBottom: hp('3%') }}>
-                    {loading ? (
-                        <Loading />
-                    ) : (
-                        <View>
-                            <Text style={{ fontSize: wp('4%'), fontWeight: '500', marginTop: hp('1%') }}>About Course</Text>
-                            <Text style={{ marginTop: hp('1%'), color: '#94867D', lineHeight: hp('3%'), width: wp('90%'), fontSize: wp('4%') }}>{courseData.description}</Text>
-                            <Text style={{ marginTop: hp('2%'), fontSize: wp('4%'), fontWeight: '500', marginBottom: hp('2%') }}>Class Available</Text>
-                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                                <FlatList
-                                    data={classDetail}
-                                    renderItem={renderClassItem}
-                                    keyExtractor={(item) => item.classId.toString()}
-                                    scrollEnabled={false}
-                                    numColumns={2}
-                                />
-                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Modal visible={isModalVisible} transparent={false} statusBarTranslucent={true} animationType="slide">
-                                        <View style={{
-                                            flex: 1, justifyContent: 'center', alignItems: 'center',
-                                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                                        }}>
-                                            <TouchableOpacity style={[styles.closeButton, { top: hp('7%'), right: wp('5%') }]} onPress={toggleModal}>
-                                                <Image source={close} style={styles.buttonClose} />
-                                            </TouchableOpacity>
-                                            <View style={styles.Popup}>
-                                                <View style={{ backgroundColor: '#327CF7', height: hp('15%'), justifyContent: 'center',borderBottomLeftRadius:0,borderBottomRightRadius:0,borderRadius:10,marginBottom:hp('2%')}}>
-                                                    <Text style={{ textAlign: "center", color: 'white', fontWeight: '600', fontSize: wp('7%')}}>Class Detail</Text>
-                                                </View>
-                                                {selectedClass && (
-                                                    <View style={{ width: wp('90%'), paddingLeft: wp('3%') }}>
-                                                        <Text style={styles.ClassInfo}>Class Code:  <Text></Text><Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.classCode}</Text></Text>
-                                                        <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayStart}</Text></Text>
-                                                        <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayEnd}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.teacher}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Study Days:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.days?.join(', ')}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.slotStart}-{selectedClass.slotEnd}</Text></Text>
-                                                    </View>
-                                                )}
+
+                    <View>
+                        <Text style={{ fontSize: wp('4%'), fontWeight: '500', marginTop: hp('1%') }}>About Course</Text>
+                        <Text style={{ marginTop: hp('1%'), color: '#94867D', lineHeight: hp('3%'), width: wp('90%'), fontSize: wp('4%') }}>{courseData.description}</Text>
+                        <Text style={{ marginTop: hp('2%'), fontSize: wp('4%'), fontWeight: '500', marginBottom: hp('2%') }}>Class Available</Text>
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                            <FlatList
+                                data={classDetail}
+                                renderItem={renderClassItem}
+                                keyExtractor={(item) => item.classId.toString()}
+                                scrollEnabled={false}
+                                numColumns={2}
+                            />
+                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <Modal visible={isModalVisible} transparent={false} statusBarTranslucent={true} animationType="slide">
+                                    <View style={{
+                                        flex: 1, justifyContent: 'center', alignItems: 'center',
+                                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                    }}>
+                                        <TouchableOpacity style={[styles.closeButton, { top: hp('7%'), right: wp('5%') }]} onPress={toggleModal}>
+                                            <Image source={close} style={styles.buttonClose} />
+                                        </TouchableOpacity>
+                                        <View style={styles.Popup}>
+                                            <View style={{ backgroundColor: '#327CF7', height: hp('15%'), justifyContent: 'center', borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderRadius: 10, marginBottom: hp('2%') }}>
+                                                <Text style={{ textAlign: "center", color: 'white', fontWeight: '600', fontSize: wp('7%') }}>Class Detail</Text>
                                             </View>
+                                            {selectedClass && (
+                                                <View style={{ width: wp('90%'), paddingLeft: wp('3%') }}>
+                                                    <Text style={styles.ClassInfo}>Class Code:  <Text></Text><Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.classCode}</Text></Text>
+                                                    <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayStart}</Text></Text>
+                                                    <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayEnd}</Text> </Text>
+                                                    <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.teacher}</Text> </Text>
+                                                    <Text style={styles.ClassInfo}>Study Days:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.days?.join(', ')}</Text> </Text>
+                                                    <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.slotStart}-{selectedClass.slotEnd}</Text></Text>
+                                                </View>
+                                            )}
                                         </View>
-                                    </Modal>
-                                </View>
+                                    </View>
+                                </Modal>
                             </View>
                         </View>
-                    )}
+                    </View>
                 </ScrollView>
             </View >
         ),
@@ -383,45 +379,49 @@ const LessonDetails = ({ route }) => {
     };
     return (
         <View style={styles.Container}>
-            <ImageBackground source={{ uri: LessImage }} style={{ width: wp('100%'), height: hp('40%') }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: wp('6%'), paddingRight: wp('6%'), marginTop: hp('5%') }}>
-                    <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'white', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>
-                        <TouchableOpacity onPress={goBack}>
-                            <Image style={{ width: wp('5%'), height: hp('3%') }} source={back1} />
-                        </TouchableOpacity>
-                    </View>
+            {loading ? (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Loading />
                 </View>
-                <TouchableOpacity activeOpacity={0.6} style={styles.ButtonVideo} onPress={() => setShowVideo(true)}>
-                    <View style={{
-                        flexDirection: "row",
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
-                        <Image source={open} style={{ width: wp('8%'), height: hp('4%'), marginRight: wp('3%') }} />
-                        <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%'), color: 'blue', fontWeight: '500' }}>Course Preview</Text>
+            ) : (
+                <ImageBackground source={{ uri: courseData.pictureUrl }} style={{ width: wp('100%'), height: hp('40%') }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: wp('6%'), paddingRight: wp('6%'), marginTop: hp('5%') }}>
+                        <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'white', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>
+                            <TouchableOpacity onPress={goBack}>
+                                <Image style={{ width: wp('5%'), height: hp('3%') }} source={back1} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </TouchableOpacity>
-                <View style={styles.DetailForm}>
-                    <TabView
-                        navigationState={{ index, routes }}
-                        renderScene={renderScene}
-                        onIndexChange={setIndex}
-                        initialLayout={{ width: '100%' }}
-                        renderTabBar={renderTabBar}
-                    />
-                </View>
-            </ImageBackground>
+                    <TouchableOpacity activeOpacity={0.6} style={styles.ButtonVideo} onPress={() => setShowVideo(true)}>
+                        <View style={{
+                            flexDirection: "row",
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <Image source={open} style={{ width: wp('8%'), height: hp('4%'), marginRight: wp('3%') }} />
+                            <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%'), color: 'blue', fontWeight: '500' }}>Course Preview</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={styles.DetailForm}>
+                        <TabView
+                            navigationState={{ index, routes }}
+                            renderScene={renderScene}
+                            onIndexChange={setIndex}
+                            initialLayout={{ width: '100%' }}
+                            renderTabBar={renderTabBar}
+                        />
+                    </View>
+                </ImageBackground>)}
             <View style={styles.Enroll}>
                 <View>
                     <Text style={{ color: '#94867D', fontSize: wp('4%'), fontWeight: '700' }}>Total Price</Text>
-                    <Text style={{ color: '#327CF7', fontWeight: '800' }}>{formatPrice(Price)}</Text>
+                    <Text style={{ color: '#327CF7', fontWeight: '800' }}>{formatPrice(courseData.price)}</Text>
                     {/* <Text style={{ color: '#327CF7', fontWeight: '800' }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text> */}
                 </View>
                 <View style={styles.Button}>
                     <Text onPress={handleContinue} style={{ fontWeight: '800', color: 'white' }}>Enroll Now</Text>
                 </View>
             </View>
-
         </View>
     )
 }

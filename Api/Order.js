@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { getApiHeaders } from '../Api/Headers';
 import { BASE_URL } from '../Api/Api'
-export const CreateOrder = async (studentId, count,Id,classCourseId) => {
+export const CreateOrder = async (studentId, count,courseId,classCourseId) => {
     try {
         const headers = await getApiHeaders();
         const response = await axios.post(`${BASE_URL}/orders`, {
             studentId: studentId,
-            courseId: Id,
+            courseId: courseId,
             classId:classCourseId,
             voucherId: 0,
             paymentType: 2,

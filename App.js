@@ -365,6 +365,7 @@ export default function App() {
           headerTitleAlign: 'center',
         }} />
         <Stack.Screen name="Search" component={Search} options={{
+          tabBarHideOnKeyboard: false,
           tabBarIcon: ({ color, size }) => (
             <Image
               source={require('./assets/HomePage/course.png')}

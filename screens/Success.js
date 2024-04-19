@@ -13,7 +13,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Success = ({ navigation, route }) => {
-    const { Name, LessImage, Lecture, className, success } = route.params;
+    const { success, classInfo } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading1, setLoading1] = useState(false);
     const toggleModal = () => {
@@ -77,14 +77,18 @@ const Success = ({ navigation, route }) => {
                     <View style={styles.Course}>
                         <Image source={{ uri: data.pictureUrl }} style={styles.CourseImage} />
                         <View>
-                            <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500',width:wp('60%') }}>{data.courseName}</Text>
+                            <View style={{ flexDirection: 'row', borderColor: "white", borderWidth: 1, paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('35%') }}>
+                                <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.8%'), marginLeft: wp('1.5%') }}>Quantity : </Text>
+                                <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.8%') }}>{data.classCode}</Text>
+                            </View>
+                            <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500', width: wp('60%') }}>{data.courseName}</Text>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                                 <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                                <Text style={{
+                                {/* <Text style={{
                                     fontWeight: 'bold',
                                     color: '#40BFFF',
                                     fontSize: wp('3.8%')
-                                }}>{Lecture}</Text>
+                                }}>{classInfo.teacher}</Text> */}
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                                 <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
@@ -97,10 +101,7 @@ const Success = ({ navigation, route }) => {
                                     {/* {parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ */}
                                 </Text>
                             </View>
-                            <View style={{ flexDirection: 'row', borderColor: "white", borderWidth: 1, paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('30%') }}>
-                                <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.8%'), marginLeft: wp('1.5%') }}>Quantity : </Text>
-                                <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.8%') }}>{data.quantityPurchased}</Text>
-                            </View>
+
                         </View>
                     </View>
                     <View style={{ height: hp('0.3%'), width: wp('90%'), backgroundColor: '#E9E9E9' }} />
@@ -166,7 +167,7 @@ const Success = ({ navigation, route }) => {
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.paymentType}</Text>
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>0 đ</Text>
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>x{data.quantityPurchased}</Text>
-                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{formatPrice(data.price * (data.quantityPurchased))}</Text>   
+                                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{formatPrice(data.price * (data.quantityPurchased))}</Text>
                                         {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                                     </View>
                                 </View>

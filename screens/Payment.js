@@ -19,7 +19,7 @@ const Payment = ({ route, navigation }) => {
     const [displayText, setDisplayText] = useState('Date of Birth');
     const [checked, setChecked] = React.useState('Thanh An');
     const [info, setInfo] = React.useState('Email');
-    const { Name, LessImage, Lecture, Avatar, Price, Id,payment,classCourseId } = route.params;
+    const { payment, classCourseId, courseData, classInfo } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
     const textInputRef = useRef(null);
     const toggleModal = () => {
@@ -131,12 +131,12 @@ const Payment = ({ route, navigation }) => {
         if (selectedStudents.length === 0) {
             Alert.alert('Alert', 'Please select at least one student.');
         } else {
-            navigation.navigate('PayMethods', { Name, LessImage, Lecture, Avatar, Price, info, checked, selectedStudents, contact ,Id,className:payment,classCourseId});
+            navigation.navigate('PayMethods', { classCourseId, courseData, classInfo, selectedStudents  });
         }
     };
     return (
         <View style={styles.Container}>
-            <View style={styles.AddChild}> 
+            <View style={styles.AddChild}>
                 <Text style={styles.TxtChild}>Student available for class: <Text style={{ color: 'red', fontWeight: '800' }}>({count})</Text></Text>
                 <TouchableOpacity onPress={toggleModal}>
                     <Text style={styles.ButChild}>Add</Text>
@@ -196,19 +196,19 @@ const Payment = ({ route, navigation }) => {
                     marginTop: hp('2%')
                 }}>Course Information:</Text>
                 <View style={styles.Course}>
-                    <Image source={{ uri: LessImage }} style={styles.CourseImage} />
+                    <Image source={{ uri: courseData.pictureUrl }} style={styles.CourseImage} />
                     <View>
-                        <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
-                            <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%') }}>Best Seller</Text>
+                        <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('37%') }}>
+                            <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.5%') }}>Class Code: {classInfo.classCode} </Text>
                         </View>
-                        <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500',width:wp('55%') }}>{Name}</Text>
+                        <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500', width: wp('55%') }}>{courseData.name}</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                             <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                             <Text style={{
                                 fontWeight: 'bold',
                                 color: '#40BFFF',
                                 fontSize: wp('3.8%')
-                            }}>{Lecture}</Text>
+                            }}>{classInfo.teacher}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                             <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
@@ -217,7 +217,7 @@ const Payment = ({ route, navigation }) => {
                                 color: 'blue',
                                 fontSize: wp('3.8%')
                             }}>
-                                {formatPrice(Price)}
+                                {formatPrice(courseData.price)}
                             </Text>
                         </View>
                     </View>
