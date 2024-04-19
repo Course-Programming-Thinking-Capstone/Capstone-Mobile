@@ -199,7 +199,7 @@ const LessonDetails = ({ route }) => {
                                             flex: 1, justifyContent: 'center', alignItems: 'center',
                                             backgroundColor: 'rgba(0, 0, 0, 0.7)',
                                         }}>
-                                            <TouchableOpacity style={[styles.closeButton, { top: hp('10%'), right: wp('5%') }]} onPress={toggleModal}>
+                                            <TouchableOpacity style={[styles.closeButton, { top: hp('7%'), right: wp('5%') }]} onPress={toggleModal}>
                                                 <Image source={close} style={styles.buttonClose} />
                                             </TouchableOpacity>
                                             <View style={styles.Popup}>
@@ -208,12 +208,12 @@ const LessonDetails = ({ route }) => {
                                                 </View>
                                                 {selectedClass && (
                                                     <View style={{ width: wp('90%'), paddingLeft: wp('3%') }}>
-                                                        <Text style={styles.ClassInfo}>Class Code:  <Text></Text><Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.classCode}</Text></Text>
-                                                        <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayStart}</Text></Text>
-                                                        <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayEnd}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.teacher}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Study Days:  <Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.days?.join(', ')}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.slotStart}-{selectedClass.slotEnd}</Text></Text>
+                                                        <Text style={styles.ClassInfo}>Class Code:  <Text></Text><Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.classCode}</Text></Text>
+                                                        <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayStart}</Text></Text>
+                                                        <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayEnd}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.teacher}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Study Days:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.days?.join(', ')}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.slotStart}-{selectedClass.slotEnd}</Text></Text>
                                                     </View>
                                                 )}
                                             </View>
@@ -578,7 +578,7 @@ const styles = StyleSheet.create({
     Popup: {
         backgroundColor: 'white',
         width: wp('90%'),
-        height: hp('77%'),
+        height: isSmallPhone || isSmallTablet ? hp('82%') : hp('77%'),
         borderRadius: 10,
     },
     closeButton: {
@@ -587,7 +587,7 @@ const styles = StyleSheet.create({
         right: wp('2%')
     },
     ClassInfo: {
-        fontSize: wp('5.5%'),
+        fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5.5%'),
         fontWeight: '500',
         color: '#327CF7',
         textAlign: 'left',

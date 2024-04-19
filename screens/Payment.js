@@ -5,7 +5,7 @@ import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import { SelectList } from 'react-native-dropdown-select-list'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-import { getStudent, addChildren } from '../Api/Children';
+import { getStudent, addChildren, getStudentByClassId } from '../Api/Children';
 import { getContact } from '../Api/Parents';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CheckBox from 'expo-checkbox';
@@ -42,7 +42,7 @@ const Payment = ({ route, navigation }) => {
     }, []);
     const fetchKid = async () => {
         try {
-            const studentData = await getStudent();
+            const studentData = await getStudentByClassId(classCourseId);
             if (studentData) {
                 const sortedStudents = studentData.sort((a, b) => b.id - a.id);
                 setStudent(sortedStudents);
@@ -136,8 +136,8 @@ const Payment = ({ route, navigation }) => {
     };
     return (
         <View style={styles.Container}>
-            <View style={styles.AddChild}>
-                <Text style={styles.TxtChild}>Select children to receive:<Text style={{ color: 'red', fontWeight: '800' }}>({count})</Text></Text>
+            <View style={styles.AddChild}> 
+                <Text style={styles.TxtChild}>Student available for class: <Text style={{ color: 'red', fontWeight: '800' }}>({count})</Text></Text>
                 <TouchableOpacity onPress={toggleModal}>
                     <Text style={styles.ButChild}>Add</Text>
                 </TouchableOpacity>
