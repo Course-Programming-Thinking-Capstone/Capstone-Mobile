@@ -9,6 +9,7 @@ import { Linking } from 'react-native';
 import { formatPrice } from '../FormatPrice/Format';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { formatDate } from '../FormatPrice/FormatDate';
 const OrderDetail = ({ route, navigation }) => {
     const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id ,Note} = route.params;
     useEffect(() => {
@@ -98,8 +99,8 @@ const OrderDetail = ({ route, navigation }) => {
                                 <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>Email</Text>
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
-                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>{Status === 'RequestRefund' ? 'Reason:' : null}</Text>
-                                <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{Status === 'RequestRefund' ? Note : null}</Text>
+                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>{Status === 'RequestRefund' ? 'Reason:' : 'Order date:'}</Text>
+                                <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{Status === 'RequestRefund' ? Note : formatDate(data.orderDate)}</Text>
                             </View>
                         </View>
                         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />

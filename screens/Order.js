@@ -76,7 +76,7 @@ const Order = ({ route, navigation }) => {
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={{ alignItems: 'center', marginBottom: hp('1%') }} onPress={() => {
-            navigation.navigate('OrderDetail', { Id: item.orderId, Status: item.orderStatus,Note:item.note });
+            navigation.navigate('OrderDetail', { Id: item.orderId, Status: item.orderStatus,Note:item.note});
         }}>
             <View style={styles.Course}>
                 <Image source={{ uri: item.pictureUrl }} style={styles.CourseImage} />
