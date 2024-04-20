@@ -1,4 +1,4 @@
-import { StyleSheet, Modal, Text, View, ScrollView, FlatList, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Modal, Text, View, ScrollView, FlatList, Image, TouchableOpacity, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -14,53 +14,19 @@ import drop from '../assets/MyCourse/drop.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { getCourseById } from '../Api/Course';
 import Loading from '../Loading/Loading'
+import { getStarted } from '../Api/Progress';
 const Course = ({ navigation, route }) => {
   const { CourseId } = route.params;
   const [loading, setLoading] = useState(true);
-
-  const lessons1 = [
-    { id: '01', name: 'Introduction programming ', time: '10:00', status: 'video' },
-    { id: '02', name: 'Make a Tower Defense Game', time: '5:00', status: 'read' },
-    { id: '03', name: 'Introduction programming ', time: '10:00', status: 'quiz' },
-    { id: '04', name: 'Make a Tower Defense Game', time: '5:00', status: 'game' },
-  ];
-  const lessons2 = [
-    { id: '01', name: 'Scratch 3.0 Tutorial ', time: '10:00', status: 'video' },
-    { id: '02', name: 'Ultimate 2022 Scratch', time: '5:00', status: 'read' },
-    { id: '03', name: 'Create engaging stories', time: '7:00', status: 'quiz' },
-    { id: '04', name: 'Create simple games', time: '3:00', status: 'game' },
-  ];
-  const lessons3 = [
-    { id: '01', name: 'Control smart devices ', time: '10:00', status: 'video' },
-    { id: '02', name: 'Programming traffic lights', time: '5:00', status: 'read' },
-    { id: '03', name: 'Control smart devices ', time: '10:00', status: 'quiz' },
-    { id: '04', name: 'Programming traffic lights', time: '5:00', status: 'game' },
-  ];
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'lessons', title: 'Lessons' },
     { key: 'certificate', title: 'Certificate' },
   ]);
-
-  const [showVideo, setShowVideo] = useState(false);
-  const VideoWebView = () => {
-    return (
-      <View style={{ height: 300, alignItems: 'center' }}>
-        <WebView style={{ width: wp('100%') }}
-          allowsFullscreenVideo
-          source={{ uri: 'https://www.youtube.com/embed/mpSmBuco6I0?si=p1hauMk3VsiiPzzR%22%20title=' }}
-        />
-      </View>
-    );
-  };
-  const closeModal = () => {
-    setShowVideo(false);
-  };
-  const [section, setSectionDetail] = useState([]);
+  const [sectionId, setSectionId] = useState();
   useEffect(() => {
     fetchCourseById()
   }, [])
-
   const fetchCourseById = async () => {
     try {
       const sectionDetail = await getCourseById(CourseId);
@@ -74,10 +40,28 @@ const Course = ({ navigation, route }) => {
       setLoading(false);
     }
   };
+  const [section, setSectionDetail] = useState([]);
+  // const handleGetStarted = async (sectionId) => {
+  //   try {
+  //     // setLoading1(true);
+  //     const success = await getStarted(sectionId, CourseId);
+  //     if (success) {
+  //       console.log("Success");
+  //     } else {
+  //       Alert.alert('Đăng ký thất bại !!!');
+  //     }
+  //   } catch (error) {
+  //     console.error("Error handling add children:", error);
+  //   } finally {
+  //     // setLoading1(false);
+  //   }
+  // };
   const [showLessons, setShowLessons] = useState({});
   const render = ({ item }) => (
     <View key={item.id}>
-      <TouchableOpacity onPress={() => setShowLessons(prevState => ({ ...prevState, [item.id]: !prevState[item.id] }))} style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]}>
+      <TouchableOpacity onPress={() => {setShowLessons(prevState => ({ ...prevState, [item.id]: !prevState[item.id] }))
+      // ,handleGetStarted(item.id)
+      }} style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]}>
         <View style={{ flexDirection: 'row', alignItems: "center" }}>
           <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4%'), marginLeft: wp('1.5%'), width: isSmallPhone || isSmallTablet ? wp('80%') : wp('78%'), textAlign: "left", height: hp('5%') }}>Section {item.order} <Text>- {item.name} </Text></Text>
         </View>
@@ -90,10 +74,10 @@ const Course = ({ navigation, route }) => {
           ) : (
             <>
               {item.lessons?.map((lesson, index) => (
-                <TouchableOpacity key={lesson.id} onPress={() => { navigation.navigate('StudyCourse', {lessons1: item.lessons, CourseVideo: lesson.resourceUrl, Id: lesson.id, currentType: lesson.type, Content: lesson.content }) }} style={styles.LessBorder}>
+                <TouchableOpacity key={lesson.id} onPress={() => { navigation.navigate('StudyCourse', { lessons1: item.lessons, CourseVideo: lesson.resourceUrl, Id: lesson.id, currentType: lesson.type, Content: lesson.content }) }} style={styles.LessBorder}>
                   {/* Sử dụng key={lesson.id} */}
                   <View style={styles.LessId}>
-                    <Text>{index+1}</Text>
+                    <Text>{index + 1}</Text>
                   </View>
                   <View>
                     <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{lesson.name}</Text>
@@ -125,7 +109,7 @@ const Course = ({ navigation, route }) => {
               {item.quizzes?.map((quiz, index) => (
                 <TouchableOpacity key={quiz.id} style={styles.LessBorder} onPress={() => { navigation.navigate('Quiz', { QuizDetail: quiz, CourseId }) }}>
                   <View style={styles.LessId}>
-                  <Text>{item.lessons.length + index + 1}</Text>
+                    <Text>{item.lessons.length + index + 1}</Text>
                   </View>
                   <View>
                     <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{quiz.title}</Text>

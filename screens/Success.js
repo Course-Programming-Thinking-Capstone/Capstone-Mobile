@@ -77,13 +77,13 @@ const Success = ({ navigation, route }) => {
                     <View style={styles.Course}>
                         <Image source={{ uri: data.pictureUrl }} style={styles.CourseImage} />
                         <View>
-                            <View style={{ flexDirection: 'row', borderColor: "white", borderWidth: 1, paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('35%') }}>
-                                <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.8%'), marginLeft: wp('1.5%') }}>Quantity : </Text>
+                            <View style={{ flexDirection: 'row', borderColor: "white", borderWidth: 1, paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('45%') }}>
+                                <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.8%'), marginLeft: wp('1.5%') }}>ClassCode : </Text>
                                 <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.8%') }}>{data.classCode}</Text>
                             </View>
-                            <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500', width: wp('60%') }}>{data.courseName}</Text>
+                            <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500', width: wp('50%') }}>{data.courseName}</Text>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                                <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                                {/* <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} /> */}
                                 {/* <Text style={{
                                     fontWeight: 'bold',
                                     color: '#40BFFF',

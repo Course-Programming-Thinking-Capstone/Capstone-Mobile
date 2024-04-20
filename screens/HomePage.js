@@ -20,12 +20,29 @@ import { getAllCourse } from '../Api/Course';
 import { getUserInfo } from '../Api/Parents';
 import test from '../assets/Lesson/kid1.jpg'
 import { formatPrice } from '../FormatPrice/Format';
+import { getNoti } from '../Api/Notification';
+import notiIn from '../assets/HomePage/notiIn.png'
+
 const HomePage = ({ navigation }) => {
     const [course, setCourse] = useState([])
     useEffect(() => {
         fetchCourse()
-        fetchInfo()
+        fetchInfo();
+        fetchNoti();
     }, [])
+    const [notiData, setNotiData] = useState([]);
+    const fetchNoti = async () => {
+        try {
+            const data = await getNoti();
+            if (data) {
+                setNotiData(data.results);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            // setLoading(false);
+        }
+    };
     const fetchCourse = async () => {
         try {
             const courseData = await getAllCourse();
@@ -144,8 +161,12 @@ const HomePage = ({ navigation }) => {
                             </View>
                             <Text style={styles.Text}>Let's start learning!</Text>
                         </View>
-                        <TouchableOpacity onPress={() => { navigation.navigate('Notification') }} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingLeft: wp('2%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
-                            <Image source={noti} style={styles.Noti} />
+                        <TouchableOpacity onPress={() => { navigation.navigate('Notification') }} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
+                            {notiData.isRead ? (
+                                <Image source={noti} style={[styles.Noti, { marginLeft: wp('2%') }]} />
+                            ) : (
+                                <Image source={notiIn} style={[styles.Noti, { marginLeft: wp('1.5%') }]} />
+                            )}
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'row' }}>

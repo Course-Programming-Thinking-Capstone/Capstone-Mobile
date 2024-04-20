@@ -198,7 +198,7 @@ const Payment = ({ route, navigation }) => {
                 <View style={styles.Course}>
                     <Image source={{ uri: courseData.pictureUrl }} style={styles.CourseImage} />
                     <View>
-                        <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('37%') }}>
+                        <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('42%') }}>
                             <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.5%') }}>Class Code: {classInfo.classCode} </Text>
                         </View>
                         <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500', width: wp('55%') }}>{courseData.name}</Text>

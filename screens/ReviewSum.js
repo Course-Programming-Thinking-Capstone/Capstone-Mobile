@@ -18,7 +18,6 @@ const ReviewSum = ({ route, navigation }) => {
         setModalVisible(!isModalVisible);
     };
     const [id, setId] = useState([])
-    console.log("Test: ",courseId);
     const postOrder = async () => {
         try {
             setLoading1(true);
@@ -59,7 +58,7 @@ const ReviewSum = ({ route, navigation }) => {
                     <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
                         <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%') }}>Best Seller</Text>
                     </View>
-                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500', width: wp('60%') }}>{courseData.name}</Text>
+                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('3.5%'), fontWeight: '500', width: wp('50%') }}>{courseData.name}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                         <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                         <Text style={{

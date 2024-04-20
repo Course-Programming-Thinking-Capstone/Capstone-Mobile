@@ -11,9 +11,33 @@ import logoutIcon from '../assets/Profile/logout.png'
 import { logout } from '../Api/Log'
 import { getUserInfo } from '../Api/Parents';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Profile = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (result.canceled === false) {
+        const { assets } = result;
+        if (assets && assets.length > 0) {
+          setImage(assets[0].uri);
+        } else {
+          Alert.alert('No image selected');
+        }
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+    }
+  };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -55,11 +79,14 @@ const Profile = ({ navigation }) => {
         </View>
       </ImageBackground>
       <View style={styles.Avt}>
-        <View style={{ alignItems: 'center' }}>
-          <TouchableOpacity activeOpacity={1}>
-            <Image source={cong} style={styles.CircleMen} />
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <TouchableOpacity onPress={pickImage} activeOpacity={0.8}>
+            {image ? (
+              <Image source={{ uri: image }} style={styles.CircleMen}/>
+            ) : (
+              <Image source={cong} style={styles.CircleMen} />
+            )}
           </TouchableOpacity>
-          <Text style={{ textAlign: 'center', fontSize: wp('5%'), marginTop: hp('1%'), fontWeight: '500' }}>{userInfo.fullName}</Text>
         </View>
       </View>
       <View style={{ paddingLeft: wp('5%'), paddingRight: wp('5%') }}>

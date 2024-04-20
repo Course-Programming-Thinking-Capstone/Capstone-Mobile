@@ -6,6 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import gmail from '../assets/Noti/bag.png'
 import dotAc from '../assets/Noti/dotAc.png'
 import dotIn from '../assets/Noti/dotIn.png'
+import { formatDate } from '../FormatPrice/FormatDate';
 
 const Notification = () => {
     const [notiData, setNotiData] = useState([]);
@@ -32,7 +33,6 @@ const Notification = () => {
         try {
             const status = await updateNoti(id);
             if (status && status.isRead !== null) {
-                console.log("Notification status:", status.isRead);
                 fetchNoti();
             }
         } catch (error) {
@@ -47,7 +47,7 @@ const Notification = () => {
             </View>
             <View>
                 <Text style={styles.notificationTxt}>{item.title}.</Text>
-                <Text style={[styles.notificationTxt, { color: '#c2c3c4' }]}>{item.date}</Text>
+                <Text style={[styles.notificationTxt, { color: '#c2c3c4' }]}>{formatDate(item.date)}</Text>
             </View>
             <View>
                 <Image source={item.isRead ? dotIn : dotAc} style={{ width: wp('5%'), height: hp('5%') }} />

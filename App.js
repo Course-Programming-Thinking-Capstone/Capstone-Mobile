@@ -40,8 +40,10 @@ import GameIntro from './screens/GameIntro';
 import AccountDetail from './screens/AccountDetail';
 import Notification from './screens/Notification';
 const Tab = createBottomTabNavigator();
-LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
+LogBox.ignoreLogs(['new NativeEventEmitter']);
 LogBox.ignoreAllLogs();
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
 function MyTabs() {
   const navigation = useNavigation();
   const goBack = () => {
@@ -151,6 +153,7 @@ function KidTab() {
   );
 }
 const Stack = createStackNavigator();
+
 export default function App() {
 
   const goBack = () => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView, Button } from 'react-native';
 import { Video } from 'expo-av';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -11,6 +11,7 @@ import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { useWindowDimensions } from 'react-native';
 
 import HTML from 'react-native-render-html';
+import { getStarted } from '../Api/Progress';
 const StudyCourse = ({ route, navigation }) => {
     const { width: windowWidth } = useWindowDimensions();
     const [selectedContent, setSelectedContent] = useState(route.params.Content);
@@ -28,6 +29,7 @@ const StudyCourse = ({ route, navigation }) => {
             await ScreenOrientation.unlockAsync();
         }
     };
+
 
     useEffect(() => {
         return () => {
@@ -82,23 +84,25 @@ const StudyCourse = ({ route, navigation }) => {
 
     return (
         <View key={currentId} style={styles.container}>
-            <View style={{width:wp('100%'),height:hp('50%')}}>
-                <ScrollView style={{ flex: 1}}>
+            <View style={{ width: wp('100%'), height: hp('50%') }}>
+                <ScrollView style={{ flex: 1 }}>
                     {currentType === 'Video' ? (
-                        <Video
-                            source={{ uri: directUrl }}
-                            rate={1.0}
-                            volume={1.0}
-                            isMuted={false}
-                            resizeMode="cover"
-                            isLooping
-                            shouldPlay
-                            style={styles.video}
-                            useNativeControls
-                            onFullscreenUpdate={(event) => handleFullscreenUpdate(event.fullscreenUpdate)}
-                        />
+                        <View>
+                            <Video
+                                source={{ uri: directUrl }}
+                                rate={1.0}
+                                volume={1.0}
+                                isMuted={false}
+                                resizeMode="cover"
+                                isLooping
+                                shouldPlay
+                                style={styles.video}
+                                useNativeControls
+                                onFullscreenUpdate={(event) => handleFullscreenUpdate(event.fullscreenUpdate)}
+                            />
+                        </View>
                     ) : currentType === 'Document' ? (
-                        <View style={{ paddingLeft: wp('2%')}}>
+                        <View style={{ paddingLeft: wp('2%') }}>
                             <HTML source={{ html: selectedContent }} contentWidth={windowWidth}
                                 tagsStyles={{
                                     p: { fontSize: wp('5%') },
@@ -110,7 +114,7 @@ const StudyCourse = ({ route, navigation }) => {
                     ) : null}
                 </ScrollView>
             </View>
-            <View style={{ marginLeft: wp('2%'), marginRight: wp('2%'),marginTop:hp('2%')  }}>
+            <View style={{ marginLeft: wp('2%'), marginRight: wp('2%'), marginTop: hp('2%') }}>
                 <Text style={{ marginBottom: hp('2%'), fontSize: wp('4%'), marginLeft: wp('2%'), fontWeight: '500', color: 'blue' }}>Next Lesson:</Text>
                 <FlatList
                     data={filteredLessons}

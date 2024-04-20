@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import hello from '../assets/HomePage/hello.png'
 import background from '../assets/HomePage/gif5.gif'
 import noti from '../assets/HomePage/noti.png'
+import notiIn from '../assets/HomePage/notiIn.png'
 import search from '../assets/HomePage/search.png'
 import filter from '../assets/HomePage/filter.png'
 import { useNavigation } from "@react-navigation/native";
@@ -15,24 +16,15 @@ import { getUserInfo } from '../Api/Parents';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { getStudentCourse } from '../Api/Children'
 import Loading from '../Loading/Loading'
+import { getNoti } from '../Api/Notification'
 const KidHome = () => {
     const navigation = useNavigation();
     const [loading, setLoading] = useState(true);
-    const Course = [
-        { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg') },
-        { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 VND', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg') },
-        { id: '5', name: 'Lập trình with C/C++', teacher: 'CongLT', price: '3.500.000 VND', image: require('../assets/MyCourse/kid5.jpg') },
-    ];
-    const Done = [
-        { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 VND', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg') },
-        { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1.500.000 VND', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg') },
-    ];
+    const [notiData, setNotiData] = useState([]);
     useEffect(() => {
-        fetchInfo()
+        fetchInfo();
+        fetchNoti();
     }, [])
-    const numberOfItems = 2;
-    const limitedCourse = Course.slice(0, numberOfItems);
-    const limitedDone = Done.slice(0, numberOfItems);
     const [userInfo, setUserInfo] = useState([])
     const fetchInfo = async () => {
         try {
@@ -42,6 +34,18 @@ const KidHome = () => {
             }
         } catch (error) {
             console.error("Error fetching data:", error);
+        }
+    };
+    const fetchNoti = async () => {
+        try {
+            const data = await getNoti();
+            if (data) {
+                setNotiData(data.results);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
         }
     };
     const [studentCourse, setStudentCourse] = useState([])
@@ -137,8 +141,12 @@ const KidHome = () => {
                             </View>
                             <Text style={styles.Text}>Let's start learning!</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>navigation.navigate('Notification')} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingLeft: wp('2%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
-                            <Image source={noti} style={styles.Noti} />
+                        <TouchableOpacity onPress={() => navigation.navigate('Notification')} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
+                            {notiData.isRead ? (
+                                <Image source={noti} style={[styles.Noti,{marginLeft: wp('2%')}]} />
+                            ) : (
+                                <Image source={notiIn} style={[styles.Noti,{marginLeft:wp('1.5%')}]} />
+                            )}
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
