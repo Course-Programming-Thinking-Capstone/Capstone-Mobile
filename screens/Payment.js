@@ -173,19 +173,15 @@ const Payment = ({ route, navigation }) => {
                             {loading ? (
                                 <Loading />
                             ) : (
-                                <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}> {contact.email && contact.email.split('@').map((part, index) => (
+                                <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%') }}> 
+                                {/* {contact.email && contact.email.split('@').map((part, index) => (
                                     <Text key={index}>
                                         {index > 0 && <Text>{"\n@"}</Text>}
                                         {part}
                                     </Text>
-                                ))}</Text>
+                                ))} */} {contact.email}
+                                </Text>
                             )}
-                        </View>
-                    </View>
-                    <View style={[styles.Account]}>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 500, color: '#212121CC', fontSize: wp('4%') }}>Zalo</Text>
-                            <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}>0393103426</Text>
                         </View>
                     </View>
                 </View>
@@ -349,7 +345,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 0.5,
-        width: wp('44%'),
+        width: wp('90%'),
         marginTop: hp('2%'),
         borderRadius: 10,
         borderColor: '#21212133',

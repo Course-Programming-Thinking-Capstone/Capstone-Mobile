@@ -42,8 +42,6 @@ import Notification from './screens/Notification';
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs(['new NativeEventEmitter']);
 LogBox.ignoreAllLogs();
-import { NativeEventEmitter, NativeModules } from 'react-native';
-
 function MyTabs() {
   const navigation = useNavigation();
   const goBack = () => {
@@ -153,7 +151,6 @@ function KidTab() {
   );
 }
 const Stack = createStackNavigator();
-
 export default function App() {
 
   const goBack = () => {

@@ -46,7 +46,7 @@ const StudyProcess = () => {
   )
   return (
     <View style={styles.Container}>
-      <Text style={{ color: '#1A9CB7', textAlign: 'center', fontSize: isSmallPhone || isSmallTablet ? 20 : 25, marginTop: hp('5%') }}>Course: What is programming?</Text>
+      <Text style={{ color: '#1A9CB7', textAlign: 'center', fontSize: isSmallPhone || isSmallTablet ? 20 : 25, marginTop: hp('5%') }}>Course: Program with Python</Text>
       <FlatList
         data={data}
         keyExtractor={item => item.id}

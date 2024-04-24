@@ -15,11 +15,11 @@ const CancelOrder = ({ route, navigation }) => {
   const [selected, setSelected] = React.useState("");
   const [loading, setLoading] = useState(false);
   const data = [
-    { key: '1', value: 'Muốn mua khóa học khác' },
-    { key: '2', value: 'Muốn thay đổi hình thức thanh toán' },
-    { key: '3', value: 'Muốn thay đổi thông tin trẻ' },
-    { key: '4', value: 'Chưa áp dụng voucher giảm giá' },
-    { key: '5', value: 'Thay đổi ý, không mua nữa' },
+    { key: '1', value: 'I want to buy another course' },
+    { key: '2', value: 'I want to change payment method' },
+    { key: '3', value: 'I want to change child information' },
+    { key: '4', value: 'Discount vouchers have not been applied yet' },
+    { key: '5', value: 'I do not want to buy anymore' },
   ]
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -64,14 +64,14 @@ const CancelOrder = ({ route, navigation }) => {
             <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>Best Seller</Text>
           </View>
           <Text style={{ marginLeft: wp('1.5%'), fontSize: isSmallPhone || isSmallTablet ? wp('3.3%') : wp('4%'), fontWeight: '500',width:wp('50%') }}>{Name}</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
+          {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
             <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
             <Text style={{
               fontWeight: 'bold',
               color: '#40BFFF',
               fontSize: wp('3.8%')
             }}>{Lecture}</Text>
-          </View>
+          </View> */}
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
             <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
             <Text style={{
@@ -98,11 +98,11 @@ const CancelOrder = ({ route, navigation }) => {
       <Text style={{ marginTop: hp('1%'), marginBottom: ('2%'), fontSize: wp('4.2%'), fontWeight: '500' }}> Order cancellation policy </Text>
       <View style={[styles.TxtInput, { borderStyle: 'dashed', height: hp('28%'), paddingLeft: wp('5%'), paddingRight: wp('1.5%'), borderColor: '#FF8A00', paddingTop: hp('0.5%'), marginBottom: hp('1%') }]}>
         <ScrollView>
-          <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4%') }}>1. Chúng tôi sẽ không thể khôi phục lại đơn hàng đã hủy.</Text>
-          <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4%') }}>2. Yêu cầu hủy đơn sẽ được Staff xét duyệt trong vòng 30p.</Text>
-          <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4%') }}>3. Kết quả xét duyệt sẽ được gửi về thông báo trong hộp thư.</Text>
-          <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4%') }}>4. Nếu đơn hủy thành công, tiền sẽ hoàn về ví điện tử 3 - 5 ngày.</Text>
-          <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4%'), marginBottom: hp('1%') }}>5. Mỗi khách hàng chỉ được phép hủy đơn hàng 3 lần/ 1 tháng.</Text>
+          <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4%') }}>1. We will not be able to restore canceled orders.</Text>
+          <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4%') }}>2. The request to cancel an order will be reviewed by staff within 30 minutes."</Text>
+          <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4%') }}>3. The approval result will be sent as a notification in the notification.</Text>
+          <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4%') }}>4. If the cancellation is successful, the money will be returned to your e-wallet</Text>
+          <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4%'), marginBottom: hp('1%') }}>5. Each customer is only allowed to cancel orders 3 times/month.</Text>
         </ScrollView>
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
@@ -113,7 +113,7 @@ const CancelOrder = ({ route, navigation }) => {
           }}
           onValueChange={() => se}
         />
-        <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}>Tôi đã đọc và đồng ý chính sách của KidsPro</Text>
+        <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4%') }}>I have read and agree to the KidsPro's policy.</Text>
       </View>
       <View style={styles.Enroll}>
         <TouchableOpacity

@@ -110,7 +110,7 @@ const LessonDetails = ({ route }) => {
     const [routes] = useState([
         { key: 'about', title: 'About' },
         { key: 'lessons', title: 'Lessons' },
-        { key: 'reviews', title: 'Reviews' },
+        // { key: 'reviews', title: 'Reviews' },
     ]);
     const [isPressed1, setIsPressed1] = useState(true);
     const [isPressed2, setIsPressed2] = useState(true);
@@ -279,100 +279,100 @@ const LessonDetails = ({ route }) => {
                 </ScrollView>
             </View>
         ),
-        reviews: () => (
-            <View>
-                <ScrollView showsVerticalScrollIndicator={false} style={{ height: isSmallPhone || isSmallTablet ? hp('59%') : hp('62%') }}>
-                    <Text style={{ fontSize: wp('4%'), fontWeight: '500', marginTop: hp('1%') }}>Reviews <Text style={{ color: 'blue' }}> (45)</Text></Text>
-                    <View style={styles.Search}>
-                        <Image source={search} style={styles.SearchIcon} />
-                        <TextInput
-                            placeholder="Search in reviews"
-                        />
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={handlePress} style={[styles.ButtonReview,
-                        { backgroundColor: isPressed ? '#F4F6F9' : '#327CF7' }]}>
-                            <Text style={{ color: isPressed ? '#327CF7' : '#F4F6F9', fontSize: wp('3.4%') }}>All Reviews</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={handlePress1} style={[styles.ButtonReview,
-                        { backgroundColor: isPressed1 ? '#F4F6F9' : '#327CF7' }]}>
-                            <Text style={{ color: isPressed1 ? '#327CF7' : '#F4F6F9', fontSize: wp('3.4%') }}>Lasted</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={handlePress2} style={[styles.ButtonReview,
-                        { backgroundColor: isPressed2 ? '#F4F6F9' : '#327CF7' }]}>
-                            <Text style={{ color: isPressed2 ? '#327CF7' : '#F4F6F9', fontSize: wp('3.4%') }}>Modify</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={handlePress3} style={[styles.ButtonReview,
-                        { backgroundColor: isPressed3 ? '#F4F6F9' : '#327CF7' }]}>
-                            <Text style={{ color: isPressed3 ? '#327CF7' : '#F4F6F9', fontSize: wp('3.4%') }}>Verified</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%'), justifyContent: 'center' }}>
-                        <View style={{ height: wp('0.2%'), width: wp('100%'), backgroundColor: '#E9E9E9' }} />
-                    </View>
-                    <View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%') }}>
-                            <Image source={cong} style={styles.CircleMen} />
-                            <Text style={{ marginLeft: wp('3%'), fontWeight: '500', fontSize: wp('4%') }}>Lương Thành Công</Text>
-                            <Text style={{ position: 'absolute', right: 0, color: '#94867D', fontWeight: '500' }}>11 months ago</Text>
-                        </View>
-                        <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%') }}>
-                            <Image source={star1} style={{ width: wp('50%'), height: hp('4%'), position: 'absolute', left: 0 }} />
-                            <Text style={{ color: '#94867D' }}>5.0</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%'), justifyContent: 'center' }}>
-                            <View style={{ height: wp('0.2%'), width: wp('100%'), backgroundColor: '#E9E9E9' }} />
-                        </View>
-                    </View>
-                    <View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%') }}>
-                            <Image source={thien} style={styles.CircleMen} />
-                            <Text style={{ marginLeft: wp('3%'), fontWeight: '500', fontSize: wp('4%') }}>Trần Minh Thiện</Text>
-                            <Text style={{ position: 'absolute', right: 0, color: '#94867D', fontWeight: '500' }}>11 months ago</Text>
-                        </View>
-                        <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%') }}>
-                            <Image source={star1} style={{ width: wp('50%'), height: hp('4%'), position: 'absolute', left: 0 }} />
-                            <Text style={{ color: '#94867D' }}>5.0</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%'), justifyContent: 'center' }}>
-                            <View style={{ height: wp('0.2%'), width: wp('100%'), backgroundColor: '#E9E9E9' }} />
-                        </View>
-                    </View>
-                    <View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%') }}>
-                            <Image source={vu} style={styles.CircleMen} />
-                            <Text style={{ marginLeft: wp('3%'), fontWeight: '500', fontSize: wp('4%') }}>Nguyễn Tuấn Vũ</Text>
-                            <Text style={{ position: 'absolute', right: 0, color: '#94867D', fontWeight: '500' }}>11 months ago</Text>
-                        </View>
-                        <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%') }}>
-                            <Image source={star1} style={{ width: wp('50%'), height: hp('4%'), position: 'absolute', left: 0 }} />
-                            <Text style={{ color: '#94867D' }}>5.0</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%'), justifyContent: 'center' }}>
-                            <View style={{ height: wp('0.2%'), width: wp('100%'), backgroundColor: '#E9E9E9' }} />
-                        </View>
-                    </View>
-                    <View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%') }}>
-                            <Image source={an} style={styles.CircleMen} />
-                            <Text style={{ marginLeft: wp('3%'), fontWeight: '500', fontSize: wp('4%') }}>Thành An</Text>
-                            <Text style={{ position: 'absolute', right: 0, color: '#94867D', fontWeight: '500' }}>11 months ago</Text>
-                        </View>
-                        <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%') }}>
-                            <Image source={star1} style={{ width: wp('50%'), height: hp('4%'), position: 'absolute', left: 0 }} />
-                            <Text style={{ color: '#94867D' }}>5.0</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%'), justifyContent: 'center' }}>
-                            <View style={{ height: wp('0.2%'), width: wp('100%'), backgroundColor: '#E9E9E9' }} />
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
-        ),
+        // reviews: () => (
+        //     <View>
+        //         <ScrollView showsVerticalScrollIndicator={false} style={{ height: isSmallPhone || isSmallTablet ? hp('59%') : hp('62%') }}>
+        //             <Text style={{ fontSize: wp('4%'), fontWeight: '500', marginTop: hp('1%') }}>Reviews <Text style={{ color: 'blue' }}> (45)</Text></Text>
+        //             <View style={styles.Search}>
+        //                 <Image source={search} style={styles.SearchIcon} />
+        //                 <TextInput
+        //                     placeholder="Search in reviews"
+        //                 />
+        //             </View>
+        //             <View style={{ flexDirection: 'row' }}>
+        //                 <TouchableOpacity onPress={handlePress} style={[styles.ButtonReview,
+        //                 { backgroundColor: isPressed ? '#F4F6F9' : '#327CF7' }]}>
+        //                     <Text style={{ color: isPressed ? '#327CF7' : '#F4F6F9', fontSize: wp('3.4%') }}>All Reviews</Text>
+        //                 </TouchableOpacity>
+        //                 <TouchableOpacity onPress={handlePress1} style={[styles.ButtonReview,
+        //                 { backgroundColor: isPressed1 ? '#F4F6F9' : '#327CF7' }]}>
+        //                     <Text style={{ color: isPressed1 ? '#327CF7' : '#F4F6F9', fontSize: wp('3.4%') }}>Lasted</Text>
+        //                 </TouchableOpacity>
+        //                 <TouchableOpacity onPress={handlePress2} style={[styles.ButtonReview,
+        //                 { backgroundColor: isPressed2 ? '#F4F6F9' : '#327CF7' }]}>
+        //                     <Text style={{ color: isPressed2 ? '#327CF7' : '#F4F6F9', fontSize: wp('3.4%') }}>Modify</Text>
+        //                 </TouchableOpacity>
+        //                 <TouchableOpacity onPress={handlePress3} style={[styles.ButtonReview,
+        //                 { backgroundColor: isPressed3 ? '#F4F6F9' : '#327CF7' }]}>
+        //                     <Text style={{ color: isPressed3 ? '#327CF7' : '#F4F6F9', fontSize: wp('3.4%') }}>Verified</Text>
+        //                 </TouchableOpacity>
+        //             </View>
+        //             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%'), justifyContent: 'center' }}>
+        //                 <View style={{ height: wp('0.2%'), width: wp('100%'), backgroundColor: '#E9E9E9' }} />
+        //             </View>
+        //             <View>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%') }}>
+        //                     <Image source={cong} style={styles.CircleMen} />
+        //                     <Text style={{ marginLeft: wp('3%'), fontWeight: '500', fontSize: wp('4%') }}>Lương Thành Công</Text>
+        //                     <Text style={{ position: 'absolute', right: 0, color: '#94867D', fontWeight: '500' }}>11 months ago</Text>
+        //                 </View>
+        //                 <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%') }}>
+        //                     <Image source={star1} style={{ width: wp('50%'), height: hp('4%'), position: 'absolute', left: 0 }} />
+        //                     <Text style={{ color: '#94867D' }}>5.0</Text>
+        //                 </View>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%'), justifyContent: 'center' }}>
+        //                     <View style={{ height: wp('0.2%'), width: wp('100%'), backgroundColor: '#E9E9E9' }} />
+        //                 </View>
+        //             </View>
+        //             <View>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%') }}>
+        //                     <Image source={thien} style={styles.CircleMen} />
+        //                     <Text style={{ marginLeft: wp('3%'), fontWeight: '500', fontSize: wp('4%') }}>Trần Minh Thiện</Text>
+        //                     <Text style={{ position: 'absolute', right: 0, color: '#94867D', fontWeight: '500' }}>11 months ago</Text>
+        //                 </View>
+        //                 <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%') }}>
+        //                     <Image source={star1} style={{ width: wp('50%'), height: hp('4%'), position: 'absolute', left: 0 }} />
+        //                     <Text style={{ color: '#94867D' }}>5.0</Text>
+        //                 </View>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%'), justifyContent: 'center' }}>
+        //                     <View style={{ height: wp('0.2%'), width: wp('100%'), backgroundColor: '#E9E9E9' }} />
+        //                 </View>
+        //             </View>
+        //             <View>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%') }}>
+        //                     <Image source={vu} style={styles.CircleMen} />
+        //                     <Text style={{ marginLeft: wp('3%'), fontWeight: '500', fontSize: wp('4%') }}>Nguyễn Tuấn Vũ</Text>
+        //                     <Text style={{ position: 'absolute', right: 0, color: '#94867D', fontWeight: '500' }}>11 months ago</Text>
+        //                 </View>
+        //                 <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%') }}>
+        //                     <Image source={star1} style={{ width: wp('50%'), height: hp('4%'), position: 'absolute', left: 0 }} />
+        //                     <Text style={{ color: '#94867D' }}>5.0</Text>
+        //                 </View>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%'), justifyContent: 'center' }}>
+        //                     <View style={{ height: wp('0.2%'), width: wp('100%'), backgroundColor: '#E9E9E9' }} />
+        //                 </View>
+        //             </View>
+        //             <View>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%') }}>
+        //                     <Image source={an} style={styles.CircleMen} />
+        //                     <Text style={{ marginLeft: wp('3%'), fontWeight: '500', fontSize: wp('4%') }}>Thành An</Text>
+        //                     <Text style={{ position: 'absolute', right: 0, color: '#94867D', fontWeight: '500' }}>11 months ago</Text>
+        //                 </View>
+        //                 <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry</Text>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1%') }}>
+        //                     <Image source={star1} style={{ width: wp('50%'), height: hp('4%'), position: 'absolute', left: 0 }} />
+        //                     <Text style={{ color: '#94867D' }}>5.0</Text>
+        //                 </View>
+        //                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('1.5%'), justifyContent: 'center' }}>
+        //                     <View style={{ height: wp('0.2%'), width: wp('100%'), backgroundColor: '#E9E9E9' }} />
+        //                 </View>
+        //             </View>
+        //         </ScrollView>
+        //     </View>
+        // ),
     });
     const goBack = () => {
         navigation.goBack();

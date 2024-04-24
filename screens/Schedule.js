@@ -2,29 +2,72 @@ import {
     View,
     StyleSheet,
 } from 'react-native';
-import React, { useState } from "react-native";
+import React, { useState, useEffect } from 'react';
 import WeeklyCalendar from 'react-native-weekly-calendar';
-
+import { getSchedule } from '../Api/Schedule';
+import moment from 'moment';
 const Schedule = () => {
-    const sampleEvents = [
-        { 'start': '2024-04-01 09:00:00', 'duration': '00:20:00', 'note': 'Schedule 1' },
-        { 'start': '2024-04-01 14:00:00', 'duration': '01:00:00', 'note': 'Schedule 2' },
-        { 'start': '2024-04-01 08:00:00', 'duration': '00:30:00', 'note': 'Schedule 3' },
-        { 'start': '2024-04-03 11:00:00', 'duration': '02:00:00', 'note': 'Schedule 4' },
-        { 'start': '2024-04-04 15:00:00', 'duration': '01:30:00', 'note': 'Schedule 5' },
-        { 'start': '2024-04-04 18:00:00', 'duration': '02:00:00', 'note': 'Schedule 6' },
-        { 'start': '2024-04-09 22:00:00', 'duration': '01:00:00', 'note': 'Schedule 8'},
-        { 'start': '2024-04-11 22:00:00', 'duration': '01:00:00', 'note': 'Schedule 9'},
-        { 'start': '2024-04-13 22:00:00', 'duration': '01:00:00', 'note': 'Schedule 10'},
-        { 'start': '2024-04-15 22:00:00', 'duration': '01:00:00', 'note': 'Schedule 11'},
+    const [schedule, setSchedule] = useState([]);
 
-    ]
+    useEffect(() => {
+        fetchSchedule();
+    }, []);
+
+    const fetchSchedule = async () => {
+        try {
+            const scheduleData = await getSchedule();
+            if (scheduleData) {
+                setSchedule(scheduleData);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    if (!schedule || !schedule.studyDay) {
+        return null;
+    }
+
+    const events = [];
+
+    const startDate = moment(schedule.openClass, 'YYYY/MM/DD');
+    const endDate = moment(schedule.closeClass, 'YYYY/MM/DD');
+    const durationInDays = endDate.diff(startDate, 'days') + 1;
+
+    for (let i = 0; i < durationInDays; i++) {
+        const currentDate = startDate.clone().add(i, 'days');
+        const dayOfWeek = currentDate.format('dddd');
+        if (schedule.studyDay.includes(dayOfWeek)) {
+            const start = moment(`${currentDate.format('YYYY/MM/DD')} ${schedule.startSlot}`, 'YYYY/MM/DD HH:mm:ss');
+            const eventStart = moment(`${currentDate.format('YYYY/MM/DD')} ${schedule.startSlot}`, 'YYYY/MM/DD HH:mm:ss');
+            const eventEnd = moment(`${currentDate.format('YYYY/MM/DD')} ${schedule.endSlot}`, 'YYYY/MM/DD HH:mm:ss');
+            const durationMs = eventEnd.diff(eventStart); // Số miligiây của duration
+            const duration = moment.utc(durationMs).format("HH:mm:ss"); // Biểu diễn duration dưới dạng chuỗi "HH:mm:ss"
+
+            for (let j = 0; j < schedule.classId; j++) {
+                const eventStart = start.clone().add(j * schedule.slotDuration, 'minutes');
+                const eventEnd = eventStart.clone().add(schedule.duration, 'hours');
+                events.push({
+                    start: eventStart.format('YYYY-MM-DD HH:mm:ss'),
+                    duration: duration, // Sử dụng duration mà không cần gọi bất kỳ phương thức nào
+                    note: `Class ${schedule.classCode}`
+                });
+            }
+        }
+    }
+
+
+
+    console.log(events);
     return (
         <View style={styles.container}>
-            <WeeklyCalendar events={sampleEvents} dayLabelStyle={{color:'blue',fontWeight:'600'}} style={{ flex:1,backgroundColor:'white'}} themeColor='blue' />
+            <WeeklyCalendar events={events} dayLabelStyle={{ color: 'blue', fontWeight: '600' }} style={{ flex: 1, backgroundColor: 'white' }} themeColor='blue' />
         </View>
     );
 };
+
+
+
 export default Schedule;
 const styles = StyleSheet.create({
     container: {

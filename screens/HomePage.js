@@ -128,7 +128,7 @@ const HomePage = ({ navigation }) => {
         }}>
             <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                {/* <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} /> */}
                 <Text style={styles.Name}>{item.name}</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>

@@ -1,6 +1,6 @@
 import { StyleSheet, View, Image, TouchableOpacity, ImageBackground, Text, Modal } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import cong from '../assets/Lesson/cong2.jpg'
+import ava from '../assets/Profile/gamer.png'
 import Back from '../assets/Profile/back1.jpg'
 import teacher from '../assets/Lesson/teacher1.png'
 import right from '../assets/HomePage/right.png'
@@ -84,9 +84,10 @@ const Profile = ({ navigation }) => {
             {image ? (
               <Image source={{ uri: image }} style={styles.CircleMen}/>
             ) : (
-              <Image source={cong} style={styles.CircleMen} />
+              <Image source={ava} style={styles.CircleMen} /> 
             )}
           </TouchableOpacity>
+          <Text style={{fontSize:wp('5%'),marginTop:hp('2%'),fontWeight:'500'}}>{userInfo.fullName}</Text>
         </View>
       </View>
       <View style={{ paddingLeft: wp('5%'), paddingRight: wp('5%') }}>
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#EFEFEF',
     borderWidth: 2,
-    borderColor: 'blue'
+    // borderColor: 'white'
   },
   DetailForm: {
     backgroundColor: 'white',

@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         marginRight:wp('2.5%')
     },
     Name: {
-        width: wp('50%'),
+        width: wp('35%'), 
         fontWeight: 'bold',
         color: '#223263',
         fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.7%')

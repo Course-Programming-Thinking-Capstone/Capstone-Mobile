@@ -41,31 +41,14 @@ const Course = ({ navigation, route }) => {
     }
   };
   const [section, setSectionDetail] = useState([]);
-  // const handleGetStarted = async (sectionId) => {
-  //   try {
-  //     // setLoading1(true);
-  //     const success = await getStarted(sectionId, CourseId);
-  //     if (success) {
-  //       console.log("Success");
-  //     } else {
-  //       Alert.alert('Đăng ký thất bại !!!');
-  //     }
-  //   } catch (error) {
-  //     console.error("Error handling add children:", error);
-  //   } finally {
-  //     // setLoading1(false);
-  //   }
-  // };
   const [showLessons, setShowLessons] = useState({});
   const render = ({ item }) => (
     <View key={item.id}>
-      <TouchableOpacity onPress={() => {setShowLessons(prevState => ({ ...prevState, [item.id]: !prevState[item.id] }))
-      // ,handleGetStarted(item.id)
-      }} style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]}>
-        <View style={{ flexDirection: 'row', alignItems: "center" }}>
-          <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4%'), marginLeft: wp('1.5%'), width: isSmallPhone || isSmallTablet ? wp('80%') : wp('78%'), textAlign: "left", height: hp('5%') }}>Section {item.order} <Text>- {item.name} </Text></Text>
-        </View>
-        <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), marginRight: wp('5%') }} />
+      <TouchableOpacity onPress={() => {
+        setShowLessons(prevState => ({ ...prevState, [item.id]: !prevState[item.id] }))
+      }} style={[styles.LessBorder,{alignItems:'center'}]}>
+        <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4%'), marginLeft: wp('1.5%'), width: isSmallPhone || isSmallTablet ? wp('80%') : wp('80%'), textAlign: "left" }}>Section {item.order} <Text>- {item.name} </Text></Text>
+        <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'),position:'absolute',right:wp('4%'),paddingTop:hp('1%')}} /> 
       </TouchableOpacity>
       {showLessons[item.id] &&
         <View>
@@ -202,7 +185,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: wp('2%'),
     alignItems: 'center',
-    paddingVertical: hp('1%'),
     marginBottom: hp('2%'),
     shadowColor: 'black',
     shadowOpacity: 0.9,
