@@ -1,11 +1,13 @@
 import {
     View,
     StyleSheet,
+    TouchableOpacity,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import WeeklyCalendar from 'react-native-weekly-calendar';
 import { getSchedule } from '../Api/Schedule';
 import moment from 'moment';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Schedule = () => {
     const [schedule, setSchedule] = useState([]);
 
@@ -41,27 +43,26 @@ const Schedule = () => {
             const start = moment(`${currentDate.format('YYYY/MM/DD')} ${schedule.startSlot}`, 'YYYY/MM/DD HH:mm:ss');
             const eventStart = moment(`${currentDate.format('YYYY/MM/DD')} ${schedule.startSlot}`, 'YYYY/MM/DD HH:mm:ss');
             const eventEnd = moment(`${currentDate.format('YYYY/MM/DD')} ${schedule.endSlot}`, 'YYYY/MM/DD HH:mm:ss');
-            const durationMs = eventEnd.diff(eventStart); // Số miligiây của duration
-            const duration = moment.utc(durationMs).format("HH:mm:ss"); // Biểu diễn duration dưới dạng chuỗi "HH:mm:ss"
+            const durationMs = eventEnd.diff(eventStart);
+            const duration = moment.utc(durationMs).format("HH:mm:ss"); 
 
             for (let j = 0; j < schedule.classId; j++) {
                 const eventStart = start.clone().add(j * schedule.slotDuration, 'minutes');
                 const eventEnd = eventStart.clone().add(schedule.duration, 'hours');
                 events.push({
                     start: eventStart.format('YYYY-MM-DD HH:mm:ss'),
-                    duration: duration, // Sử dụng duration mà không cần gọi bất kỳ phương thức nào
-                    note: `Class ${schedule.classCode}`
+                    duration: duration, 
+                    note: `${schedule.classCode}`,
+                    roomUrl: schedule.roomUrl,
+                    teacherName:schedule.teacherName,
+                    totalSlot: schedule.totalSlot
                 });
             }
         }
     }
-
-
-
-    console.log(events);
     return (
         <View style={styles.container}>
-            <WeeklyCalendar events={events} dayLabelStyle={{ color: 'blue', fontWeight: '600' }} style={{ flex: 1, backgroundColor: 'white' }} themeColor='blue' />
+            <WeeklyCalendar events={events} dayLabelStyle={{ color: 'blue', fontWeight: '600' }} style={{ flex: 1, backgroundColor: 'white'}} themeColor='blue' />
         </View>
     );
 };
