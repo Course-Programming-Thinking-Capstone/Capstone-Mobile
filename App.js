@@ -39,6 +39,7 @@ import QuizScreen from './screens/Quiz';
 import GameIntro from './screens/GameIntro';
 import AccountDetail from './screens/AccountDetail';
 import Notification from './screens/Notification';
+import KidSearch from './screens/KidSearch';
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs(['new NativeEventEmitter']);
 LogBox.ignoreAllLogs();
@@ -434,6 +435,21 @@ export default function App() {
             headerTitleAlign: 'center',
           }}
         />
+        <Stack.Screen name="KidSearch" component={KidSearch} options={{
+          tabBarHideOnKeyboard: false,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('./assets/HomePage/course.png')}
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: wp('5%'), letterSpacing: wp('0.5%'), fontWeight: 'bold', color: '#223263' }}>Search Class</Text>
+            </View>
+          ),
+          headerTitleAlign: 'center',
+        }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

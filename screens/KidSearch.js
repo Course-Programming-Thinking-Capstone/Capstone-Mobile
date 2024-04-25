@@ -6,34 +6,37 @@ import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import learning from '../assets/Lesson/learning.png'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { getAllCourse } from '../Api/Course';
 import { formatPrice } from '../FormatPrice/Format';
-const SearchLesson = ({ navigation }) => {
+import { getStudentCourse } from '../Api/Children';
+import ProgressBar from 'react-native-progress/Bar';
+const KidSearch = ({ navigation }) => {
     const textInputRef = useRef(null);
-    const [course, setCourse] = useState([])
+    const [studentClass, setStudentClass] = useState([])
+    // const [loading, setLoading] = useState(true);
     useEffect(() => {
-        fetchCourse()
+        fetchClass()
     }, [])
-    const fetchCourse = async () => {
+    const fetchClass = async () => {
         try {
-            const courseData = await getAllCourse();
-            if (courseData) {
-                setCourse(courseData.results);
+            const classData = await getStudentCourse();
+            if (classData) {
+                setStudentClass(classData);
+                // setLoading(false);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     };
     const [searchQuery, setSearchQuery] = useState('');
-    const [filteredData, setFilteredData] = useState(course);
+    const [filteredData, setFilteredData] = useState(studentClass);
 
     const handleSearch = (text) => {
         setSearchQuery(text);
         if (text === '') {
             setFilteredData([]);
         } else {
-            const newData = course.filter((item) => {
-                const itemName = item.name.toLowerCase();
+            const newData = studentClass.filter((item) => {
+                const itemName = item.courseName.toLowerCase();
                 const searchText = text.toLowerCase();
                 return itemName.includes(searchText);
             });
@@ -42,27 +45,28 @@ const SearchLesson = ({ navigation }) => {
     };
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.Course} onPress={() => {
-            navigation.navigate('LessonDetails', {
-                Name: item.name,
-                LessImage: item.pictureUrl,
-                Price: item.price,
-                Id: item.id
-            })
-        }}>
-            <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
-            <View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                    <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                    <Text style={styles.Name}>{item.name}</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-                    <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                    <Text style={{
-                        fontWeight: 'bold',
-                        color: 'blue',
-                        fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
-                    }}>{item.isFree ? 'Free' : formatPrice(item.price)}</Text>
+        <TouchableOpacity onPress={() => { navigation.navigate('Course', { CourseId: item.courseId }) }}>
+            <View style={styles.Course}>
+                <Image source={{ uri: item.courseImage }} style={styles.CourseImage} />
+                <View>
+                    <View style={{flexDirection: 'row', alignItems: 'center', borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('47%') }}>
+                        <Text style={{
+                            fontWeight: 'bold',
+                            color: '#40BFFF',
+                            fontSize: wp('3.8%'), marginRight: wp('2%')
+                        }}>Class Code:</Text>
+                        <Text>{item.classCode}</Text>
+                    </View>
+                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500', width: wp('50%') }}>{item.courseName}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%'), marginLeft: wp('2%') }}>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: wp('1.5%') }}>
+                        <ProgressBar progress={item.courseProgress} width={wp('35%')} borderWidth={1} height={(hp('1%'))} />
+                        <Text style={{
+                            marginLeft: wp('3%'),
+                            color: '#40BFFF',
+                        }}>{item.courseProgress}/25</Text>
+                    </View>
                 </View>
             </View>
         </TouchableOpacity>
@@ -88,7 +92,7 @@ const SearchLesson = ({ navigation }) => {
                 <FlatList
                     data={filteredData}
                     renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item.classId}
                     contentContainerStyle={styles.List}
                 />
             )}
@@ -96,7 +100,7 @@ const SearchLesson = ({ navigation }) => {
     );
 };
 
-export default SearchLesson;
+export default KidSearch;
 const styles = StyleSheet.create({
     Container: {
         flex: 1,

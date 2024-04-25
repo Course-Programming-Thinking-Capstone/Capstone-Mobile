@@ -55,7 +55,6 @@ const Schedule = () => {
                     note: `${schedule.classCode}`,
                     roomUrl: schedule.roomUrl,
                     teacherName:schedule.teacherName,
-                    totalSlot: schedule.totalSlot
                 });
             }
         }

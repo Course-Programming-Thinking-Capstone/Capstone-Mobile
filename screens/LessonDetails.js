@@ -30,6 +30,8 @@ import { getCourse } from '../Api/Course';
 import { RadioButton } from 'react-native-paper';
 import close from '../assets/welcome/close1.png'
 import Loading from '../Loading/Loading'
+import ErrorModal from '../Alert/Alert';
+import LongContent from '../FormatPrice/FormatText';
 const LessonDetails = ({ route }) => {
     const [showVideo, setShowVideo] = useState(false);
     const [payment, setPayment] = React.useState('');
@@ -158,19 +160,27 @@ const LessonDetails = ({ route }) => {
                 <RadioButton
                     value={item.classCode}
                     status={payment === item.classCode ? 'checked' : 'unchecked'}
-                    onPress={() => [setPayment(item.classCode), setClassCourseId(item.classId),setClassInfo(item)]}
+                    onPress={() => [setPayment(item.classCode), setClassCourseId(item.classId), setClassInfo(item)]}
                 />
                 <Text style={{ marginLeft: wp('5%') }}>{item.classCode}</Text>
             </TouchableOpacity>
         </View>
     );
+    const [modalVisible, setModalDisplay] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
     const handleContinue = () => {
         if (!payment || !classCourseId) {
-            Alert.alert('Alert', 'Please select a class!');
+            setErrorMessage('Please select a class!');
+            setModalDisplay(true);
         } else {
             navigation.navigate('Payment', { payment, classCourseId, courseData, classInfo });
         }
-    };
+    }
+
+    const handleCloseModal = () => {
+        setModalDisplay(false);
+    }
     const renderScene = SceneMap({
         about: () => (
             <View style={{
@@ -180,7 +190,10 @@ const LessonDetails = ({ route }) => {
 
                     <View>
                         <Text style={{ fontSize: wp('4%'), fontWeight: '500', marginTop: hp('1%') }}>About Course</Text>
-                        <Text style={{ marginTop: hp('1%'), color: '#94867D', lineHeight: hp('3%'), width: wp('90%'), fontSize: wp('4%') }}>{courseData.description}</Text>
+                        <View style={{paddingRight:wp('3%')}}>
+                            <LongContent content={courseData.description} />
+                        </View>
+                        {/* <Text style={{ marginTop: hp('1%'), color: '#94867D', lineHeight: hp('3%'), width: wp('90%'), fontSize: wp('4%') }}>{courseData.description}</Text> */}
                         <Text style={{ marginTop: hp('2%'), fontSize: wp('4%'), fontWeight: '500', marginBottom: hp('2%') }}>Class Available</Text>
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                             <FlatList
@@ -422,6 +435,7 @@ const LessonDetails = ({ route }) => {
                     <Text onPress={handleContinue} style={{ fontWeight: '800', color: 'white' }}>Enroll Now</Text>
                 </View>
             </View>
+            <ErrorModal visible={modalVisible} errorMessage={errorMessage} onClose={handleCloseModal} />
         </View>
     )
 }

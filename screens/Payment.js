@@ -13,6 +13,7 @@ import Loading from '../Loading/Loading'
 import lich from '../assets/Profile/lich.png'
 import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import ErrorModal from '../Alert/Alert';
 const Payment = ({ route, navigation }) => {
     const [name, setName] = useState('')
     const [dob, setDob] = useState(null);
@@ -127,13 +128,22 @@ const Payment = ({ route, navigation }) => {
             setLoading1(false);
         }
     };
+
+    const [modalVisible, setModalDisplay] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
     const handleContinue = () => {
         if (selectedStudents.length === 0) {
-            Alert.alert('Alert', 'Please select at least one student.');
+            setErrorMessage('Select at least one student !');
+            setModalDisplay(true);
         } else {
-            navigation.navigate('PayMethods', { classCourseId, courseData, classInfo, selectedStudents  });
+            navigation.navigate('PayMethods', { classCourseId, courseData, classInfo, selectedStudents });
+
         }
     };
+    const handleCloseModal = () => {
+        setModalDisplay(false);
+    }
     return (
         <View style={styles.Container}>
             <View style={styles.AddChild}>
@@ -173,8 +183,8 @@ const Payment = ({ route, navigation }) => {
                             {loading ? (
                                 <Loading />
                             ) : (
-                                <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%') }}> 
-                                {/* {contact.email && contact.email.split('@').map((part, index) => (
+                                <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%') }}>
+                                    {/* {contact.email && contact.email.split('@').map((part, index) => (
                                     <Text key={index}>
                                         {index > 0 && <Text>{"\n@"}</Text>}
                                         {part}
@@ -292,6 +302,7 @@ const Payment = ({ route, navigation }) => {
                     onChange={onChange}
                 />
             )}
+            <ErrorModal visible={modalVisible} errorMessage={errorMessage} onClose={handleCloseModal} />
         </View>
     )
 }

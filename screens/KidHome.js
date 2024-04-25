@@ -69,59 +69,28 @@ const KidHome = () => {
             <View style={styles.Course}>
                 <Image source={{ uri: item.courseImage }} style={styles.CourseImage} />
                 <View>
-                    <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
-                        <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%') }}>Best Seller</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('47%') }}>
+                        <Text style={{
+                            fontWeight: 'bold',
+                            color: '#40BFFF',
+                            fontSize: wp('3.8%'), marginRight: wp('2%')
+                        }}>Class Code:</Text>
+                        <Text>{item.classCode}</Text>
                     </View>
                     <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500', width: wp('50%') }}>{item.courseName}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%'), marginLeft: wp('2%') }}>
-                        <Text>Class Code:</Text>
-                        <Text style={{
-                            fontWeight: 'bold',
-                            color: '#40BFFF',
-                            fontSize: wp('3.8%'), marginLeft: wp('2%')
-                        }}>{item.classCode}</Text>
                     </View>
-                    {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: wp('1.5%') }}>
-                        <ProgressBar progress={0.8} width={wp('35%')} borderWidth={1} height={(hp('1%'))} />
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: wp('1.5%') }}>
+                        <ProgressBar progress={item.courseProgress} width={wp('35%')} borderWidth={2} borderColor={'lightblue'} height={(hp('1%'))} />
                         <Text style={{
                             marginLeft: wp('3%'),
                             color: '#40BFFF',
-                        }}>20/25</Text>
-                    </View> */}
-                </View>
-            </View>
-        </TouchableOpacity>
-    );
-    const renderDone = ({ item }) => (
-        <TouchableOpacity onPress={() => { navigation.navigate('Course') }}>
-            <View style={styles.Course}>
-                <Image source={item.image} style={styles.CourseImage} />
-                <View>
-                    <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
-                        <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%') }}>Best Seller</Text>
-                    </View>
-                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{item.name}</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                        <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                        <Text style={{
-                            fontWeight: 'bold',
-                            color: '#40BFFF',
-                            fontSize: wp('3.8%')
-                        }}>{item.teacher}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <ProgressBar progress={1} width={wp('35%')} borderWidth={1} height={(hp('1%'))} />
-                        <Text style={{
-                            marginLeft: wp('2%'),
-                            color: '#40BFFF',
-                        }}>25/25</Text>
+                        }}>{item.courseProgress}/25</Text>
                     </View>
                 </View>
             </View>
         </TouchableOpacity>
     );
-
-
     return (
         <View style={styles.Container}>
             <ImageBackground source={background} style={styles.backPic}>
@@ -143,19 +112,20 @@ const KidHome = () => {
                         </View>
                         <TouchableOpacity onPress={() => navigation.navigate('Notification')} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
                             {notiData.isRead ? (
-                                <Image source={noti} style={[styles.Noti,{marginLeft: wp('2%')}]} />
+                                <Image source={noti} style={[styles.Noti, { marginLeft: wp('2%') }]} />
                             ) : (
-                                <Image source={notiIn} style={[styles.Noti,{marginLeft:wp('1.5%')}]} />
+                                <Image source={notiIn} style={[styles.Noti, { marginLeft: wp('1.5%') }]} />
                             )}
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
-                        <View style={styles.Search}>
+                        <TouchableOpacity activeOpacity={1} onPress={() => { navigation.navigate('KidSearch') }} style={styles.Search}>
                             <Image source={search} style={styles.SearchIcon} />
                             <TextInput
                                 placeholder="Search ..."
+                                editable={false}
                             />
-                        </View>
+                        </TouchableOpacity>
                         <View style={styles.Filter}>
                             <Image style={{
                                 width: wp('5.2%'),

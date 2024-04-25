@@ -9,6 +9,7 @@ import { cancerlOrder } from '../Api/Order';
 import { formatPrice } from '../FormatPrice/Format';
 import Loading from '../Loading/Loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import ErrorModal from '../Alert/Alert'
 const CancelOrder = ({ route, navigation }) => {
   const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id } = route.params;
   const [checked1, setChecked] = React.useState(false);
@@ -26,13 +27,21 @@ const CancelOrder = ({ route, navigation }) => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+  const [modalVisible, setModalDisplay] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleCancelOrder = () => {
     if (!selected) {
-      Alert.alert('Alert', 'Please select a reason for cancellation.');
+      setErrorMessage('Select a reason for cancellation !');
+      setModalDisplay(true);
     } else {
       toggleModal()
     }
   };
+  const handleCloseModal = () => {
+    setModalDisplay(false);
+  }
+
   const requestCancel = async () => {
     try {
       setLoading(true)
@@ -48,10 +57,10 @@ const CancelOrder = ({ route, navigation }) => {
     }
   };
   const handlePress = () => {
-    if (!loading) { 
+    if (!loading) {
       requestCancel();
     }
-    else{
+    else {
       Alert.alert("please wait")
     }
   };
@@ -63,7 +72,7 @@ const CancelOrder = ({ route, navigation }) => {
           <View style={{ borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('21.9%') }}>
             <Text style={{ color: 'orange', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center' }}>Best Seller</Text>
           </View>
-          <Text style={{ marginLeft: wp('1.5%'), fontSize: isSmallPhone || isSmallTablet ? wp('3.3%') : wp('4%'), fontWeight: '500',width:wp('50%') }}>{Name}</Text>
+          <Text style={{ marginLeft: wp('1.5%'), fontSize: isSmallPhone || isSmallTablet ? wp('3.3%') : wp('4%'), fontWeight: '500', width: wp('50%') }}>{Name}</Text>
           {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
             <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
             <Text style={{
@@ -93,7 +102,7 @@ const CancelOrder = ({ route, navigation }) => {
       </View>
       <Text style={{ marginTop: hp('1%'), marginBottom: ('2%'), fontSize: wp('4%'), fontWeight: '500' }}>More Information (Optional)</Text>
       <View style={styles.TxtInput}>
-        <TextInput multiline placeholder='Write more reasons here' textBreakStrategy="simple"  />
+        <TextInput multiline placeholder='Write more reasons here' textBreakStrategy="simple" />
       </View>
       <Text style={{ marginTop: hp('1%'), marginBottom: ('2%'), fontSize: wp('4.2%'), fontWeight: '500' }}> Order cancellation policy </Text>
       <View style={[styles.TxtInput, { borderStyle: 'dashed', height: hp('28%'), paddingLeft: wp('5%'), paddingRight: wp('1.5%'), borderColor: '#FF8A00', paddingTop: hp('0.5%'), marginBottom: hp('1%') }]}>
@@ -153,6 +162,7 @@ const CancelOrder = ({ route, navigation }) => {
           </View>
         </Modal>
       </View>
+      <ErrorModal visible={modalVisible} errorMessage={errorMessage} onClose={handleCloseModal} />
     </View>
   )
 }
