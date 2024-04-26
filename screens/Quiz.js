@@ -98,9 +98,6 @@ const QuizScreen = ({ route, navigation }) => {
                             </TouchableOpacity>
                             <Text style={{ marginBottom: hp('1%'), fontSize: wp('5%'), fontWeight: '600' }}>{QuizDetail.createdByName}</Text>
                             <Text style={{ fontSize: wp('4.5%'), fontWeight: '700', color: 'orange' }}>Your Score: {score}đ</Text>
-                            <TouchableOpacity onPress={toggleAnswerModal} style={[styles.Btn, { backgroundColor: 'orange', marginTop: hp('1%'), width: wp("40%") }]}>
-                                <Text style={{ color: 'white', fontWeight: '600' }}>Show Answer</Text>
-                            </TouchableOpacity>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: hp('2%') }}>
                             <TouchableOpacity onPress={restartQuiz} style={[styles.Btn, { backgroundColor: 'red', marginRight: wp('3%') }]}>
@@ -158,6 +155,7 @@ const QuizScreen = ({ route, navigation }) => {
                                     setSelectedOptions({ ...selectedOptions, [currentQuestionIndex]: option.content });
                                     handleAnswer(option.content);
                                 }}
+                                color={selectedOptions[currentQuestionIndex] === option.content ? 'blue' : 'black'}
                             />
                         </TouchableOpacity>
                     ))}
@@ -209,11 +207,11 @@ const styles = StyleSheet.create({
     quizContainer: {
         flex: 1,
         alignItems: 'center',
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     scoreContainer: {
         flex: 1,
-        marginTop:hp('10%')
+        marginTop: hp('10%')
     },
     questionText: {
         fontSize: wp('6.5%'),
@@ -314,7 +312,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         backgroundColor: 'white',
         borderColor: 'white',
-        marginTop:hp('16%')
+        marginTop: hp('16%')
     },
     QuizTitle: {
         backgroundColor: 'rgba(127, 108, 212, 0.7)',
@@ -324,7 +322,7 @@ const styles = StyleSheet.create({
         marginBottom: hp('3%'),
         alignItems: 'center',
         justifyContent: "center",
-        marginTop:hp('10%')
+        marginTop: hp('10%')
     },
     buttonClose: {
         width: wp('4%'),

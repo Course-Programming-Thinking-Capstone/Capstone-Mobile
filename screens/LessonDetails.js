@@ -26,7 +26,7 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { usePreventScreenCapture } from 'expo-screen-capture';
 import PayMethods from './PayMethods';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-import { getCourse } from '../Api/Course';
+import { getCourse, getCourseById } from '../Api/Course';
 import { RadioButton } from 'react-native-paper';
 import close from '../assets/welcome/close1.png'
 import Loading from '../Loading/Loading'
@@ -38,6 +38,8 @@ const LessonDetails = ({ route }) => {
     const [classCourseId, setClassCourseId] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
+    const { Id } = route.params;
+    console.log("Test:",Id);
     useEffect(() => {
         fetchClass()
     }, []);
@@ -144,7 +146,7 @@ const LessonDetails = ({ route }) => {
     };
     const fetchClass = async () => {
         try {
-            const courseData = await getCourse();
+            const courseData = await getCourseById(Id);
             if (courseData && courseData.classes) {
                 setClassDetail(courseData.classes);
                 setCourseData(courseData)
@@ -190,7 +192,7 @@ const LessonDetails = ({ route }) => {
 
                     <View>
                         <Text style={{ fontSize: wp('4%'), fontWeight: '500', marginTop: hp('1%') }}>About Course</Text>
-                        <View style={{paddingRight:wp('3%')}}>
+                        <View style={{ paddingRight: wp('3%') }}>
                             <LongContent content={courseData.description} />
                         </View>
                         {/* <Text style={{ marginTop: hp('1%'), color: '#94867D', lineHeight: hp('3%'), width: wp('90%'), fontSize: wp('4%') }}>{courseData.description}</Text> */}

@@ -12,6 +12,7 @@ import { useWindowDimensions } from 'react-native';
 
 import HTML from 'react-native-render-html';
 import { getStarted } from '../Api/Progress';
+import { getLessonById } from '../Api/Course';
 const StudyCourse = ({ route, navigation }) => {
     const { width: windowWidth } = useWindowDimensions();
     const [selectedContent, setSelectedContent] = useState(route.params.Content);
@@ -19,7 +20,8 @@ const StudyCourse = ({ route, navigation }) => {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [currentId, setCurrentId] = useState(route.params.Id);
     const [currentType, setCurrentType] = useState(route.params.currentType);
-    const { lessons1 } = route.params;
+    const { lessons1, Num } = route.params;
+    console.log("Num: ", Num);
     const handleFullscreenUpdate = async (fullscreenUpdate) => {
         if (fullscreenUpdate === 0 || fullscreenUpdate === 1) {
             setIsFullscreen(true);
@@ -29,13 +31,27 @@ const StudyCourse = ({ route, navigation }) => {
             await ScreenOrientation.unlockAsync();
         }
     };
-
-
     useEffect(() => {
         return () => {
             ScreenOrientation.unlockAsync();
         };
     }, []);
+    useEffect(() => {
+        if (currentType === 'Video' || currentType === 'Document') {
+            fetchLesson()
+        }
+    }, [currentType])
+    const [less, setLess] = useState([]);
+    const fetchLesson = async () => {
+        try {
+            const leesonData = await getLessonById(currentId);
+            if (leesonData) {
+                setLess(leesonData);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
     const handleItemPress = (itemId, itemType, itemContent, itemVideo) => {
         setCurrentId(itemId);
         setCurrentType(itemType);
@@ -53,11 +69,11 @@ const StudyCourse = ({ route, navigation }) => {
         }
     }
     const filteredLessons = lessons1.filter(item => item.id !== currentId);
-    const directUrl = currentType === 'Video' ? convertDriveUrlToDirectUrl(selectedVideo) : null;
+    const directUrl = currentType === 'Video' ? convertDriveUrlToDirectUrl(less.resourceUrl) : null;
     const render = ({ item }) => (
         <TouchableOpacity key={item.id} onPress={() => handleItemPress(item.id, item.type, item.content, item.resourceUrl)} style={styles.LessBorder}>
             <View style={styles.LessId}>
-                <Text>{item.order}</Text>
+                <Text>{currentId < item.id ? Num + 1 : Num - 1}</Text>
             </View>
             <View>
                 <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{item.name}</Text>
@@ -80,8 +96,6 @@ const StudyCourse = ({ route, navigation }) => {
             }
         </TouchableOpacity>
     );
-
-
     return (
         <View key={currentId} style={styles.container}>
             <View style={{ width: wp('100%'), height: hp('50%') }}>
@@ -102,14 +116,19 @@ const StudyCourse = ({ route, navigation }) => {
                             />
                         </View>
                     ) : currentType === 'Document' ? (
-                        <View style={{ paddingLeft: wp('2%') }}>
-                            <HTML source={{ html: selectedContent }} contentWidth={windowWidth}
-                                tagsStyles={{
-                                    p: { fontSize: wp('5%') },
-                                    h1: { fontSize: 24 },
-                                    h2: { fontSize: 20 },
-                                    h3: { fontSize: 18 },
-                                }} />
+                        <View style={{ paddingLeft: wp('5%'),paddingRight:wp('2%') }}>
+                            {less && less.content ? (
+                                <HTML
+                                    source={{ html: less.content }}
+                                    contentWidth={windowWidth}
+                                    tagsStyles={{
+                                        p: { fontSize: wp('3.5%') },
+                                        h1: { fontSize: wp('5%') },
+                                        h2: { fontSize: wp('5%')},
+                                        h3: { fontSize: wp('5%') },
+                                    }}
+                                />
+                            ) : null}
                         </View>
                     ) : null}
                 </ScrollView>

@@ -12,9 +12,10 @@ import quizPic from '../assets/Profile/quiz.png'
 import game from '../assets/Profile/control.png'
 import drop from '../assets/MyCourse/drop.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-import { getCourseById } from '../Api/Course';
+import { getCourseById, getCourseStudyById } from '../Api/Course';
 import Loading from '../Loading/Loading'
 import { getStarted } from '../Api/Progress';
+import lock from '../assets/Details/padlock.png'
 const Course = ({ navigation, route }) => {
   const { CourseId } = route.params;
   const [loading, setLoading] = useState(true);
@@ -23,10 +24,9 @@ const Course = ({ navigation, route }) => {
     { key: 'lessons', title: 'Lessons' },
     { key: 'certificate', title: 'Certificate' },
   ]);
-  const [sectionId, setSectionId] = useState();
   useEffect(() => {
-    fetchCourseById()
-  }, [])
+    fetchCourseById();
+  }, []);
   const fetchCourseById = async () => {
     try {
       const sectionDetail = await getCourseById(CourseId);
@@ -36,82 +36,103 @@ const Course = ({ navigation, route }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-    } finally {
       setLoading(false);
     }
   };
   const [section, setSectionDetail] = useState([]);
   const [showLessons, setShowLessons] = useState({});
-  const render = ({ item }) => (
-    <View key={item.id}>
-      <TouchableOpacity onPress={() => {
-        setShowLessons(prevState => ({ ...prevState, [item.id]: !prevState[item.id] }))
-      }} style={[styles.LessBorder,{alignItems:'center'}]}>
-        <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4%'), marginLeft: wp('1.5%'), width: isSmallPhone || isSmallTablet ? wp('80%') : wp('80%'), textAlign: "left" }}>Section {item.order} <Text>- {item.name} </Text></Text>
-        <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'),position:'absolute',right:wp('4%'),paddingTop:hp('1%')}} /> 
-      </TouchableOpacity>
-      {showLessons[item.id] &&
-        <View>
-          {loading ? (
-            <Loading />
+  const render = ({ item, index }) => {
+    const isFirstItem = index === 0;
+    const isLocked = !isFirstItem;
+    return (
+      <View key={item.id}>
+        <TouchableOpacity
+          onPress={() => {
+            if (!isLocked) {
+              setShowLessons(prevState => ({
+                ...prevState,
+                [item.id]: !prevState[item.id]
+              }));
+            }
+          }}
+          style={[styles.LessBorder, { alignItems: 'center' }]}
+        >
+          <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4%'), marginLeft: wp('1.5%'), width: isSmallPhone || isSmallTablet ? wp('75%') : wp('80%'), textAlign: "left" }}>
+            Section {item.id} <Text>- {item.name} </Text>
+          </Text>
+          {isFirstItem ? (
+            <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), position: 'absolute', right: wp('4%'), paddingTop: hp('1%') }} />
           ) : (
-            <>
-              {item.lessons?.map((lesson, index) => (
-                <TouchableOpacity key={lesson.id} onPress={() => { navigation.navigate('StudyCourse', { lessons1: item.lessons, CourseVideo: lesson.resourceUrl, Id: lesson.id, currentType: lesson.type, Content: lesson.content }) }} style={styles.LessBorder}>
-                  {/* Sử dụng key={lesson.id} */}
-                  <View style={styles.LessId}>
-                    <Text>{index + 1}</Text>
-                  </View>
-                  <View>
-                    <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{lesson.name}</Text>
-                    <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{lesson.duration}:00</Text>
-                  </View>
-                  {lesson.type === 'Video' ? (
-                    <TouchableOpacity onPress={() => setShowVideo(true)} style={{ position: 'absolute', right: wp('2%') }}>
+            <Image style={{
+              height: hp('4.5%'),
+              width: wp('9%'),
+              position: 'absolute',
+              right: wp('2%'),
+              paddingTop: hp('1%')
+            }} source={lock} />
+          )}
+        </TouchableOpacity>
+        {showLessons[item.id] &&
+          <View>
+            {loading ? (
+              <Loading />
+            ) : (
+              <>
+                {item.lessons?.map((lesson, index) => (
+                  <TouchableOpacity key={lesson.id} onPress={() => { navigation.navigate('StudyCourse', { lessons1: item.lessons, CourseVideo: lesson.resourceUrl, Id: lesson.id, currentType: lesson.type, Content: lesson.content, Num: index + 1 }) }} style={styles.LessBorder}>
+                    <View style={styles.LessId}>
+                      <Text>{index + 1}</Text>
+                    </View>
+                    <View>
+                      <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{lesson.name}</Text>
+                      <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{lesson.duration}:00</Text>
+                    </View>
+                    {lesson.type === 'Video' ? (
+                      <TouchableOpacity onPress={() => setShowVideo(true)} style={{ position: 'absolute', right: wp('2%') }}>
+                        <Image style={{
+                          width: wp('9%'),
+                          height: hp('4.51%'),
+                        }} source={open} />
+                      </TouchableOpacity>
+                    ) : lesson.type === 'Document' ? (
                       <Image style={{
                         width: wp('9%'),
-                        height: hp('4.51%'),
-                      }} source={open} />
-                    </TouchableOpacity>
-                  ) : lesson.type === 'Document' ? (
-                    <Image style={{
-                      width: wp('9%'),
-                      height: hp('4.5%'),
-                      position: 'absolute', right: wp('2%')
-                    }} source={answer} />
-                  ) : (
+                        height: hp('4.5%'),
+                        position: 'absolute', right: wp('2%')
+                      }} source={answer} />
+                    ) : (
+                      <Image style={{
+                        width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
+                        height: hp('4.5%'),
+                        position: 'absolute', right: wp('2%')
+                      }} source={game} />
+                    )
+                    }
+                  </TouchableOpacity>
+                ))}
+                {item.quizzes?.map((quiz, index) => (
+                  <TouchableOpacity key={quiz.id} style={styles.LessBorder} onPress={() => { navigation.navigate('Quiz', { QuizId: quiz.id, CourseId, QuizDetail: quiz }) }}>
+                    <View style={styles.LessId}>
+                      <Text>{item.lessons.length + index + 1}</Text>
+                    </View>
+                    <View>
+                      <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{quiz.title}</Text>
+                      <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{quiz.duration}:00</Text>
+                    </View>
                     <Image style={{
                       width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
                       height: hp('4.5%'),
                       position: 'absolute', right: wp('2%')
-                    }} source={game} />
-                  )
-                  }
-                </TouchableOpacity>
-              ))}
-              {item.quizzes?.map((quiz, index) => (
-                <TouchableOpacity key={quiz.id} style={styles.LessBorder} onPress={() => { navigation.navigate('Quiz', { QuizDetail: quiz, CourseId }) }}>
-                  <View style={styles.LessId}>
-                    <Text>{item.lessons.length + index + 1}</Text>
-                  </View>
-                  <View>
-                    <Text style={{ fontWeight: '600', fontSize: wp('4%'), width: wp('70%') }}>{quiz.title}</Text>
-                    <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{quiz.duration}:00</Text>
-                  </View>
-                  <Image style={{
-                    width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
-                    height: hp('4.5%'),
-                    position: 'absolute', right: wp('2%')
-                  }} source={quizPic} />
-                </TouchableOpacity>
-              ))}
-            </>
-          )}
-        </View>
-      }
-    </View>
-  );
-
+                    }} source={quizPic} />
+                  </TouchableOpacity>
+                ))}
+              </>
+            )}
+          </View>
+        }
+      </View>
+    );
+  }
   const renderScene = SceneMap({
     lessons: () => (
       <View style={{ marginTop: hp('2%') }}>
