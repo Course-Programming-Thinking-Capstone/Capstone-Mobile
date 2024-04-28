@@ -93,3 +93,46 @@ export const getQuizById = async (Id) => {
         return null;
     }
 }
+export const checkStudy = async (sectionIds) => {
+    try {
+        const headers = await getApiHeaders();
+        const response = await axios.post(`${BASE_URL}/courses/check-study`, sectionIds, { headers });
+        if (response.status === 200) {
+            return response.data;
+        }
+        return false;
+    } catch (error) {
+        console.error("Error adding new child:", error);
+        return false;
+    }
+};
+export const getStarted = async () => {
+    try {
+        const headers = await getApiHeaders();
+        const response = await axios.post(`${BASE_URL}/courses/start-study`, {
+            sectionId: 1,
+            courseId: 1
+        }, { headers });
+        if (response.status === 200) {
+            return response.data;
+        }
+        return false;
+    } catch (error) {
+        console.error("Error adding new child:", error);
+        return false;
+    }
+};
+export const markLesson = async (Id) => {
+    try {
+        const headers = await getApiHeaders();
+        const response = await axios.patch(`${BASE_URL}/courses/mark-lesson-completed?lessonId=${Id}`, {
+        }, { headers });
+        if (response.status === 200) {
+            return response.data;
+        }
+        return false;
+    } catch (error) {
+        console.error("Error adding new child:", error);
+        return false;
+    }
+};

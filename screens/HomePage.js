@@ -127,7 +127,7 @@ const HomePage = ({ navigation }) => {
             })
         }}>
             <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8,paddingLeft:wp('2%') }}>
                 {/* <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} /> */}
                 <Text style={styles.Name}>{item.name}</Text>
             </View>
@@ -420,10 +420,10 @@ const styles = StyleSheet.create({
         borderWidth: 2,
     },
     Name: {
-        width: wp('50%'),
+        width: wp('45%'), 
         fontWeight: 'bold',
         color: '#223263',
-        fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.7%')
+        fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.7%')
     },
     Location: {
         fontWeight: 'bold',

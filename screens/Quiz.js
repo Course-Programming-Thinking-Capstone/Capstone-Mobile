@@ -1,70 +1,90 @@
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity, Modal, ScrollView, ImageBackground } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, Modal, ScrollView, ImageBackground, Alert } from 'react-native';
 import { RadioButton } from 'react-native-paper'; // Import RadioButton component
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import cong from '../assets/Lesson/cong2.jpg'
+import cong from '../assets/Profile/gamer.png'
 import close from '../assets/welcome/close1.png'
 import bgc from '../assets/Quiz/bgc1.jpg'
+import time from '../assets/Quiz/clock.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import { getUserInfo } from '../Api/Parents';
+import { submitQuiz } from '../Api/Quiz';
 const QuizScreen = ({ route, navigation }) => {
     const { QuizDetail, CourseId } = route.params;
+    // console.log("Test Quiz:",QuizDetail);
     const [isModalVisible, setModalVisible] = useState(false);
     const [answerModal, setAnswerModal] = useState(false);
-    const [userAnswers, setUserAnswers] = useState(new Array(QuizDetail.numberOfQuestion).fill(null));
-    const [selectedOptions, setSelectedOptions] = useState(new Array(QuizDetail.numberOfQuestion).fill(null)); // Lưu trữ lựa chọn của người dùng cho mỗi câu hỏi
+    const [userAnswers, setUserAnswers] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState([]);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [score, setScore] = useState(0);
+    const [showScore, setShowScore] = useState(false);
+    const [showNextBackButtons, setShowNextBackButtons] = useState(true);
+    const [selectedOptionIds, setSelectedOptionIds] = useState([]);
+    const [submittedTimeTaken, setSubmittedTimeTaken] = useState(null);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
         setShowNextBackButtons(true)
     };
     const toggleAnswerModal = () => {
         setAnswerModal(!answerModal);
-        // console.log("Cong test quiz:",selectedOptions);
     };
-
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [score, setScore] = useState(0);
-    const [showScore, setShowScore] = useState(false);
-    const [showNextBackButtons, setShowNextBackButtons] = useState(true);
-
-    const handleAnswer = (selectedOption) => {
+    const [selectedQuestionIds, setSelectedQuestionIds] = useState([]);
+    const resetQuizState = () => {
+        const questionIds = QuizDetail.questions.map(question => question.questionId);
+        setSelectedQuestionIds(questionIds);
+    };
+    useEffect(() => {
+        resetQuizState();
+    }, [QuizDetail]);
+    const handleAnswer = (selectedOptionId) => {
+        const currentQuestion = QuizDetail.questions[currentQuestionIndex];
+        const correctIndex = currentQuestion.options.findIndex(option => option.isCorrect);
+        if (selectedOptionId === null || selectedOptionId === undefined) {
+            selectedOptionId = 0;
+        }
         const updatedUserAnswers = [...userAnswers];
-        updatedUserAnswers[currentQuestionIndex] = selectedOption;
+        updatedUserAnswers[currentQuestionIndex] = selectedOptionId;
         setUserAnswers(updatedUserAnswers);
-        const correctIndex = QuizDetail.questions[currentQuestionIndex].options.findIndex(option => option.isCorrect);
-        if (selectedOption === QuizDetail.questions[currentQuestionIndex].options[correctIndex].content) {
+        if (selectedOptionId === currentQuestion.options[correctIndex].optionId) {
             setScore(score + 1);
         }
+        setSelectedOptionIds([...selectedOptionIds.slice(0, currentQuestionIndex), selectedOptionId, ...selectedOptionIds.slice(currentQuestionIndex + 1)]);
     };
 
     const handleNextQuestion = () => {
         const nextQuestionIndex = currentQuestionIndex + 1;
         if (nextQuestionIndex < QuizDetail.numberOfQuestion) {
             setCurrentQuestionIndex(nextQuestionIndex);
-            handleAnswer(selectedOptions[currentQuestionIndex]);
+            handleAnswer(selectedOptionIds[currentQuestionIndex]);
         } else {
             setShowScore(true);
         }
     }
-
     const handlePreviousQuestion = () => {
         const previousQuestionIndex = currentQuestionIndex - 1;
         if (previousQuestionIndex >= 0) {
             setCurrentQuestionIndex(previousQuestionIndex);
         }
     };
-
+    const [attemptCount, setAttemptCount] = useState(0);
     const restartQuiz = () => {
+        if (attemptCount >= QuizDetail.numberOfAttempt) {
+            return;
+        }
+        setAttemptCount(attemptCount + 1);
         setCurrentQuestionIndex(0);
         setScore(0);
         setShowScore(false);
         setUserAnswers(new Array(QuizDetail.numberOfQuestion).fill(null));
         setModalVisible(false);
-        setSelectedOptions([])
+        setSelectedOptions([]);
         setShowNextBackButtons(true);
+        setSelectedOptionIds([]);
+        setSelectedQuestionIds([])
+        setRemainingTime(totalSeconds);
+        resetQuizState();
     };
-
-    const progress = ((currentQuestionIndex + 1) / QuizDetail.numberOfQuestion) * 100;
-
     const handleNextOrSubmit = () => {
         if (currentQuestionIndex < QuizDetail.numberOfQuestion - 1) {
             handleNextQuestion();
@@ -73,8 +93,16 @@ const QuizScreen = ({ route, navigation }) => {
             setShowNextBackButtons(false);
         }
     };
-
-    const handleSubmitQuiz = () => {
+    const [timeTaken, setTimeTaken] = useState(null);
+    const handleSubmitQuiz = async () => {
+        console.log("1", QuizDetail.id);
+        console.log("2", selectedQuestionIds);
+        console.log("3", selectedOptionIds);
+        let timeElapsed = totalSeconds - remainingTime;
+        if (timeElapsed < 0) {
+            timeElapsed = 0;
+        }
+        setTimeTaken(timeElapsed);
         let correctAnswers = 0;
         userAnswers.forEach((answer, index) => {
             const correctIndex = QuizDetail.questions[index].options.findIndex(option => option.isCorrect);
@@ -82,10 +110,64 @@ const QuizScreen = ({ route, navigation }) => {
                 correctAnswers++;
             }
         });
-        setScore(correctAnswers);
-        setShowScore(true);
+        // setScore(correctAnswers);
+        await FetchSubmitQuiz(timeElapsed);
     };
-
+    useEffect(() => {
+        fetchInfo();
+    }, [])
+    const [userInfo, setUserInfo] = useState([])
+    const fetchInfo = async () => {
+        try {
+            const userData = await getUserInfo();
+            if (userData) {
+                setUserInfo(userData);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    const durationInMinutes = QuizDetail.duration;
+    const totalSeconds = durationInMinutes * 60;
+    const [remainingTime, setRemainingTime] = useState(totalSeconds);
+    useEffect(() => {
+        let intervalId;
+        const updateRemainingTime = () => {
+            setRemainingTime(prevTime => {
+                if (prevTime <= 0) {
+                    clearInterval(intervalId);
+                    return 0;
+                }
+                return prevTime - 1;
+            });
+        };
+        intervalId = setInterval(updateRemainingTime, 1000);
+        return () => clearInterval(intervalId);
+    }, []);
+    useEffect(() => {
+        if (remainingTime <= 0) {
+            handleSubmitQuiz();
+        }
+    }, [remainingTime]);
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime % 60;
+    const [quizScore, setQuizScore] = useState([]);
+    const FetchSubmitQuiz = async (timeElapsed) => {
+        try {
+            const success = await submitQuiz(QuizDetail.id, selectedQuestionIds, selectedOptionIds, QuizDetail.duration, timeElapsed);
+            if (success) {
+                console.log("result:", success);
+                setQuizScore(success)
+                setShowScore(true);
+                setSubmittedTimeTaken(timeElapsed);
+            } else {
+                Alert.alert('Đăng ký thất bại !!!');
+            }
+        } catch (error) {
+            console.error("Error handling add children:", error);
+        } finally {
+        }
+    };
     return (
         <ImageBackground source={bgc} style={styles.container}>
             {showScore ? (
@@ -96,12 +178,17 @@ const QuizScreen = ({ route, navigation }) => {
                             <TouchableOpacity activeOpacity={1}>
                                 <Image source={cong} style={styles.CircleMen} />
                             </TouchableOpacity>
-                            <Text style={{ marginBottom: hp('1%'), fontSize: wp('5%'), fontWeight: '600' }}>{QuizDetail.createdByName}</Text>
-                            <Text style={{ fontSize: wp('4.5%'), fontWeight: '700', color: 'orange' }}>Your Score: {score}đ</Text>
+                            {timeTaken !== null && (
+                                <Text>
+                                    Thời gian làm bài: {timeTaken < 60 ? `${Math.floor(timeTaken / 60)} phút ${timeTaken % 60} giây` : `${Math.floor(timeTaken / 60)} phút`}
+                                </Text>
+                            )}
+                            <Text style={{ marginBottom: hp('1%'), fontSize: wp('5%'), fontWeight: '600' }}>{userInfo.fullName}</Text>
+                            <Text style={{ fontSize: wp('4.5%'), fontWeight: '700', color: 'orange' }}>Your Score: {quizScore.quizSubmit.score} đ</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: hp('2%') }}>
                             <TouchableOpacity onPress={restartQuiz} style={[styles.Btn, { backgroundColor: 'red', marginRight: wp('3%') }]}>
-                                <Text style={{ color: 'white', fontWeight: '600' }}>Restart Quiz</Text>
+                                <Text style={{ color: 'white', fontWeight: '600' }}>Restart ({attemptCount}/{QuizDetail.numberOfAttempt}) </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Course', { CourseId }) }}>
                                 <Text style={{ color: 'white', fontWeight: '600' }}>Main menu</Text>
@@ -136,28 +223,38 @@ const QuizScreen = ({ route, navigation }) => {
             ) : (
                 <View style={styles.quizContainer} >
                     <View style={styles.QuizTitle}>
+                        <View style={{
+                            flexDirection: "row", position: 'absolute', top: hp('2%'), alignItems: "center",
+                        }}>
+                            <Image source={time} style={{
+                                width: wp('11%'), height: hp('5.5%')
+                                , width: isSmallPhone || isSmallTablet ? wp('11.5%') : wp('11%'),
+                            }} />
+                            <Text style={{ fontSize: wp('6%'), color: 'white', marginLeft: wp('2%') }}>{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}</Text>
+                        </View>
                         <Text style={styles.questionText}>{QuizDetail.questions[currentQuestionIndex].title}</Text>
                     </View>
                     {QuizDetail.questions[currentQuestionIndex].options.map((option, index) => (
                         <TouchableOpacity
                             onPress={() => {
                                 setSelectedOptions({ ...selectedOptions, [currentQuestionIndex]: option.content });
-                                handleAnswer(option.content);
+                                handleAnswer(option.optionId);
                             }}
                             key={`${option.order}-${index}`}
                             style={[styles.optionContainer, selectedOptions[currentQuestionIndex] === option.content && { backgroundColor: '#40BFFF' }]}
                         >
-                            <Text style={selectedOptions[currentQuestionIndex] === option.content && { color: 'white', fontSize: wp('4%'), fontWeight: '600' }}>{option.content}</Text>
+                            <Text style={[selectedOptions[currentQuestionIndex] === option.content && { color: 'white', fontSize: wp('4%'), fontWeight: '600' }, { width: wp('78%'), textAlign: 'left' }]}>{option.content}</Text>
                             <RadioButton
                                 value={option.content}
                                 status={selectedOptions[currentQuestionIndex] === option.content ? 'checked' : 'unchecked'}
                                 onPress={() => {
                                     setSelectedOptions({ ...selectedOptions, [currentQuestionIndex]: option.content });
-                                    handleAnswer(option.content);
+                                    handleAnswer(option.optionId); // Thay đổi tại đây
                                 }}
                                 color={selectedOptions[currentQuestionIndex] === option.content ? 'blue' : 'black'}
                             />
                         </TouchableOpacity>
+
                     ))}
                     <Modal visible={isModalVisible} transparent={true} statusBarTranslucent={true}>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
@@ -288,14 +385,14 @@ const styles = StyleSheet.create({
     },
     CircleMen: {
         width: wp('28%'),
-        height: hp('14%'),
+        height: hp('13%'),
         borderRadius: 70,
         borderWidth: 2,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#EFEFEF',
         borderWidth: 2,
-        borderColor: 'blue',
+        borderColor: 'white',
         marginBottom: hp('2%')
     },
     FormScore: {

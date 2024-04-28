@@ -26,14 +26,14 @@ const GameIntro = ({ navigation, route }) => {
                 <View style={styles.DetailForm}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('3%'), paddingLeft: wp('2.4%'), paddingRight: wp('2%') }}>
                         <View>
-                            <Text style={styles.TxtGame}>KidPro Gaming</Text>
+                            <Text style={styles.TxtGame}>KidsPro Gaming</Text>
                         </View>
                         <View>
                             <Text style={[styles.TxtGame, { color: 'blue' }]}>4-5 years old</Text>
                         </View>
                     </View>
                     <View style={{ marginTop: hp('2%'), alignItems: 'center', paddingLeft: wp('2%') }}>
-                        <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4.2%'), textAlign: 'left' }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </Text>
+                        <Text style={{ lineHeight: hp('3.5%'), fontSize: wp('4.2%'), textAlign: 'left' }}>Game listings on StartPlaying can be a tricky monster to grapple. You’re given a blank box and free reign to put whatever you want in it. This is by design, because only you can say what kind of game experience you want to deliver. However, that also leaves lots of room for error? </Text>
                     </View>
                     <TouchableOpacity style={styles.BtnPlay} onPress={handlePress}>
                         <Text style={{ color: 'white', fontSize: wp('4.5%') }}>Play Now !</Text>

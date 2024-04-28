@@ -81,11 +81,11 @@ const KidHome = () => {
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%'), marginLeft: wp('2%') }}>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: wp('1.5%') }}>
-                        <ProgressBar progress={item.courseProgress} width={wp('35%')} borderWidth={2} borderColor={'lightblue'} height={(hp('1%'))} />
+                        <ProgressBar progress={item.courseProgress/100} width={wp('35%')} borderWidth={2} borderColor={'lightblue'} height={(hp('1%'))} />
                         <Text style={{
-                            marginLeft: wp('3%'),
+                            marginLeft: wp('3%'), 
                             color: '#40BFFF',
-                        }}>{item.courseProgress}/25</Text>
+                        }}>{item.courseProgress}%</Text>
                     </View>
                 </View>
             </View>

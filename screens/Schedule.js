@@ -44,24 +44,24 @@ const Schedule = () => {
             const eventStart = moment(`${currentDate.format('YYYY/MM/DD')} ${schedule.startSlot}`, 'YYYY/MM/DD HH:mm:ss');
             const eventEnd = moment(`${currentDate.format('YYYY/MM/DD')} ${schedule.endSlot}`, 'YYYY/MM/DD HH:mm:ss');
             const durationMs = eventEnd.diff(eventStart);
-            const duration = moment.utc(durationMs).format("HH:mm:ss"); 
+            const duration = moment.utc(durationMs).format("HH:mm:ss");
 
             for (let j = 0; j < schedule.classId; j++) {
                 const eventStart = start.clone().add(j * schedule.slotDuration, 'minutes');
                 const eventEnd = eventStart.clone().add(schedule.duration, 'hours');
                 events.push({
                     start: eventStart.format('YYYY-MM-DD HH:mm:ss'),
-                    duration: duration, 
+                    duration: duration,
                     note: `${schedule.classCode}`,
                     roomUrl: schedule.roomUrl,
-                    teacherName:schedule.teacherName,
+                    teacherName: schedule.teacherName,
                 });
             }
         }
     }
     return (
         <View style={styles.container}>
-            <WeeklyCalendar events={events} dayLabelStyle={{ color: 'blue', fontWeight: '600' }} style={{ flex: 1, backgroundColor: 'white'}} themeColor='blue' />
+            <WeeklyCalendar events={events} dayLabelStyle={{ color: 'blue', fontWeight: '600' }} style={{ flex: 1, backgroundColor: 'white' }} themeColor='blue' />
         </View>
     );
 };

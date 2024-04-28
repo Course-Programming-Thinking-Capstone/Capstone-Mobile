@@ -221,11 +221,11 @@ const LessonDetails = ({ route }) => {
                                             {selectedClass && (
                                                 <View style={{ width: wp('90%'), paddingLeft: wp('3%') }}>
                                                     <Text style={styles.ClassInfo}>Class Code:  <Text></Text><Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.classCode}</Text></Text>
-                                                    <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayStart}</Text></Text>
-                                                    <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.dayEnd}</Text> </Text>
-                                                    <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.teacher}</Text> </Text>
+                                                    <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.openClass}</Text></Text>
+                                                    <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.closeClass}</Text> </Text>
+                                                    <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.teacherName}</Text> </Text>
                                                     <Text style={styles.ClassInfo}>Study Days:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.days?.join(', ')}</Text> </Text>
-                                                    <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.slotStart}-{selectedClass.slotEnd}</Text></Text>
+                                                    <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.startSlot}-{selectedClass.endSlot}</Text></Text>
                                                 </View>
                                             )}
                                         </View>

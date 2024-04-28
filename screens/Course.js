@@ -1,4 +1,4 @@
-import { StyleSheet, Modal, Text, View, ScrollView, FlatList, Image, TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, Modal, Text, View, ScrollView, FlatList, Image, TouchableOpacity, Alert, ImageBackground } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -10,11 +10,12 @@ import lesson from '../assets/Profile/book2.png'
 import answer from '../assets/Profile/reading.png'
 import quizPic from '../assets/Profile/quiz.png'
 import game from '../assets/Profile/control.png'
+import gameBtn from '../assets/Game/game.jpg'
 import drop from '../assets/MyCourse/drop.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-import { getCourseById, getCourseStudyById } from '../Api/Course';
+import { checkStudy, getCourseById, getCourseStudyById, getStarted } from '../Api/Course';
 import Loading from '../Loading/Loading'
-import { getStarted } from '../Api/Progress';
+// import { getStarted } from '../Api/Progress';
 import lock from '../assets/Details/padlock.png'
 const Course = ({ navigation, route }) => {
   const { CourseId } = route.params;
@@ -24,6 +25,8 @@ const Course = ({ navigation, route }) => {
     { key: 'lessons', title: 'Lessons' },
     { key: 'certificate', title: 'Certificate' },
   ]);
+  const [sectionId, setSectionId] = useState([]);
+  const [data, setData] = useState([]);
   useEffect(() => {
     fetchCourseById();
   }, []);
@@ -32,11 +35,32 @@ const Course = ({ navigation, route }) => {
       const sectionDetail = await getCourseById(CourseId);
       if (sectionDetail) {
         setSectionDetail(sectionDetail.sections);
+        const sectionIds = sectionDetail.sections.map(section => section.id);
+        setSectionId(sectionIds);
         setLoading(false);
+        const success = await checkStudy(sectionIds);
+        if (success) {
+          setData(success)
+        } else {
+          Alert.alert('Đăng ký thất bại !!!');
+        }
       }
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
+    }
+  };
+  const FetchGetStarted = async () => {
+    try {
+      const getStarted1 = await getStarted();
+      if (getStarted1) {
+        fetchCourseById()
+      } else {
+        Alert.alert('Đăng ký thất bại !!!');
+      }
+    } catch (error) {
+      console.error("Error handling add children:", error);
+    } finally {
     }
   };
   const [section, setSectionDetail] = useState([]);
@@ -53,6 +77,11 @@ const Course = ({ navigation, route }) => {
                 ...prevState,
                 [item.id]: !prevState[item.id]
               }));
+              const sectionSuccess = data.find(sec => sec.sectionId === item.id);
+              if (sectionSuccess && sectionSuccess.isCheck) {
+              } else {
+                FetchGetStarted()
+              }
             }
           }}
           style={[styles.LessBorder, { alignItems: 'center' }]}
@@ -135,7 +164,7 @@ const Course = ({ navigation, route }) => {
   }
   const renderScene = SceneMap({
     lessons: () => (
-      <View style={{ marginTop: hp('2%') }}>
+      <View style={{ marginTop: hp('2%'), flex: 1 }}>
         {loading ? (
           <Loading />
         ) : (
@@ -149,10 +178,44 @@ const Course = ({ navigation, route }) => {
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={false}
               />
+              <TouchableOpacity style={{ marginBottom: hp('3%') }} onPress={() => { navigation.navigate('GameIntro', { CourseId }) }}>
+                <ImageBackground
+                  source={gameBtn}
+                  style={{
+                    borderWidth: 2,
+                    borderColor: 'white',
+                    borderRadius: 30,
+                    // padding: 10,
+                    overflow: 'hidden',
+                    shadowColor: 'black',
+                    shadowOpacity: 0.9,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowRadius: 20,
+                    elevation: 5,
+                    backgroundColor: 'white'
+                  }}
+                >
+                  <View style={{
+                    height:hp('7%'),
+                    backgroundColor: 'rgba(200, 200, 200, 0.5)', justifyContent: 'center'
+                  }}>
+                    <Text style={{
+                      textAlign: 'center', color: 'blue'
+                      , fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('5%'), width: wp('80%')
+                    }}>Game Programming</Text>
+                    <Image
+                      style={{
+                        width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
+                        height: hp('4.5%'),
+                        position: 'absolute',
+                        right: wp('2%')
+                      }}
+                      source={game}
+                    />
+                  </View>
+                </ImageBackground>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity style={[styles.LessBorder, { justifyContent: 'space-between', alignItems: 'center' }]} onPress={() => { navigation.navigate('GameIntro', { CourseId }) }}>
-              <Text style={{ textAlign: 'center', color: 'blue', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('1.5%'), width: wp('80%') }}>Game Programming</Text>
-            </TouchableOpacity>
           </ScrollView>
         )}
       </View>
