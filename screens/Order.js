@@ -223,8 +223,8 @@ const Order = ({ route, navigation }) => {
         <TabBar
             {...props}
             indicatorStyle={{ backgroundColor: 'blue', height: hp('1%'), borderTopLeftRadius: 10, borderTopRightRadius: 10 }} // Màu nền cho tab đang chọn
-            style={{ backgroundColor: 'white' }} // Màu nền chung của tab bar
-            labelStyle={{ color: 'black' }}// Màu chữ của tab
+            style={{ backgroundColor: 'white' }}
+            labelStyle={{ color: 'black' }}
             tabStyle={{ color: 'red' }}
             renderLabel={({ route, focused, color }) => (
                 <Text style={{ color: focused ? 'blue' : 'black', fontWeight: focused ? '600' : '400', fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('3.8%'), width: isSmallPhone || isSmallTablet ? wp('19%') : wp('20%'), textAlign: 'center' }}>{route.title}</Text>

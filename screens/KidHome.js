@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, StyleSheet, Text, View, ImageBackground, Image, TextInput, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import { RefreshControl, StyleSheet, Text, View, ImageBackground, Image, TextInput, ScrollView, FlatList, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import hello from '../assets/HomePage/hello.png'
@@ -17,7 +17,9 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import { getStudentCourse } from '../Api/Children'
 import Loading from '../Loading/Loading'
 import { getNoti } from '../Api/Notification'
+
 const KidHome = () => {
+    const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
     const [loading, setLoading] = useState(true);
     const [notiData, setNotiData] = useState([]);
@@ -64,6 +66,14 @@ const KidHome = () => {
             console.error("Error fetching data:", error);
         }
     };
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+        try {
+            await fetchCourse();
+        } finally {
+            setRefreshing(false);
+        }
+    }, []);
     const renderCourse = ({ item }) => (
         <TouchableOpacity onPress={() => { navigation.navigate('Course', { CourseId: item.courseId }) }}>
             <View style={styles.Course}>
@@ -81,9 +91,9 @@ const KidHome = () => {
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%'), marginLeft: wp('2%') }}>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: wp('1.5%') }}>
-                        <ProgressBar progress={item.courseProgress/100} width={wp('35%')} borderWidth={2} borderColor={'lightblue'} height={(hp('1%'))} />
+                        <ProgressBar progress={item.courseProgress / 100} width={wp('35%')} borderWidth={2} borderColor={'lightblue'} height={(hp('1%'))} />
                         <Text style={{
-                            marginLeft: wp('3%'), 
+                            marginLeft: wp('3%'),
                             color: '#40BFFF',
                         }}>{item.courseProgress}%</Text>
                     </View>
@@ -138,7 +148,13 @@ const KidHome = () => {
             {loading ? (
                 <Loading />
             ) : (
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }>
                     <View style={{ flex: 1, paddingLeft: wp('5%') }}>
                         <View style={{ flexDirection: "row", justifyContent: 'space-between', paddingRight: isSmallPhone || isSmallTablet ? wp('5%') : wp('5%'), marginTop: hp('1%'), alignItems: 'center' }}>
                             <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), fontWeight: '500' }}>Continue Learning</Text>

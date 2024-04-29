@@ -12,7 +12,7 @@ export const submitQuiz = async (quizId, questionIds, optionIds, duration, timeT
         const response = await axios.post(
             `${BASE_URL}/courses/quiz/submit`,
             {
-                quizId: 1,
+                quizId: quizId,
                 quizResults,
                 duration,
                 quizMinutes: timeTaken

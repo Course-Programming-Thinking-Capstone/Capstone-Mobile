@@ -1,4 +1,4 @@
-import { StyleSheet, Modal, Text, View, ScrollView, FlatList, Image, TouchableOpacity, Alert, ImageBackground } from 'react-native'
+import { StyleSheet, Modal, Text, View, ScrollView, FlatList, Image, TouchableOpacity, Alert, ImageBackground,RefreshControl  } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -28,7 +28,7 @@ const Course = ({ navigation, route }) => {
   const [sectionId, setSectionId] = useState([]);
   const [data, setData] = useState([]);
   const [check, setCheck] = useState([]);
-
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     fetchCourseById();
   }, []);
@@ -52,9 +52,17 @@ const Course = ({ navigation, route }) => {
       setLoading(false);
     }
   };
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await fetchCourseById();
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
   const FetchGetStarted = async (sectionId) => {
     try {
-      const getStarted1 = await getStarted(sectionId,CourseId); 
+      const getStarted1 = await getStarted(sectionId, CourseId);
       if (getStarted1) {
         fetchCourseById();
       } else {
@@ -168,7 +176,13 @@ const Course = ({ navigation, route }) => {
         {loading ? (
           <Loading />
         ) : (
-          <ScrollView showsVerticalScrollIndicator={false} >
+          <ScrollView showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            } >
             <View>
               <FlatList
                 data={section}

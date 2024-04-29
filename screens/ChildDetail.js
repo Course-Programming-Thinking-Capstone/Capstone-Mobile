@@ -9,18 +9,45 @@ import { getStudentDetail } from '../Api/Children';
 import * as Progress from 'react-native-progress';
 import Loading from '../Loading/Loading'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { getProgress } from '../Api/Progress'
 const ChildDetail = ({ route, navigation }) => {
   const { id } = route.params;
   const [student, setStudent] = useState([])
   const [loading, setLoading] = useState(true);
+  const [courseId, setCourseId] = useState(null);
+  const [progress, setProgress] = useState([]);
+
   useEffect(() => {
     fetchKid();
   }, []);
+
   const fetchKid = async () => {
     try {
       const studentDetail = await getStudentDetail(id);
-      if (studentDetail) {
-        setStudent(studentDetail);
+      if (studentDetail && studentDetail.studentsCourse && studentDetail.studentsCourse.length > 0) {
+        const firstCourseId = studentDetail.studentsCourse[0].courseId;
+        setCourseId(firstCourseId);
+        fetchProgress(firstCourseId);
+      } else {
+        console.log("CourseId is not set yet");
+      }
+      setStudent(studentDetail);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchProgress = async (courseId) => {
+    try {
+      if (courseId) {
+        const progressDetail = await getProgress(id, courseId);
+        if (progressDetail) {
+          setProgress(progressDetail)
+        }
+      } else {
+        console.log("CourseId is not set yet");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -28,6 +55,8 @@ const ChildDetail = ({ route, navigation }) => {
       setLoading(false);
     }
   };
+
+
   return (
     <View style={styles.Container}>
       {loading ? (
@@ -78,7 +107,7 @@ const ChildDetail = ({ route, navigation }) => {
               <Text style={{ color: '#FF8A00', fontWeight: '500', fontSize: wp('10%') }}>2</Text>
             </View>
           </View>
-          <TouchableWithoutFeedback activeOpacity={0.8} onPress={() => { navigation.navigate('StudyProcess') }}>
+          <TouchableWithoutFeedback activeOpacity={0.8} onPress={() => { navigation.navigate('StudyProcess',{id,courseId}) }}>
             <View style={{
               flexDirection: 'row', backgroundColor: 'white', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('0.5%'), borderWidth: 1, shadowColor: 'black',
               shadowOpacity: 0.9,
@@ -88,20 +117,22 @@ const ChildDetail = ({ route, navigation }) => {
               backgroundColor: '#e9f2eb',
               borderColor: '#e9f2eb',
             }}>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row',alignItems:'center' }}>
                 <View style={{ marginLeft: wp('3%') }}>
                   <Image source={lesson} style={{ width: wp('8%'), height: hp('4%') }} />
                 </View>
-                <Text style={{ fontSize: wp('4.5%'), alignSelf: 'center', marginLeft: wp('5%'), width: wp('51%') }}>Program with Python</Text>
+                <Text style={{ fontSize: wp('4%'), alignSelf: 'center', marginLeft: wp('5%'), width: wp('51%') }}>
+                  {progress && progress.courseName ? progress.courseName : ''}
+                </Text>
                 <Progress.Circle
                   animated={true}
-                  progress={0.7}
+                  progress={progress && progress.courseProgress ? parseInt(progress.courseProgress, 10) / 100 : 0}
                   size={35}
                   showsText={true}
                   color="#FF8A00"
                   thickness={3}
                   textStyle={{ fontSize: 10, color: 'red', fontWeight: '800' }}
-                  formatText={() => '40%'}
+                  formatText={() => `${progress && progress.courseProgress ? progress.courseProgress + '%' : ''}`}
                   borderWidth={0.5}
                 />
               </View>
