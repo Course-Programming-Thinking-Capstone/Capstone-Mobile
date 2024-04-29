@@ -27,6 +27,8 @@ const Course = ({ navigation, route }) => {
   ]);
   const [sectionId, setSectionId] = useState([]);
   const [data, setData] = useState([]);
+  const [check, setCheck] = useState([]);
+
   useEffect(() => {
     fetchCourseById();
   }, []);
@@ -38,9 +40,9 @@ const Course = ({ navigation, route }) => {
         const sectionIds = sectionDetail.sections.map(section => section.id);
         setSectionId(sectionIds);
         setLoading(false);
-        const success = await checkStudy(sectionIds);
-        if (success) {
-          setData(success)
+        const lock = await checkStudy(sectionIds);
+        if (lock) {
+          setCheck(lock)
         } else {
           Alert.alert('Đăng ký thất bại !!!');
         }
@@ -50,24 +52,24 @@ const Course = ({ navigation, route }) => {
       setLoading(false);
     }
   };
-  const FetchGetStarted = async () => {
+  const FetchGetStarted = async (sectionId) => {
     try {
-      const getStarted1 = await getStarted();
+      const getStarted1 = await getStarted(sectionId,CourseId); 
       if (getStarted1) {
-        fetchCourseById()
+        fetchCourseById();
       } else {
         Alert.alert('Đăng ký thất bại !!!');
       }
     } catch (error) {
       console.error("Error handling add children:", error);
-    } finally {
     }
   };
   const [section, setSectionDetail] = useState([]);
   const [showLessons, setShowLessons] = useState({});
   const render = ({ item, index }) => {
-    const isFirstItem = index === 0;
-    const isLocked = !isFirstItem;
+    const isLocked = check.find(sectionItem => sectionItem.sectionId === item.id && sectionItem.isBlock);
+    const isCompleted = check.find(sectionItem => sectionItem.sectionId === item.id && sectionItem.isCheck);
+
     return (
       <View key={item.id}>
         <TouchableOpacity
@@ -77,10 +79,8 @@ const Course = ({ navigation, route }) => {
                 ...prevState,
                 [item.id]: !prevState[item.id]
               }));
-              const sectionSuccess = data.find(sec => sec.sectionId === item.id);
-              if (sectionSuccess && sectionSuccess.isCheck) {
-              } else {
-                FetchGetStarted()
+              if (!isCompleted) {
+                FetchGetStarted(item.id);
               }
             }
           }}
@@ -89,9 +89,7 @@ const Course = ({ navigation, route }) => {
           <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4%'), marginLeft: wp('1.5%'), width: isSmallPhone || isSmallTablet ? wp('75%') : wp('80%'), textAlign: "left" }}>
             Section {item.id} <Text>- {item.name} </Text>
           </Text>
-          {isFirstItem ? (
-            <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), position: 'absolute', right: wp('4%'), paddingTop: hp('1%') }} />
-          ) : (
+          {isLocked ? (
             <Image style={{
               height: hp('4.5%'),
               width: wp('9%'),
@@ -99,6 +97,8 @@ const Course = ({ navigation, route }) => {
               right: wp('2%'),
               paddingTop: hp('1%')
             }} source={lock} />
+          ) : (
+            <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), position: 'absolute', right: wp('4%'), paddingTop: hp('1%') }} />
           )}
         </TouchableOpacity>
         {showLessons[item.id] &&
@@ -196,7 +196,7 @@ const Course = ({ navigation, route }) => {
                   }}
                 >
                   <View style={{
-                    height:hp('7%'),
+                    height: hp('7%'),
                     backgroundColor: 'rgba(200, 200, 200, 0.5)', justifyContent: 'center'
                   }}>
                     <Text style={{

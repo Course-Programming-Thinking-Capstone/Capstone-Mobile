@@ -78,21 +78,7 @@ export const getLessonById = async (Id) => {
         return null;
     }
 }
-export const getQuizById = async (Id) => {
-    try {
-        const headers = await getApiHeaders();
-        const response = await axios.get(`${BASE_URL}/courses/study/section/quiz/${Id}`, { headers });
-        if (typeof response.data === 'object' && response.data !== null) {
-            return response.data;
-        } else {
-            console.error("Invalid data received from the server:", response.data);
-            return null;
-        }
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        return null;
-    }
-}
+
 export const checkStudy = async (sectionIds) => {
     try {
         const headers = await getApiHeaders();
@@ -106,12 +92,12 @@ export const checkStudy = async (sectionIds) => {
         return false;
     }
 };
-export const getStarted = async () => {
+export const getStarted = async (sectionId,CourseId) => {
     try {
         const headers = await getApiHeaders();
         const response = await axios.post(`${BASE_URL}/courses/start-study`, {
-            sectionId: 1,
-            courseId: 1
+            sectionId: sectionId,
+            courseId: CourseId
         }, { headers });
         if (response.status === 200) {
             return response.data;
