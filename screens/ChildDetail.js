@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableWithoutFeedback, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import right from '../assets/HomePage/right.png'
 import lesson from '../assets/Profile/book.png'
@@ -24,37 +24,57 @@ const ChildDetail = ({ route, navigation }) => {
   const fetchKid = async () => {
     try {
       const studentDetail = await getStudentDetail(id);
-      if (studentDetail && studentDetail.studentsCourse && studentDetail.studentsCourse.length > 0) {
-        const firstCourseId = studentDetail.studentsCourse[0].courseId;
-        setCourseId(firstCourseId);
-        fetchProgress(firstCourseId);
-      } else {
-        console.log("CourseId is not set yet");
-      }
-      setStudent(studentDetail);
+      setStudent(studentDetail)
+      console.log("test:", studentDetail.studentsCourse);
+      setProgress(studentDetail.studentsCourse)
+      setCourseId(studentDetail.id)
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
+  const renderItem = ({ item }) => (
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ marginLeft: wp('3%') }}>
+        <Image source={lesson} style={{ width: wp('8%'), height: hp('4%') }} />
+      </View>
+      <View style={{ flexDirection: "row", width: wp('51%'), alignItems: 'center' }}>
+        <Text style={{ fontSize: wp('4%'), alignSelf: 'center', marginLeft: wp('5%'), width: wp('51%') }}>
+          {item.courseName}
+        </Text>
+        <Progress.Circle
+          animated={true}
+          progress={parseInt(item.courseProgress, 10) / 100}
+          size={35}
+          showsText={true}
+          color="#FF8A00"
+          thickness={3}
+          textStyle={{ fontSize: 10, color: 'red', fontWeight: '800' }}
+          formatText={() => `${item.courseProgress}%`}
+          borderWidth={0.5}
+        />
+      </View>
+    </View>
+  );
 
-  const fetchProgress = async (courseId) => {
-    try {
-      if (courseId) {
-        const progressDetail = await getProgress(id, courseId);
-        if (progressDetail) {
-          setProgress(progressDetail)
-        }
-      } else {
-        console.log("CourseId is not set yet");
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+
+  // const fetchProgress = async (courseId) => {
+  //   try {
+  //     if (courseId) {
+  //       const progressDetail = await getProgress(id, courseId);
+  //       if (progressDetail) {
+  //         setProgress(progressDetail)
+  //       }
+  //     } else {
+  //       console.log("CourseId is not set yet");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
 
   return (
@@ -101,111 +121,38 @@ const ChildDetail = ({ route, navigation }) => {
             </View>
           </View>
           <View style={{ borderColor: '#1A9CB7', borderWidth: 1, borderStyle: 'dashed', width: wp('90%'), marginTop: hp('2%') }}></View>
-          <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
-            <Text style={{ fontWeight: '500', fontSize: wp('4.5%') }}>Total number of courses</Text>
-            <View style={styles.Circle}>
-              <Text style={{ color: '#FF8A00', fontWeight: '500', fontSize: wp('10%') }}>2</Text>
-            </View>
-          </View>
-          <TouchableWithoutFeedback activeOpacity={0.8} onPress={() => { navigation.navigate('StudyProcess',{id,courseId}) }}>
-            <View style={{
-              flexDirection: 'row', backgroundColor: 'white', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('0.5%'), borderWidth: 1, shadowColor: 'black',
-              shadowOpacity: 0.9,
-              shadowOffset: { width: 0, height: 2 },
-              shadowRadius: 20,
-              elevation: 5,
-              backgroundColor: '#e9f2eb',
-              borderColor: '#e9f2eb',
-            }}>
-              <View style={{ flexDirection: 'row',alignItems:'center' }}>
-                <View style={{ marginLeft: wp('3%') }}>
-                  <Image source={lesson} style={{ width: wp('8%'), height: hp('4%') }} />
+          <>
+            {progress.length > 0 ? (
+              <>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
+                  <Text style={{ fontWeight: '500', fontSize: wp('4.5%') }}>Total number of courses</Text>
+                  <View style={styles.Circle}>
+                    <Text style={{ color: '#FF8A00', fontWeight: '500', fontSize: wp('10%') }}>{progress.length}</Text>
+                  </View>
                 </View>
-                <Text style={{ fontSize: wp('4%'), alignSelf: 'center', marginLeft: wp('5%'), width: wp('51%') }}>
-                  {progress && progress.courseName ? progress.courseName : ''}
-                </Text>
-                <Progress.Circle
-                  animated={true}
-                  progress={progress && progress.courseProgress ? parseInt(progress.courseProgress, 10) / 100 : 0}
-                  size={35}
-                  showsText={true}
-                  color="#FF8A00"
-                  thickness={3}
-                  textStyle={{ fontSize: 10, color: 'red', fontWeight: '800' }}
-                  formatText={() => `${progress && progress.courseProgress ? progress.courseProgress + '%' : ''}`}
-                  borderWidth={0.5}
-                />
-              </View>
-              <Image source={right} style={{ width: wp('6%'), height: hp('3.5%'), alignSelf: 'center', marginRight: wp('3%') }} />
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
-            <View style={{
-              flexDirection: 'row', backgroundColor: 'white', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('0.5%'), borderWidth: 1, shadowColor: 'black',
-              shadowOpacity: 0.9,
-              shadowOffset: { width: 0, height: 2 },
-              shadowRadius: 20,
-              elevation: 5,
-              backgroundColor: '#e9f2eb',
-              borderColor: '#e9f2eb',
-            }}>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ marginLeft: wp('3%') }}>
-                  <Image source={lesson} style={{ width: wp('8%'), height: hp('4%') }} />
-                </View>
-                <Text style={{ fontSize: wp('4.5%'), alignSelf: 'center', marginLeft: wp('5%'), width: wp('51%') }}>Program with Scratch</Text>
-                <Progress.Circle
-                  animated={true}
-                  progress={0.8}
-                  size={35}
-                  showsText={true}
-                  color="#FF8A00"
-                  thickness={3}
-                  textStyle={{ fontSize: 10, color: 'red', fontWeight: '800' }}
-                  formatText={() => '80%'}
-                  borderWidth={0.6}
-                />
-              </View>
-              <Image source={right} style={{ width: wp('6%'), height: hp('3.5%'), alignSelf: 'center', marginRight: wp('3%') }} />
-            </View>
-          </TouchableWithoutFeedback>
-          <View style={{ borderColor: '#1A9CB7', borderWidth: 1, borderStyle: 'dashed', width: wp('90%'), marginTop: hp('2%') }}></View>
-          <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: hp('2%') }}>
-            <Text style={{ fontWeight: '500', fontSize: wp('4.5%') }}>Total number of certificates</Text>
-            <View style={styles.Circle}>
-              <Text style={{ color: '#FF8A00', fontWeight: '500', fontSize: wp('10%') }}>1</Text>
-            </View>
-          </View>
-          <TouchableWithoutFeedback>
-            <View style={{
-              flexDirection: 'row', backgroundColor: 'white', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('0.5%'), borderWidth: 1, shadowColor: 'black',
-              shadowOpacity: 0.9,
-              shadowOffset: { width: 0, height: 2 },
-              shadowRadius: 20,
-              elevation: 5,
-              backgroundColor: '#e9f2eb',
-              borderColor: '#e9f2eb',
-            }}>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ marginLeft: wp('3%') }}>
-                  <Image source={lesson} style={{ width: wp('8%'), height: hp('4%') }} />
-                </View>
-                <Text style={{ fontSize: wp('4.5%'), alignSelf: 'center', marginLeft: wp('5%'), width: wp('51%') }}>Program with Tinker</Text>
-                <Progress.Circle
-                  animated={true}
-                  progress={1}
-                  size={35}
-                  showsText={true}
-                  color="#00bcd4"
-                  thickness={3}
-                  textStyle={{ fontSize: 9, color: 'red', fontWeight: '800' }}
-                  formatText={() => '100%'}
-                  borderWidth={0.5}
-                />
-              </View>
-              <Image source={right} style={{ width: wp('6%'), height: hp('3.5%'), alignSelf: 'center', marginRight: wp('3%') }} />
-            </View>
-          </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback activeOpacity={0.8} onPress={() => { navigation.navigate('StudyProcess', { id, courseId }) }}>
+                  <View style={{
+                    flexDirection: 'row', backgroundColor: 'white', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('0.5%'), borderWidth: 1, shadowColor: 'black',
+                    shadowOpacity: 0.9,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowRadius: 20,
+                    elevation: 5,
+                    backgroundColor: '#e9f2eb',
+                    borderColor: '#e9f2eb',
+                  }}>
+                    <FlatList
+                      data={progress}
+                      keyExtractor={(item, index) => index.toString()}
+                      renderItem={renderItem}
+                    />
+                    <Image source={right} style={{ width: wp('6%'), height: hp('3.5%'), alignSelf: 'center', marginRight: wp('3%') }} />
+                  </View>
+                </TouchableWithoutFeedback>
+              </>
+            ) : (
+              <Text></Text>
+            )}
+          </>
         </View>
       )}
     </View>

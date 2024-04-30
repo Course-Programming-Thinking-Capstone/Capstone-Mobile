@@ -170,6 +170,8 @@ const ChildProcess = ({ navigation }) => {
                                     save="value"
                                     search={false}
                                     defaultOption={{ key: '1', value: 'Male' }}
+                                    dropdownStyles={{backgroundColor: 'rgba(200, 200, 200, 0.5)',
+                                }}
                                 />
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: hp('2.8%') }}>

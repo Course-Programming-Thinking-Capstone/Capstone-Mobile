@@ -7,7 +7,6 @@ import { getProgress } from '../Api/Progress';
 const StudyProcess = ({ route }) => {
   const [progress, setProgress] = useState(null);
   const { id, courseId } = route.params;
-
   useEffect(() => {
     fetchProgress();
   }, []);
@@ -37,7 +36,7 @@ const StudyProcess = ({ route }) => {
               <View style={{ alignItems: 'center' }}>
                 <View style={[styles.Process, { backgroundColor: '#F69E4A' }]}>
                   <Image source={lesson} style={{ width: 30, height: 30, justifyContent: 'center' }} />
-                  <Text style={{ color: 'white', fontSize: 20, fontWeight: '500' }}>LESSON {item.sectionId}</Text>
+                  <Text style={{ color: 'white', fontSize: isSmallPhone || isSmallTablet ? wp('4.7%') : 20, fontWeight: '500' }}>Section {item.sectionId}</Text>
                 </View>
                 <View style={{ height: 200, width: 5, backgroundColor: '#F69E4A' }}></View>
                 <View style={[styles.Process, { width: 20, height: 20 }]}></View>
@@ -48,15 +47,15 @@ const StudyProcess = ({ route }) => {
               <View style={{ borderColor: '#1A9CB7', borderWidth: 1, width: wp('10%'), marginTop: 20, height: 1 }}></View>
 
               <View style={styles.Percent}>
-                <Text style={{ color: '#F69E4A', fontSize: 25, fontWeight: '500' }}>{item.progress}%</Text>
+                <Text style={{ color: '#F69E4A', fontSize: isSmallPhone || isSmallTablet ? wp('4.7%') : 20, fontWeight: '700' }}>{item.progress}%</Text>
               </View>
               <View style={{ borderColor: '#1A9CB7', borderWidth: 1, width: wp('30%'), marginTop: 20, height: 1 }}></View>
             </View>
           </View>
         </View>
-        <Text style={{ fontSize: 17, marginTop: 10, paddingLeft: wp('13%'), fontWeight: 'bold' }}>Lesson Title</Text>
+        <Text style={{ fontSize: 17, marginTop: 10, paddingLeft: isSmallPhone || isSmallTablet ? wp('10%') : wp('13%'), fontWeight: 'bold' }}>Lesson Title</Text>
         <View style={styles.LessonTitle}>
-          <Text style={{ fontSize: wp('4.5%'), width: wp('70%'),textAlign:"center",paddingRight:wp('15%') }}>{item.sectionName}</Text>
+          <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4%') : wp('4.5%'), width: wp('70%'),textAlign:"center",paddingRight:isSmallPhone || isSmallTablet ? wp('20%') : wp('15%') }}>{item.sectionName}</Text>
         </View>
       </View>
     </>
@@ -68,7 +67,7 @@ const StudyProcess = ({ route }) => {
 
   return (
     <View style={styles.Container}>
-      <Text style={{ color: '#1A9CB7', textAlign: 'center', fontSize: 25, marginTop: hp('3%'),paddingLeft:wp('2%'),paddingRight:wp('2%') }}>{progress.courseName}</Text>
+      <Text style={{ color: '#1A9CB7', textAlign: 'center', fontSize: isSmallPhone || isSmallTablet ? wp('5.5%') : 25, marginTop: hp('3%'),paddingLeft:wp('2%'),paddingRight:wp('2%') }}>{progress.courseName}</Text>
       <FlatList
         data={progress.sectionProgress}
         keyExtractor={item => item.sectionId.toString()}

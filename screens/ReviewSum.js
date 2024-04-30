@@ -9,11 +9,11 @@ import { CreateOrder, CreatePayment } from '../Api/Order';
 import { formatPrice } from '../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const ReviewSum = ({ route, navigation }) => {
-    const { classCourseId, courseData, classInfo,selectedStudents,payment } = route.params;
+    const { classCourseId, courseData, classInfo,selectedStudents,payment,voucherId,voucherDis } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading1, setLoading1] = useState(false);
     const [courseId, setCourseId] = useState(route.params.courseData.id);
-
+    console.log("test voucherID:",voucherDis);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -23,7 +23,7 @@ const ReviewSum = ({ route, navigation }) => {
             setLoading1(true);
             const studentId = selectedStudents.map(student => student.id);
             const count = selectedStudents.length
-            const success = await CreateOrder(studentId, count, courseId, classCourseId);
+            const success = await CreateOrder(studentId, count, courseId, classCourseId,voucherId);
             if (success) {
                 const paymentDetail = await CreatePayment(success);
                 if (paymentDetail) {
@@ -114,9 +114,9 @@ const ReviewSum = ({ route, navigation }) => {
                     </View>
                     <View>
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{payment}</Text>
-                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>0 đ</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}> {voucherDis ? formatPrice(voucherDis) : '0 đ'}</Text>
                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>x{selectedStudents.length}</Text>
-                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{formatPrice(courseData.price)}</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{formatPrice(courseData.price*selectedStudents.length)}</Text>
                     </View>
                 </View>
                 <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
@@ -126,7 +126,7 @@ const ReviewSum = ({ route, navigation }) => {
                         <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>Total</Text>
                     </View>
                     <View>
-                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{formatPrice((courseData.price) * (selectedStudents.length))}</Text>
+                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700' }}>{formatPrice((courseData.price) * (selectedStudents.length)-voucherDis)}</Text>
                     </View>
                 </View>
             </ScrollView >

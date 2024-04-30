@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import zalo from '../assets/Payment/zalo1.png'
 import momo from '../assets/Payment/momo.png'
@@ -7,10 +7,37 @@ import paypal from '../assets/Payment/paypal1.png'
 import apple from '../assets/Payment/apple1.png'
 import { RadioButton } from 'react-native-paper';
 import { formatPrice } from '../FormatPrice/Format';
+import { SelectList } from 'react-native-dropdown-select-list';
+import { getVoucher } from '../Api/Voucher';
 
 const PayMethods = ({ navigation, route }) => {
-  const {classCourseId, courseData, classInfo,selectedStudents } = route.params;
+  const { classCourseId, courseData, classInfo, selectedStudents } = route.params;
   const [payment, setPayment] = React.useState('Momo');
+  const [selected, setSelected] = React.useState('0');
+  const [selectedVoucher, setSelectedVoucher] = useState(null);
+  console.log("test log:", selectedVoucher);
+  const data = [
+    { key: '1', value: 'Male' },
+    { key: '2', value: 'Female' },
+  ]
+
+
+  const [voucher, setVoucher] = useState([]);
+  useEffect(() => {
+    fetchvoucher();
+  }, []);
+  const fetchvoucher = async () => {
+    try {
+      const voucherData = await getVoucher();
+      if (voucherData) {
+        setVoucher(voucherData);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const [selectedDiscountAmount, setSelectedDiscountAmount] = useState(null);
+
   return (
     <View style={styles.Container}>
       <View style={{ marginTop: hp('1%') }}>
@@ -27,26 +54,37 @@ const PayMethods = ({ navigation, route }) => {
             onPress={() => setPayment('Momo')}
           />
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => setPayment('Zalo')} style={[styles.Account, { borderColor: payment === 'Zalo' ? 'blue' : '#21212133', backgroundColor: payment === 'Zalo' ? '#D9D9D933' : 'white' }]}>
-          <Image source={zalo} style={[styles.PaymentIcon, { width: wp('13%'), height: hp('6%'), marginLeft: wp('2.3%') }]} />
-          <View style={{ alignItems: 'center' }}>
-            <Text style={{ fontWeight: 600, color: '#212121CC', fontSize: wp('4%') }}>Zalo E-wallet</Text>
-            <Text style={{ fontWeight: 700, color: '#FF8A00', fontSize: wp('3.5%') }}>0393103426</Text>
-          </View>
-          <RadioButton
-            value="Zalo"
-            status={payment === 'Zalo' ? 'checked' : 'unchecked'}
-            onPress={() => setPayment('Zalo')}
-          />
-        </TouchableOpacity>
       </View>
       <View style={{ marginTop: hp('1%') }}>
         <Text style={{ fontWeight: '500', fontSize: wp('4%'), marginVertical: hp('1%') }}>Voucher</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={styles.Search}>
-            <TextInput
-              placeholder="Enter discount code"
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{
+            width: wp('63%'),
+            height: hp('7%'),
+            marginTop: hp('1.5%'),
+            marginRight: wp('3%'),
+          }}>
+            <SelectList
+              setSelected={(value) => {
+                const selectedVoucher = voucher.find((item) => item.discountAmount === value);
+                setSelectedVoucher(selectedVoucher);
+              }}
+              data={voucher.map((item, index) => ({
+                key: item.discountAmount,
+                value: `KidsPro${index + 1} - ${formatPrice(item.discountAmount)}`,
+              }))}
+              save="key" // Save the key (discountAmount) instead of the value
+              search={false}
+              defaultOption={{ key: null, value: 'Select voucher' }}
+              dropdownStyles={{
+                backgroundColor: 'white',
+                zIndex: 20,
+                height: hp('15%'),
+              }}
+              dropdownTextStyles={{ color: 'black', fontSize: wp('4%') }}
+              inputStyles={{ color: 'black', fontSize: wp('4%') }}
             />
+
           </View>
           <View style={styles.Button}>
             <Text style={{ color: 'white', fontWeight: 500, fontSize: wp('4%') }}>Apply</Text>
@@ -57,25 +95,31 @@ const PayMethods = ({ navigation, route }) => {
         <Text style={{ fontWeight: '500', fontSize: wp('4%'), marginVertical: hp('1%') }}>Order payment</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View>
-            {/* <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Class Code:</Text> */}
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Price</Text>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Quantity</Text>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Discount</Text>
             <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '400', fontSize: wp('3.5%') }}>Total</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{courseData.name}</Text> */}
             <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{formatPrice(courseData.price)}</Text>
-            {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{parseFloat(Price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ</Text> */}
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>x {selectedStudents.length}</Text> 
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>0 đ</Text>
-            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{formatPrice((courseData.price) * (selectedStudents.length))}</Text>
-            {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>x {selectedStudents.length}</Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>
+              {selectedVoucher ? formatPrice(selectedVoucher.discountAmount) : '0 đ'}
+            </Text>
+            <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: wp('3.5%') }}>
+              {selectedVoucher ? formatPrice((courseData.price) * (selectedStudents.length) - (selectedVoucher.discountAmount)) : formatPrice((courseData.price) * (selectedStudents.length))}
+            </Text>
           </View>
         </View>
       </View>
       <View style={styles.Enroll}>
-        <TouchableOpacity style={styles.Checkout} onPress={() => { navigation.navigate('ReviewSum', { classCourseId, courseData, classInfo,selectedStudents,payment }) }}>
+        <TouchableOpacity style={styles.Checkout} onPress={() => {
+          navigation.navigate('ReviewSum', {
+            classCourseId, courseData, classInfo, selectedStudents, payment
+            , voucherId: selectedVoucher ? selectedVoucher.id : null
+            , voucherDis: selectedVoucher ? selectedVoucher.discountAmount : null
+          })
+        }}>
           <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('4.5%') }}>Continue</Text>
         </TouchableOpacity>
       </View>
