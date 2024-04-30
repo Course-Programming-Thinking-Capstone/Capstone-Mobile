@@ -6,7 +6,6 @@ import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const GameIntro = ({ navigation, route }) => {
     const { CourseId } = route.params;
-    console.log("COng test:",CourseId);
     const goBack = () => {
         navigation.navigate('Course',{CourseId});
     };

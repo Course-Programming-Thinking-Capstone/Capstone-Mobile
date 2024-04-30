@@ -22,13 +22,17 @@ import test from '../assets/Lesson/kid1.jpg'
 import { formatPrice } from '../FormatPrice/Format';
 import { getNoti } from '../Api/Notification';
 import notiIn from '../assets/HomePage/notiIn.png'
-
+import { getTeacher } from '../Api/Teacher';
+import cong from '../assets/Lesson/cong2.jpg'
 const HomePage = ({ navigation }) => {
     const [course, setCourse] = useState([])
+    const [teacher, setTeacher] = useState([])
+
     useEffect(() => {
         fetchCourse()
         fetchInfo();
         fetchNoti();
+        fetchTeacher()
     }, [])
     const [notiData, setNotiData] = useState([]);
     const fetchNoti = async () => {
@@ -36,6 +40,19 @@ const HomePage = ({ navigation }) => {
             const data = await getNoti();
             if (data) {
                 setNotiData(data.results);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            // setLoading(false);
+        }
+    };
+    const fetchTeacher = async () => {
+        try {
+            const data = await getTeacher();
+            if (data) {
+                setTeacher(data);
+                console.log("Test teacher:",data);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -107,13 +124,13 @@ const HomePage = ({ navigation }) => {
     );
     const renderMentor = ({ item }) => (
         <View style={{ marginVertical: hp('2%') }}>
-            <TouchableOpacity style={{ paddingRight: wp('8%'), paddingLeft: wp('1%') }} onPress={() => {
-                navigation.navigate('MentorDetails', { Lecture: item.teacher, Avatar: item.avatar, Id: item.id })
+            <TouchableOpacity style={{ paddingRight: wp('8%'), paddingLeft: wp('1%'), alignItems:'center' }} onPress={() => {
+                navigation.navigate('MentorDetails', { Lecture: item.teacher, Avatar: item.avatar, Id: item.teacherId })
             }}>
                 <View >
-                    <Image source={item.avatar} style={styles.CircleMen} />
+                    <Image source={cong} style={styles.CircleMen} />
                 </View>
-                <Text style={{ textAlign: 'center' }}>{item.teacher}</Text>
+                <Text style={{ textAlign: 'center',fontSize:wp('3.5%') }}>{item.teacherName}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -127,7 +144,7 @@ const HomePage = ({ navigation }) => {
             })
         }}>
             <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8,paddingLeft:wp('2%') }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, paddingLeft: wp('2%') }}>
                 {/* <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} /> */}
                 <Text style={styles.Name}>{item.name}</Text>
             </View>
@@ -251,8 +268,8 @@ const HomePage = ({ navigation }) => {
                     </View>
                     <View>
                         <FlatList
-                            data={limitedNear}
-                            keyExtractor={item => item.id}
+                            data={teacher}
+                            keyExtractor={item => item.teacherId}
                             renderItem={renderMentor}
                             horizontal
                             scrollEnabled={false}
@@ -420,7 +437,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
     },
     Name: {
-        width: wp('45%'), 
+        width: wp('45%'),
         fontWeight: 'bold',
         color: '#223263',
         fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.7%')

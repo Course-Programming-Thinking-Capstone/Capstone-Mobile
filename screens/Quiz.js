@@ -95,9 +95,6 @@ const QuizScreen = ({ route, navigation }) => {
     };
     const [timeTaken, setTimeTaken] = useState(null);
     const handleSubmitQuiz = async () => {
-        console.log("1", QuizDetail.id);
-        console.log("2", selectedQuestionIds);
-        console.log("3", selectedOptionIds);
         let timeElapsed = totalSeconds - remainingTime;
         if (timeElapsed < 0) {
             timeElapsed = 0;

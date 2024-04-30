@@ -39,7 +39,6 @@ const LessonDetails = ({ route }) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
     const { Id } = route.params;
-    console.log("Test:",Id);
     useEffect(() => {
         fetchClass()
     }, []);

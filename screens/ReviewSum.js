@@ -13,7 +13,6 @@ const ReviewSum = ({ route, navigation }) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading1, setLoading1] = useState(false);
     const [courseId, setCourseId] = useState(route.params.courseData.id);
-    console.log("test voucherID:",voucherDis);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };

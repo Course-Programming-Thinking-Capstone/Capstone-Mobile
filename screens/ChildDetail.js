@@ -25,7 +25,6 @@ const ChildDetail = ({ route, navigation }) => {
     try {
       const studentDetail = await getStudentDetail(id);
       setStudent(studentDetail)
-      console.log("test:", studentDetail.studentsCourse);
       setProgress(studentDetail.studentsCourse)
       setCourseId(studentDetail.id)
     } catch (error) {

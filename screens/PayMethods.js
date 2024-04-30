@@ -15,7 +15,6 @@ const PayMethods = ({ navigation, route }) => {
   const [payment, setPayment] = React.useState('Momo');
   const [selected, setSelected] = React.useState('0');
   const [selectedVoucher, setSelectedVoucher] = useState(null);
-  console.log("test log:", selectedVoucher);
   const data = [
     { key: '1', value: 'Male' },
     { key: '2', value: 'Female' },
