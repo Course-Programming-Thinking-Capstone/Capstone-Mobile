@@ -16,7 +16,10 @@ import HTML from 'react-native-render-html';
 import { getStarted } from '../Api/Progress';
 import { getLessonById, markLesson } from '../Api/Course';
 import Loading from '../Loading/Loading';
+import { usePreventScreenCapture } from 'expo-screen-capture';
+
 const StudyCourse = ({ route, navigation }) => {
+    usePreventScreenCapture();
     const { width: windowWidth } = useWindowDimensions();
     const [selectedContent, setSelectedContent] = useState(route.params.Content);
     const [selectedVideo, setSelectedVideo] = useState(route.params.CourseVideo);
@@ -48,11 +51,14 @@ const StudyCourse = ({ route, navigation }) => {
     }, [currentType])
     const [less, setLess] = useState([]);
     const [isComplete1, setIsComplete] = useState();
+    const [video, setVideo] = useState([]);
+
     const fetchLesson = async () => {
-        try {
+        try { 
             const leesonData = await getLessonById(currentId);
             if (leesonData) {
                 setLess(leesonData);
+                setVideo(leesonData.resourceUrl)
                 setIsComplete(leesonData.isComplete)
                 setLoading(false);
             }
@@ -143,7 +149,7 @@ const StudyCourse = ({ route, navigation }) => {
                             <ImageBackground source={readBack} style={{ width: wp('100%'), height: hp('70%') }}>
                                 <View style={{ paddingLeft: wp('10%') }}>
                                     <Video
-                                        source={{ uri: directUrl }}
+                                        source={{ uri: video }}
                                         rate={1.0}
                                         volume={1.0}
                                         isMuted={false}

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Button, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
@@ -11,7 +11,7 @@ import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { formatDate } from '../FormatPrice/FormatDate';
 const OrderDetail = ({ route, navigation }) => {
-    const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id ,Note} = route.params;
+    const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id, Note } = route.params;
     useEffect(() => {
         fetchOrderDetail()
     }, [])
@@ -84,7 +84,7 @@ const OrderDetail = ({ route, navigation }) => {
                             </View>
                         </View>
                     </View>
-                    <View>
+                    <ScrollView>
                         <View >
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
                                 <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Children Receive<Text style={{ color: 'red', fontWeight: '600' }}> ({data.numberChildren}): </Text></Text>
@@ -99,6 +99,12 @@ const OrderDetail = ({ route, navigation }) => {
                                 <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>Email</Text>
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
+                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Order Code:</Text>
+                                <View>
+                                    <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{data.orderCode}</Text>
+                                </View>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
                                 <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>{Status === 'RequestRefund' ? 'Reason:' : 'Order date:'}</Text>
                                 <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500' }}>{Status === 'RequestRefund' ? Note : formatDate(data.orderDate)}</Text>
                             </View>
@@ -108,15 +114,15 @@ const OrderDetail = ({ route, navigation }) => {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: hp('2%') }}>
                             <View>
                                 <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Payment Method</Text>
-                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Voucher</Text>
                                 <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Amount</Text>
                                 <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Quantity</Text>
+                                <Text style={{ lineHeight: hp('4%'), color: '#40BFFF', fontWeight: '500' }}>Voucher</Text>
                             </View>
                             <View>
                                 <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{data.paymentType}</Text>
-                                <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>0 đ</Text>
                                 <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>{formatPrice(data.price)}</Text>
                                 <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>x{data.numberChildren}</Text>
+                                <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right' }}>0 đ</Text>
                             </View>
                         </View>
                         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
@@ -130,7 +136,7 @@ const OrderDetail = ({ route, navigation }) => {
                             </View>
                         </View>
                         <View style={{ width: wp('90%'), height: hp('0.2%'), backgroundColor: '#E9E9E9', marginTop: hp('2%') }} />
-                    </View>
+                    </ScrollView>
                     <View style={[styles.Enroll, { borderColor: Status === 'Cancelled' ? 'white' : 'white' }]}>
                         <TouchableOpacity style={[styles.Button, { borderColor: Status === 'Cancelled' ? 'white' : 'white', backgroundColor: Status === 'Pending' ? 'red' : Status === 'Success' ? '#FF8A00' : Status === 'Process' ? 'blue' : 'white' }]}
                             onPress={() => {

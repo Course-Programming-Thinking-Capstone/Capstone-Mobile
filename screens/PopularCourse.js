@@ -7,7 +7,8 @@ import { getAllCourse } from '../Api/Course';
 import { formatPrice } from '../FormatPrice/Format';
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-const PopularCourse = () => {
+const PopularCourse = ({route}) => {
+    const { paidCourses } = route.params;
     const [course, setCourse] = useState([])
     useEffect(() => {
         fetchCourse()
@@ -41,7 +42,7 @@ const PopularCourse = () => {
     return (
         <View style={styles.Container}>
             <FlatList
-                data={course}
+                data={paidCourses}
                 renderItem={renderCourse}
                 keyExtractor={item => item.id.toString()}
                 showsHorizontalScrollIndicator={false}

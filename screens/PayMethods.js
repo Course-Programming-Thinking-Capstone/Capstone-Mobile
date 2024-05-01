@@ -72,7 +72,7 @@ const PayMethods = ({ navigation, route }) => {
                 key: item.discountAmount,
                 value: `KidsPro${index + 1} - ${formatPrice(item.discountAmount)}`,
               }))}
-              save="key" // Save the key (discountAmount) instead of the value
+              save="key"
               search={false}
               defaultOption={{ key: null, value: 'Select voucher' }}
               dropdownStyles={{

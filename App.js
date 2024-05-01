@@ -40,6 +40,7 @@ import GameIntro from './screens/GameIntro';
 import AccountDetail from './screens/AccountDetail';
 import Notification from './screens/Notification';
 import KidSearch from './screens/KidSearch';
+import FreeCourse from './screens/FreeCourse';
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs(['new NativeEventEmitter']);
 LogBox.ignoreAllLogs();
@@ -450,6 +451,7 @@ export default function App() {
           ),
           headerTitleAlign: 'center',
         }} />
+        <Stack.Screen name="FreeCourse" component={FreeCourse} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -60,7 +60,7 @@ const Login = ({ navigation }) => {
               onChangeText={(text) => setEmail(text)}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => textInputRef1.current.focus()} activeOpacity={1}>
+          <TouchableOpacity style={{marginBottom:hp('2.5%')}} onPress={() => textInputRef1.current.focus()} activeOpacity={1}>
             <View style={styles.Pass}>
               <Image source={pass} style={styles.Icon} />
               <TextInput
@@ -73,17 +73,6 @@ const Login = ({ navigation }) => {
               />
             </View>
           </TouchableOpacity>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginLeft: wp('7.3%'), marginTop: hp('2%') }}>
-            <View style={styles.checkboxContainer}>
-              <CheckBox
-                value={isSelected}
-                onValueChange={setSelection}
-                style={styles.checkbox}
-              />
-              <Text style={{ fontSize: wp('3.2%'), color: 'blue', fontWeight: 'bold', marginLeft: wp('2%') }}>Remember Pass</Text>
-            </View>
-            <Text style={{ fontSize: wp('3.2%'), color: 'blue', fontWeight: 'bold', marginRight: wp('6%') }}>Forgot Password</Text>
-          </View>
           <View style={styles.Button}>
             <TouchableOpacity onPress={handleLogin}>
               {loading ? (
@@ -224,7 +213,7 @@ const styles = StyleSheet.create({
     height: hp('50%'),
     borderRadius: 20,
     alignContent: 'center',
-    paddingTop: hp('1%'),
+    paddingTop: hp('4%'),
     borderColor: 'white',
     borderWidth: 1
   },

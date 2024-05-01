@@ -7,6 +7,9 @@ import { getProgress } from '../Api/Progress';
 const StudyProcess = ({ route }) => {
   const [progress, setProgress] = useState(null);
   const { id, courseId } = route.params;
+  console.log("test 1",id);
+  console.log("test 2",courseId); 
+
   useEffect(() => {
     fetchProgress();
   }, []);

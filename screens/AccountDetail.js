@@ -4,6 +4,7 @@ import cong from '../assets/Lesson/cong2.jpg'
 import Back from '../assets/Profile/back1.jpg'
 import { getUserInfo } from '../Api/Parents';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { formatDate, formatDay } from '../FormatPrice/FormatDate';
 const AccountDetail = ({ route }) => {
     useEffect(() => {
         fetchInfo()
@@ -63,7 +64,7 @@ const AccountDetail = ({ route }) => {
                     <View style={{ alignItems: 'flex-end' }}>
                         <Text style={{lineHeight:hp('5%'),fontSize:wp('4%')}}>{userInfo.email}</Text>
                         <Text style={{lineHeight:hp('5%'),fontSize:wp('4%')}}>{userInfo.phoneNumber}</Text>
-                        <Text style={{lineHeight:hp('5%'),fontSize:wp('4%')}}>{userInfo.dateOfBirth}</Text>
+                        {/* <Text style={{lineHeight:hp('5%'),fontSize:wp('4%')}}>{userInfo.dateOfBirth}</Text> */}
                         <Text style={{lineHeight:hp('5%'),fontSize:wp('4%')}}>{userInfo.createdDate}</Text>
                     </View>
                 </View>

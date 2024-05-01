@@ -31,6 +31,21 @@ export const getCourseById = async (CourseId) => {
         return null;
     }
 }
+export const getCommonId = async (Id) => {
+    try {
+        const headers = await getApiHeaders();
+        const response = await axios.get(`${BASE_URL}/courses/${Id}`, { headers });
+        if (typeof response.data === 'object' && response.data !== null) {
+            return response.data;
+        } else {
+            console.error("Invalid data received from the server:", response.data);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        return null;
+    }
+}
 export const getCourseStudyById = async (CourseId) => {
     try {
         const headers = await getApiHeaders();

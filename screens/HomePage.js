@@ -27,7 +27,8 @@ import cong from '../assets/Lesson/cong2.jpg'
 const HomePage = ({ navigation }) => {
     const [course, setCourse] = useState([])
     const [teacher, setTeacher] = useState([])
-
+    const [freeCourses, setFreeCourses] = useState([]);
+    const [paidCourses, setPaidCourses] = useState([]);
     useEffect(() => {
         fetchCourse()
         fetchInfo();
@@ -40,6 +41,7 @@ const HomePage = ({ navigation }) => {
             const data = await getNoti();
             if (data) {
                 setNotiData(data.results);
+                fetchNoti();
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -52,7 +54,6 @@ const HomePage = ({ navigation }) => {
             const data = await getTeacher();
             if (data) {
                 setTeacher(data);
-                console.log("Test teacher:",data);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -60,11 +61,15 @@ const HomePage = ({ navigation }) => {
             // setLoading(false);
         }
     };
+
     const fetchCourse = async () => {
         try {
             const courseData = await getAllCourse();
             if (courseData) {
-                setCourse(courseData.results);
+                const freeCoursesData = courseData.results.filter(course => course.isFree);
+                const paidCoursesData = courseData.results.filter(course => !course.isFree);
+                setFreeCourses(freeCoursesData);
+                setPaidCourses(paidCoursesData);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -94,21 +99,13 @@ const HomePage = ({ navigation }) => {
     const numberCourse = 4;
     const limitedCourse = course.slice(0, numberCourse);
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.Course} onPress={() => {
-            navigation.navigate('LessonDetails', { Name: item.name, LessImage: item.image, Lecture: item.teacher, Avatar: item.avatar, Price: item.price, Id: item.id })
+        <TouchableOpacity style={[styles.Course,{height:hp('25%')}]} onPress={() => {
+            navigation.navigate('FreeCourse', { Id: item.id })
         }}>
-            <Image source={item.image} style={styles.Image} />
+            <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                 <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                 <Text style={styles.Name}>{item.name}</Text>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
-                <Text style={{
-                    fontWeight: 'bold',
-                    color: '#40BFFF',
-                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
-                }}>{item.teacher}</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                 <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
@@ -116,21 +113,19 @@ const HomePage = ({ navigation }) => {
                     fontWeight: 'bold',
                     color: 'blue',
                     fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
-                }}>
-                    {parseFloat(item.price.replace(/\./g, '').replace(',', '.')).toLocaleString('vi-VN')} đ
-                </Text>
+                }}>{item.isFree ? 'Free' : formatPrice(item.price)}</Text>
             </View>
         </TouchableOpacity>
     );
     const renderMentor = ({ item }) => (
         <View style={{ marginVertical: hp('2%') }}>
-            <TouchableOpacity style={{ paddingRight: wp('8%'), paddingLeft: wp('1%'), alignItems:'center' }} onPress={() => {
-                navigation.navigate('MentorDetails', { Lecture: item.teacher, Avatar: item.avatar, Id: item.teacherId })
+            <TouchableOpacity style={{ paddingRight: wp('5%'), alignItems: 'center' }} onPress={() => {
+                // navigation.navigate('MentorDetails', { Lecture: item.teacher, Avatar: item.avatar, Id: item.teacherId })
             }}>
                 <View >
                     <Image source={cong} style={styles.CircleMen} />
                 </View>
-                <Text style={{ textAlign: 'center',fontSize:wp('3.5%') }}>{item.teacherName}</Text>
+                <Text style={{ textAlign: 'center', fontSize: wp('3.5%') }}>{item.teacherName}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -158,7 +153,8 @@ const HomePage = ({ navigation }) => {
             </View>
         </TouchableOpacity>
     );
-
+    const allRead = notiData.every(notification => notification.isRead);
+    // console.log("free coures:",freeCourses);
     return (
         <View style={styles.Container}>
             <ImageBackground source={background} style={styles.backPic}>
@@ -179,11 +175,7 @@ const HomePage = ({ navigation }) => {
                             <Text style={styles.Text}>Let's start learning!</Text>
                         </View>
                         <TouchableOpacity onPress={() => { navigation.navigate('Notification') }} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
-                            {notiData.isRead ? (
-                                <Image source={noti} style={[styles.Noti, { marginLeft: wp('2%') }]} />
-                            ) : (
-                                <Image source={notiIn} style={[styles.Noti, { marginLeft: wp('1.5%') }]} />
-                            )}
+                            <Image source={allRead ? notiIn : noti} style={[styles.Noti, { marginLeft: allRead ? wp('1.5%') : wp('1.5%') }]} />
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
@@ -209,7 +201,7 @@ const HomePage = ({ navigation }) => {
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Categories</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }}>View all</Text>
-                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
+                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} /> 
                         </TouchableOpacity>
                     </View>
                     <View style={styles.EventList}>
@@ -239,30 +231,32 @@ const HomePage = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View >
-                    <View style={styles.Title}>
-                        <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Popular Course</Text>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('PopularCourse') }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
-                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
-                        </TouchableOpacity>
+                {freeCourses.length > 0 && (
+                    <View >
+                        <View style={styles.Title}>
+                            <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Free Course</Text>
+                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
+                                <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <FlatList
+                                data={freeCourses}
+                                keyExtractor={item => item.id}
+                                renderItem={renderItem}
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                contentContainerStyle={styles.List}
+                            />
+                        </View>
                     </View>
-                    <View>
-                        <FlatList
-                            data={limitedNear}
-                            keyExtractor={item => item.id}
-                            renderItem={renderItem}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            contentContainerStyle={styles.List}
-                        />
-                    </View>
-                </View>
+                )}
                 <View>
                     <View style={styles.EventTitle}>
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Top Mentor</Text>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { navigation.navigate('TopMentor') }} >
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }} >View all</Text>
+                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }} >View all</Text> 
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
@@ -272,47 +266,27 @@ const HomePage = ({ navigation }) => {
                             keyExtractor={item => item.teacherId}
                             renderItem={renderMentor}
                             horizontal
-                            scrollEnabled={false}
+                            scrollEnabled={true}
                             showsHorizontalScrollIndicator={false}
-                        />
-                    </View>
-                </View>
-                <View >
-                    <View style={styles.Title}>
-                        <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>3 - 4 years old</Text>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} onPress={() => { navigation.navigate('PopularCourse') }}>View all</Text>
-                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        <FlatList
-                            data={limitedNear}
-                            keyExtractor={item => item.id}
-                            renderItem={renderItem}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            contentContainerStyle={styles.List}
                         />
                     </View>
                 </View>
                 <View>
                     <View style={styles.Title}>
-                        <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>5 - 6 years old</Text>
+                        <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Pay Course</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} onPress={() => { navigation.navigate('PopularCourse') }}>View all</Text>
+                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} onPress={() => { navigation.navigate('PopularCourse',{paidCourses}) }}>View all</Text>
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
                     <View style={{ paddingBottom: hp('1%'), flexDirection: 'row' }}>
                         <FlatList
-                            data={limitedCourse}
+                            data={paidCourses}
                             renderItem={renderCourse}
                             keyExtractor={item => item.id.toString()}
                             horizontal
                             showsHorizontalScrollIndicator={false}
                             contentContainerStyle={styles.List}
-
                         />
                     </View>
                 </View>
@@ -440,7 +414,7 @@ const styles = StyleSheet.create({
         width: wp('45%'),
         fontWeight: 'bold',
         color: '#223263',
-        fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.7%')
+        fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('3.7%')
     },
     Location: {
         fontWeight: 'bold',

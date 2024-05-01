@@ -1,21 +1,29 @@
 export const formatDate = (apiDate) => {
-    // Tách ngày và thời gian
     const [datePart, timePart] = apiDate.split(' ');
 
-    // Tách ngày thành các phần
     const [year, month, day] = datePart.split('/');
-
-    // Tách thời gian thành các phần
     const [hour, minute, second] = timePart.split(':');
 
-    // Tạo một đối tượng ngày mới
     const formattedDate = new Date(year, month - 1, day, hour, minute, second);
-
-    // Thêm 7 giờ
     formattedDate.setHours(formattedDate.getHours() + 7);
 
-    // Format lại ngày và thời gian
-    const formattedDateString = `${formattedDate.getDate()}/${formattedDate.getMonth() + 1}/${formattedDate.getFullYear()} ${formattedDate.getHours()}:${formattedDate.getMinutes()}:${formattedDate.getSeconds()}`;
+    // Sử dụng padStart để thêm số 0 phía trước nếu cần thiết
+    const formattedDateString = `${formattedDate.getDate().toString().padStart(2, '0')}/${(formattedDate.getMonth() + 1).toString().padStart(2, '0')}/${formattedDate.getFullYear()} ${formattedDate.getHours().toString().padStart(2, '0')}:${formattedDate.getMinutes().toString().padStart(2, '0')}:${formattedDate.getSeconds().toString().padStart(2, '0')}`;
 
     return formattedDateString;
 }
+
+export function formatDay(dateString) {
+    if (dateString && typeof dateString === 'string') {
+        const parts = dateString.split('/');
+        if (parts.length === 3) {
+            return parts[2] + '/' + parts[1] + '/' + parts[0];
+        } else {
+            return 'Invalid Date';
+        }
+    } else {
+        return 'Invalid Date';
+    }
+}
+
+

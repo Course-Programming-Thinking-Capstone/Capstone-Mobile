@@ -2,31 +2,33 @@ import { StyleSheet, Text, View, Image, TouchableWithoutFeedback, FlatList } fro
 import React, { useEffect, useState } from 'react'
 import right from '../assets/HomePage/right.png'
 import lesson from '../assets/Profile/book.png'
-import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import boy from '../assets/Profile/boy1.png'
 import girl from '../assets/Profile/girl1.png'
 import { getStudentDetail } from '../Api/Children';
 import * as Progress from 'react-native-progress';
 import Loading from '../Loading/Loading'
+import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { getProgress } from '../Api/Progress'
+import { formatDate, formatDay } from '../FormatPrice/FormatDate'
 const ChildDetail = ({ route, navigation }) => {
   const { id } = route.params;
   const [student, setStudent] = useState([])
   const [loading, setLoading] = useState(true);
-  const [courseId, setCourseId] = useState(null);
   const [progress, setProgress] = useState([]);
-
+  const [courseId, setCourseId] = useState();
   useEffect(() => {
     fetchKid();
   }, []);
-
   const fetchKid = async () => {
     try {
       const studentDetail = await getStudentDetail(id);
       setStudent(studentDetail)
       setProgress(studentDetail.studentsCourse)
-      setCourseId(studentDetail.id)
+      if (studentDetail.studentsCourse.length > 0) {
+        setCourseId(studentDetail.studentsCourse[0].courseId);
+      }
+      console.log("test:",student);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -45,7 +47,7 @@ const ChildDetail = ({ route, navigation }) => {
         <Progress.Circle
           animated={true}
           progress={parseInt(item.courseProgress, 10) / 100}
-          size={35}
+          size={isSmallPhone || isSmallTablet ? 40 : 35}
           showsText={true}
           color="#FF8A00"
           thickness={3}
@@ -56,26 +58,7 @@ const ChildDetail = ({ route, navigation }) => {
       </View>
     </View>
   );
-
-
-  // const fetchProgress = async (courseId) => {
-  //   try {
-  //     if (courseId) {
-  //       const progressDetail = await getProgress(id, courseId);
-  //       if (progressDetail) {
-  //         setProgress(progressDetail)
-  //       }
-  //     } else {
-  //       console.log("CourseId is not set yet");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-
+  const formattedDate = formatDay(student.dateOfBirth);
   return (
     <View style={styles.Container}>
       {loading ? (
@@ -99,22 +82,22 @@ const ChildDetail = ({ route, navigation }) => {
                   <Text style={{ textAlign: 'center', width: wp('20%'), fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%') }}>{student.age} years old</Text>
                 </View>
                 <View style={{ marginLeft: wp('3%') }}>
-                  <Text style={{ textAlign: 'center', fontWeight: '500' }}>Email</Text>
-                  <Text style={{ textAlign: 'center', width: wp('25%'), fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%') }}>lili@gmail.com</Text>
+                  <Text style={{ textAlign: 'center', fontWeight: '500' }}>Account</Text>
+                  <Text style={{ textAlign: 'center', width: wp('25%'), fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%') }}>{student.userName}</Text>
                 </View>
               </View>
               <View style={{ flexDirection: 'row', marginTop: hp('1%'), alignItems: 'center' }}>
                 <View style={{ marginLeft: wp('1%') }}>
                   <Text style={{ textAlign: 'center', fontWeight: '500' }}>Birthday</Text>
-                  <Text style={{ textAlign: 'center', width: wp('20%'), fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%') }}>{student.dateOfBirth}</Text>
+                  <Text style={{ textAlign: 'center', width: wp('20%'), fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%') }}>{formattedDate}</Text>
                 </View>
                 <View style={{ marginLeft: isSmallPhone || isSmallTablet ? wp('7%') : wp('8%'), alignItems: 'center' }}>
                   <Text style={{ fontWeight: '500' }}>Gender</Text>
                   <Text style={{ width: wp('12%'), fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%'), marginLeft: wp('1%') }}>{student.gender}</Text>
                 </View>
                 <View style={{ marginLeft: isSmallPhone || isSmallTablet ? wp('7.5%') : wp('8.2%') }}>
-                  <Text style={{ textAlign: 'center', fontWeight: '500' }}>Password</Text>
-                  <Text style={{ textAlign: 'center', width: wp('20%'), fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%') }}>12345678</Text>
+                  <Text style={{ textAlign: 'center', fontWeight: '500' }}>Role</Text>
+                  <Text style={{ textAlign: 'center', width: wp('20%'), fontSize: isSmallPhone || isSmallTablet ? wp('3%') : wp('3.5%') }}>{student.role}</Text>
                 </View>
               </View>
             </View>
@@ -129,7 +112,7 @@ const ChildDetail = ({ route, navigation }) => {
                     <Text style={{ color: '#FF8A00', fontWeight: '500', fontSize: wp('10%') }}>{progress.length}</Text>
                   </View>
                 </View>
-                <TouchableWithoutFeedback activeOpacity={0.8} onPress={() => { navigation.navigate('StudyProcess', { id, courseId }) }}>
+                <TouchableWithoutFeedback activeOpacity={0.8} onPress={() => { navigation.navigate('StudyProcess', { id, courseId}) }}>
                   <View style={{
                     flexDirection: 'row', backgroundColor: 'white', paddingVertical: hp('1.2%'), borderRadius: 10, marginTop: hp('2%'), justifyContent: 'space-between', marginBottom: hp('0.5%'), borderWidth: 1, shadowColor: 'black',
                     shadowOpacity: 0.9,
