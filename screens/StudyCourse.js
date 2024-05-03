@@ -19,7 +19,7 @@ import Loading from '../Loading/Loading';
 import { usePreventScreenCapture } from 'expo-screen-capture';
 
 const StudyCourse = ({ route, navigation }) => {
-    usePreventScreenCapture();
+    // usePreventScreenCapture();
     const { width: windowWidth } = useWindowDimensions();
     const [selectedContent, setSelectedContent] = useState(route.params.Content);
     const [selectedVideo, setSelectedVideo] = useState(route.params.CourseVideo);

@@ -24,6 +24,8 @@ import { getNoti } from '../Api/Notification';
 import notiIn from '../assets/HomePage/notiIn.png'
 import { getTeacher } from '../Api/Teacher';
 import cong from '../assets/Lesson/cong2.jpg'
+import ava from '../assets/Profile/gamer.png'
+
 const HomePage = ({ navigation }) => {
     const [course, setCourse] = useState([])
     const [teacher, setTeacher] = useState([])
@@ -99,7 +101,7 @@ const HomePage = ({ navigation }) => {
     const numberCourse = 4;
     const limitedCourse = course.slice(0, numberCourse);
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={[styles.Course,{height:hp('25%')}]} onPress={() => {
+        <TouchableOpacity style={[styles.Course, { height: hp('25%') }]} onPress={() => {
             navigation.navigate('FreeCourse', { Id: item.id })
         }}>
             <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
@@ -123,7 +125,7 @@ const HomePage = ({ navigation }) => {
                 // navigation.navigate('MentorDetails', { Lecture: item.teacher, Avatar: item.avatar, Id: item.teacherId })
             }}>
                 <View >
-                    <Image source={cong} style={styles.CircleMen} />
+                    <Image source={ava} style={styles.CircleMen} />
                 </View>
                 <Text style={{ textAlign: 'center', fontSize: wp('3.5%') }}>{item.teacherName}</Text>
             </TouchableOpacity>
@@ -201,7 +203,7 @@ const HomePage = ({ navigation }) => {
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Categories</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }}>View all</Text>
-                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} /> 
+                            <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.EventList}>
@@ -234,7 +236,7 @@ const HomePage = ({ navigation }) => {
                 {freeCourses.length > 0 && (
                     <View >
                         <View style={styles.Title}>
-                            <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Free Course</Text>
+                            <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Pay Course</Text>
                             <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
                                 <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
@@ -242,9 +244,9 @@ const HomePage = ({ navigation }) => {
                         </View>
                         <View>
                             <FlatList
-                                data={freeCourses}
-                                keyExtractor={item => item.id}
-                                renderItem={renderItem}
+                                data={paidCourses}
+                                renderItem={renderCourse}
+                                keyExtractor={item => item.id.toString()}
                                 horizontal
                                 showsHorizontalScrollIndicator={false}
                                 contentContainerStyle={styles.List}
@@ -256,7 +258,7 @@ const HomePage = ({ navigation }) => {
                     <View style={styles.EventTitle}>
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Top Mentor</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }} >View all</Text> 
+                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }} >View all</Text>
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
@@ -273,17 +275,18 @@ const HomePage = ({ navigation }) => {
                 </View>
                 <View>
                     <View style={styles.Title}>
-                        <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Pay Course</Text>
+                        <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Free Course</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} onPress={() => { navigation.navigate('PopularCourse',{paidCourses}) }}>View all</Text>
+                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} onPress={() => { navigation.navigate('PopularCourse', { paidCourses }) }}>View all</Text>
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
                     <View style={{ paddingBottom: hp('1%'), flexDirection: 'row' }}>
+
                         <FlatList
-                            data={paidCourses}
-                            renderItem={renderCourse}
-                            keyExtractor={item => item.id.toString()}
+                            data={freeCourses}
+                            keyExtractor={item => item.id}
+                            renderItem={renderItem}
                             horizontal
                             showsHorizontalScrollIndicator={false}
                             contentContainerStyle={styles.List}

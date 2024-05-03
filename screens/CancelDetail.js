@@ -36,14 +36,14 @@ const CancelDetail = ({ route, navigation }) => {
             <Text style={{ color: 'white', fontWeight: '500', fontSize: wp('3.1%'), textAlign: 'center', width: wp('30%') }}>Wait for approving</Text>
           </View>
           <Text style={{ marginLeft: wp('1.5%'), fontSize: isSmallPhone || isSmallTablet ? wp('3.3%') : wp('4%'), fontWeight: '500',width:wp('50%') }}>{Name}</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
+          {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
             <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
             <Text style={{
               fontWeight: 'bold',
               color: '#40BFFF',
               fontSize: wp('3.8%')
             }}>{Lecture}</Text>
-          </View>
+          </View> */}
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
             <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
             <Text style={{

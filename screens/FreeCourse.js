@@ -1,4 +1,4 @@
-import { ImageBackground, Modal, StyleSheet, Text, View, Image, Alert, TouchableOpacity, TextInput, ScrollView, FlatList, Pressable } from 'react-native'
+import { ImageBackground, Modal, StyleSheet, Text, View, Image, Alert, TouchableOpacity, TextInput, ScrollView, FlatList, Pressable, Linking } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from "@react-navigation/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -53,7 +53,7 @@ const FreeCourse = ({ route }) => {
                         ) : (
                             <>
                                 {item.lessons?.map((lesson, index) => (
-                                    <TouchableOpacity key={lesson.id} style={styles.LessBorder}>
+                                    <TouchableOpacity onPress={() => { navigation.navigate('TrialDoc',{lessionId:lesson.id}) }} key={lesson.id} style={styles.LessBorder}>
                                         <View style={styles.LessId}>
                                             <Text>{index + 1}</Text>
                                         </View>
@@ -69,11 +69,13 @@ const FreeCourse = ({ route }) => {
                                                 }} source={open} />
                                             </TouchableOpacity>
                                         ) : lesson.type === 'Document' ? (
-                                            <Image style={{
-                                                width: wp('9%'),
-                                                height: hp('4.5%'),
-                                                position: 'absolute', right: wp('2%')
-                                            }} source={answer} />
+                                            <TouchableOpacity style={{ position: 'absolute', right: wp('2%') }}>
+                                                <Image style={{
+                                                    width: wp('9%'),
+                                                    height: hp('4.5%'),
+                                                    // position: 'absolute', right: wp('2%')
+                                                }} source={answer} />
+                                            </TouchableOpacity>
                                         ) : (
                                             <Image style={{
                                                 width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
@@ -139,6 +141,9 @@ const FreeCourse = ({ route }) => {
             console.error("Error fetching data:", error);
         }
     };
+    const handlePress = () => {
+        Linking.openURL('https://kidspro-capstone.github.io/Capstone-Game-WebGL/');
+    };
     const renderScene = SceneMap({
         about: () => (
             <View style={{
@@ -171,7 +176,7 @@ const FreeCourse = ({ route }) => {
                                 showsVerticalScrollIndicator={false}
                                 scrollEnabled={false}
                             />
-                            <TouchableOpacity style={{ marginBottom: hp('3%') }}> 
+                            <TouchableOpacity onPress={handlePress} style={{ marginBottom: hp('3%') }}>
                                 <ImageBackground
                                     source={gameBtn}
                                     style={{
@@ -231,7 +236,7 @@ const FreeCourse = ({ route }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    
+
                     <View style={styles.DetailForm}>
                         <TabView
                             navigationState={{ index, routes }}

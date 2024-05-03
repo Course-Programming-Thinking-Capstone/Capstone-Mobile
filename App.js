@@ -452,6 +452,7 @@ export default function App() {
           headerTitleAlign: 'center',
         }} />
         <Stack.Screen name="FreeCourse" component={FreeCourse} options={{ headerShown: false }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

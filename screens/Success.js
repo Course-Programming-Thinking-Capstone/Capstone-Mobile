@@ -169,7 +169,7 @@ const Success = ({ navigation, route }) => {
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{data.paymentType}</Text>
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{formatPrice(data.price * (data.quantityPurchased))}</Text>
                                         <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>x {data.quantityPurchased}</Text>
-                                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>- {formatPrice(data.discount)}</Text>
+                                        <Text style={{ lineHeight: hp('4%'), color: 'red', fontWeight: '700', textAlign: 'right', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>- {data && data.discount ? formatPrice(data.discount) : '0đ'}</Text>
                                         {/* <Text style={{ lineHeight: hp('4%'), color: 'black', fontWeight: '500', fontSize: isSmallPhone || isSmallTablet ? wp('3.8%') : wp('4.3%') }}>{(Price * (selectedStudents.length)).toLocaleString('vi-VN')} đ</Text> */}
                                     </View>
                                 </View>
