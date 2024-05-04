@@ -95,7 +95,7 @@ const Course = ({ navigation, route }) => {
           style={[styles.LessBorder, { alignItems: 'center' }]}
         >
           <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4%'), marginLeft: wp('1.5%'), width: isSmallPhone || isSmallTablet ? wp('75%') : wp('80%'), textAlign: "left" }}>
-            Section {item.id} <Text>- {item.name} </Text>
+            Section {index+1} <Text>- {item.name} </Text>
           </Text>
           {isLocked ? (
             <Image style={{
@@ -236,8 +236,9 @@ const Course = ({ navigation, route }) => {
     ),
     certificate: () => (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        {/* <Image source={certi} style={{ width: wp('90%'), height: hp('75%'), borderWidth: 3, borderColor: 'blue', borderRadius: 10, marginTop: hp('5%') }} /> */}
-        <Text style={{ fontSize: wp('4%'), fontWeight: '500' }}>Please complete your course!</Text>
+        <Image source={certi} style={{ width: wp('90%'), height: hp('75%'), borderWidth: 3, borderColor: 'blue', borderRadius: 10,
+       }} />
+        {/* <Text style={{ fontSize: wp('4%'), fontWeight: '500' }}>Please complete your course!</Text> */}
       </View>
     ),
   });

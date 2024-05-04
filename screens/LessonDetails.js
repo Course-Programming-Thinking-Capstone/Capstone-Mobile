@@ -54,12 +54,12 @@ const LessonDetails = ({ route }) => {
                             [item.id]: !prevState[item.id]
                         }));
                     }}
-                    style={[styles.LessBorder, { alignItems: 'center', paddingVertical: hp('2%') }]}
+                    style={[styles.LessBorder, { alignItems: 'center', paddingVertical: hp('1%') }]}
                 >
                     <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4%'), marginLeft: wp('1.5%'), width: isSmallPhone || isSmallTablet ? wp('75%') : wp('80%'), textAlign: "left" }}>
                         Section {item.order} <Text>- {item.name} </Text>
                     </Text>
-                    <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), position: 'absolute', right: wp('4%'), paddingTop: hp('1%') }} />
+                    <Image source={drop} style={{ height: hp('3.5%'), width: wp('4.5%'), position: 'absolute', right: wp('5%'), paddingTop: hp('1%') }} />
                 </TouchableOpacity>
                 {showLessons[item.id] &&
                     <View>
@@ -73,7 +73,7 @@ const LessonDetails = ({ route }) => {
                                             <Text>{index + 1}</Text>
                                         </View>
                                         <View>
-                                            <Text style={{ fontWeight: '600', fontSize: wp('3.5%'), width: wp('70%') }}>{lesson.name}</Text>
+                                            <Text style={{ fontWeight: '600', fontSize: wp('3.5%'), width: wp('65%') }}>{lesson.name}</Text>
                                             <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{lesson.duration}:00</Text>
                                         </View>
                                         {lesson.type === 'Video' ? (
@@ -229,11 +229,11 @@ const LessonDetails = ({ route }) => {
                                                 <ScrollView>
                                                     <View style={{ width: wp('90%'), paddingLeft: wp('3%') }}>
                                                         <Text style={styles.ClassInfo}>Class Code:  <Text></Text><Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.classCode}</Text></Text>
-                                                        <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{formatDay(selectedClass.openClass)}</Text></Text>
-                                                        <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{formatDay(selectedClass.closeClass)}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.teacherName}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Study Days:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.days?.join(', ')}</Text> </Text>
-                                                        <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.startSlot}-{selectedClass.endSlot}</Text></Text>
+                                                        <Text style={styles.ClassInfo}>Date Start:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.3%') : wp('5%'), fontWeight: '400', color: 'black' }}>{formatDay(selectedClass.openClass)}</Text></Text>
+                                                        <Text style={styles.ClassInfo}>Date End:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.3%') : wp('5%'), fontWeight: '400', color: 'black' }}>{formatDay(selectedClass.closeClass)}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Teacher:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.3%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.teacherName}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Study Days:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.3%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.days?.join(', ')}</Text> </Text>
+                                                        <Text style={styles.ClassInfo}>Slot Time:  <Text style={{ fontSize: isSmallPhone || isSmallTablet ? wp('4.3%') : wp('5%'), fontWeight: '400', color: 'black' }}>{selectedClass.startSlot}-{selectedClass.endSlot}</Text></Text>
                                                     </View>
                                                 </ScrollView>
                                             )}

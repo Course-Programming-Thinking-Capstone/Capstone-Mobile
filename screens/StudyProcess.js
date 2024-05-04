@@ -20,6 +20,7 @@ const StudyProcess = ({ route }) => {
         const progressDetail = await getProgress(id, courseId);
         if (progressDetail) {
           setProgress(progressDetail);
+          console.log("test Progress:",progressDetail);
         }
       } else {
         console.log("CourseId is not set yet");
@@ -29,7 +30,7 @@ const StudyProcess = ({ route }) => {
     }
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item,index }) => (
     <>
       <View >
         <View style={{ flexDirection: 'row' }}>
@@ -39,7 +40,7 @@ const StudyProcess = ({ route }) => {
               <View style={{ alignItems: 'center' }}>
                 <View style={[styles.Process, { backgroundColor: '#F69E4A' }]}>
                   <Image source={lesson} style={{ width: 30, height: 30, justifyContent: 'center' }} />
-                  <Text style={{ color: 'white', fontSize: isSmallPhone || isSmallTablet ? wp('4.7%') : 20, fontWeight: '500' }}>Section {item.sectionId}</Text>
+                  <Text style={{ color: 'white', fontSize: isSmallPhone || isSmallTablet ? wp('4.7%') : 20, fontWeight: '500' }}>Section {index+1}</Text>
                 </View>
                 <View style={{ height: 200, width: 5, backgroundColor: '#F69E4A' }}></View>
                 <View style={[styles.Process, { width: 20, height: 20 }]}></View>

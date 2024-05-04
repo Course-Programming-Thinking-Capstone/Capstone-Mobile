@@ -17,7 +17,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import { getStudentCourse } from '../Api/Children'
 import Loading from '../Loading/Loading'
 import { getNoti } from '../Api/Notification'
-
+import learning from '../assets/Lesson/learning.png'
 const KidHome = () => {
     const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
@@ -60,6 +60,7 @@ const KidHome = () => {
             const contactData = await getStudentCourse();
             if (contactData) {
                 setStudentCourse(contactData);
+                // console.log("Test data:", contactData);
                 setLoading(false);
             }
         } catch (error) {
@@ -79,7 +80,7 @@ const KidHome = () => {
             <View style={styles.Course}>
                 <Image source={{ uri: item.courseImage }} style={styles.CourseImage} />
                 <View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', borderColor: "white", borderWidth: 1, paddingHorizontal: hp('1%'), paddingVertical: wp('1%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('47%') }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', borderColor: "white", borderWidth: 1, paddingHorizontal: wp('1%'), paddingVertical: hp('0.5%'), borderRadius: 10, backgroundColor: '#EFEFEF', width: wp('47%') }}>
                         <Text style={{
                             fontWeight: 'bold',
                             color: '#40BFFF',
@@ -87,8 +88,13 @@ const KidHome = () => {
                         }}>Class Code:</Text>
                         <Text>{item.classCode}</Text>
                     </View>
-                    <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500', width: wp('50%') }}>{item.courseName}</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%'), marginLeft: wp('2%') }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%'), paddingLeft: wp('1%') }}>
+                        <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%') }} />
+                        <Text style={styles.Name}>{item.courseName}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
+                        <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                        <Text style={{ marginLeft: wp('0.5%'), fontSize: wp('4%'), width: wp('50%'), color: '#40BFFF', fontWeight: '500' }}>{item.teacherName}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: wp('1.5%') }}>
                         <ProgressBar progress={item.courseProgress / 100} width={wp('35%')} borderWidth={2} borderColor={'lightblue'} height={(hp('1%'))} />
@@ -258,5 +264,11 @@ const styles = StyleSheet.create({
     List: {
         paddingBottom: hp('1%'),
         paddingLeft: wp('1%')
-    }
+    },
+    Name: {
+        fontWeight: 'bold',
+        color: '#223263',
+        fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4.3%'),
+        width: isSmallPhone || isSmallTablet ? wp('40%') : wp('40%')
+    },
 })

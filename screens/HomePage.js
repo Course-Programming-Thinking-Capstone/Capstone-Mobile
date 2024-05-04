@@ -11,7 +11,7 @@ import program from '../assets/HomePage/programmer.png'
 import support from '../assets/HomePage/sup.png'
 import right from '../assets/HomePage/right.png'
 import hello from '../assets/HomePage/hello.png'
-import teacher from '../assets/Lesson/teacher1.png'
+import teacher1 from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import learning from '../assets/Lesson/learning.png'
 import background from '../assets/HomePage/gif5.gif'
@@ -125,7 +125,7 @@ const HomePage = ({ navigation }) => {
                 // navigation.navigate('MentorDetails', { Lecture: item.teacher, Avatar: item.avatar, Id: item.teacherId })
             }}>
                 <View >
-                    <Image source={ava} style={styles.CircleMen} />
+                    <Image source={cong} style={styles.CircleMen} />
                 </View>
                 <Text style={{ textAlign: 'center', fontSize: wp('3.5%') }}>{item.teacherName}</Text>
             </TouchableOpacity>
@@ -141,16 +141,24 @@ const HomePage = ({ navigation }) => {
             })
         }}>
             <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, paddingLeft: wp('2%') }}>
-                {/* <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} /> */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, paddingLeft: wp('1%'),position:'absolute',top:hp('15%') }}>
+                <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%')}} />
                 <Text style={styles.Name}>{item.name}</Text>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+            {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8,position:'absolute',top:hp('19%')}}> 
+                <Image source={teacher1} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                <Text style={{
+                    fontWeight: 'bold',
+                    color: 'blue',
+                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%'),
+                }}>3-4 years old</Text>
+            </View> */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8,position:'absolute',bottom:hp('1%') }}>
                 <Image source={tag} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                 <Text style={{
                     fontWeight: 'bold',
                     color: 'blue',
-                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%')
+                    fontSize: isSmallPhone || isSmallTablet ? wp('3.4%') : wp('3.8%'),
                 }}>{item.isFree ? 'Free' : formatPrice(item.price)}</Text>
             </View>
         </TouchableOpacity>
@@ -238,7 +246,7 @@ const HomePage = ({ navigation }) => {
                         <View style={styles.Title}>
                             <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Pay Course</Text>
                             <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
+                                <Text onPress={() => { navigation.navigate('PopularCourse', { paidCourses }) }} style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
                                 <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                             </TouchableOpacity>
                         </View>
@@ -277,7 +285,7 @@ const HomePage = ({ navigation }) => {
                     <View style={styles.Title}>
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Free Course</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} onPress={() => { navigation.navigate('PopularCourse', { paidCourses }) }}>View all</Text>
+                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} >View all</Text>
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
@@ -414,10 +422,11 @@ const styles = StyleSheet.create({
         borderWidth: 2,
     },
     Name: {
-        width: wp('45%'),
+        
         fontWeight: 'bold',
         color: '#223263',
-        fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('3.7%')
+        fontSize: isSmallPhone || isSmallTablet ? wp('3.5%') : wp('4.3%'),
+        width: isSmallPhone || isSmallTablet ? wp('37%') : wp('40%')
     },
     Location: {
         fontWeight: 'bold',

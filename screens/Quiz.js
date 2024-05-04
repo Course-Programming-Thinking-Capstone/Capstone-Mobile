@@ -11,7 +11,7 @@ import { getUserInfo } from '../Api/Parents';
 import { submitQuiz } from '../Api/Quiz';
 const QuizScreen = ({ route, navigation }) => {
     const { QuizDetail, CourseId } = route.params;
-    // console.log("Test Quiz:",QuizDetail);
+    // console.log("Test Quiz:",QuizDetail); 
     const [isModalVisible, setModalVisible] = useState(false);
     const [answerModal, setAnswerModal] = useState(false);
     const [userAnswers, setUserAnswers] = useState([]);
@@ -69,7 +69,7 @@ const QuizScreen = ({ route, navigation }) => {
     };
     const [attemptCount, setAttemptCount] = useState(0);
     const restartQuiz = () => {
-        if (attemptCount >= QuizDetail.numberOfAttempt) {
+        if (attemptCount >= QuizDetail.quizSubmit.attemptTurnNumber) {
             return;
         }
         setAttemptCount(attemptCount + 1);
@@ -149,6 +149,7 @@ const QuizScreen = ({ route, navigation }) => {
     const minutes = Math.floor(remainingTime / 60);
     const seconds = remainingTime % 60;
     const [quizScore, setQuizScore] = useState([]);
+    // console.log("test quiz:",quizScore);
     const FetchSubmitQuiz = async (timeElapsed) => {
         try {
             const success = await submitQuiz(QuizDetail.id, selectedQuestionIds, selectedOptionIds, QuizDetail.duration, timeElapsed);
@@ -185,7 +186,7 @@ const QuizScreen = ({ route, navigation }) => {
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: hp('2%') }}>
                             <TouchableOpacity onPress={restartQuiz} style={[styles.Btn, { backgroundColor: 'red', marginRight: wp('3%') }]}>
-                                <Text style={{ color: 'white', fontWeight: '600' }}>Restart ({attemptCount}/{QuizDetail.numberOfAttempt}) </Text>
+                                <Text style={{ color: 'white', fontWeight: '600' }}>Restart ({attemptCount}/{quizScore.quizSubmit.attemptTurnNumber}) </Text>   
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.Btn} onPress={() => { navigation.navigate('Course', { CourseId }) }}>
                                 <Text style={{ color: 'white', fontWeight: '600' }}>Main menu</Text>
