@@ -54,7 +54,7 @@ const LessonDetails = ({ route }) => {
                             [item.id]: !prevState[item.id]
                         }));
                     }}
-                    style={[styles.LessBorder, { alignItems: 'center', paddingVertical: hp('1%') }]}
+                    style={[styles.LessBorder, { alignItems: 'center', paddingVertical: hp('1%'),height:hp('7.5%') }]}
                 >
                     <Text style={{ color: '#8A8A8A', fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.7%') : wp('4%'), marginLeft: wp('1.5%'), width: isSmallPhone || isSmallTablet ? wp('75%') : wp('80%'), textAlign: "left" }}>
                         Section {item.order} <Text>- {item.name} </Text>

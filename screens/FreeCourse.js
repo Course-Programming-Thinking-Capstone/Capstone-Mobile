@@ -1,4 +1,4 @@
-import { ImageBackground, Modal, StyleSheet, Text, View, Image, Alert, TouchableOpacity, TextInput, ScrollView, FlatList, Pressable, Linking } from 'react-native'
+import { ImageBackground, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList, Pressable, Linking, Modal } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from "@react-navigation/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -20,6 +20,8 @@ import drop from '../assets/MyCourse/drop.png'
 import lesson from '../assets/Profile/book2.png'
 import answer from '../assets/Profile/reading.png'
 import quizPic from '../assets/Profile/quiz.png'
+import close from '../assets/welcome/close1.png'
+
 const FreeCourse = ({ route }) => {
     usePreventScreenCapture();
     const [isModalVisible, setModalVisible] = useState(false);
@@ -29,6 +31,7 @@ const FreeCourse = ({ route }) => {
         fetchClass()
     }, []);
     const [showLessons, setShowLessons] = useState({});
+    const [showVideo, setShowVideo] = useState(false);
     const render = ({ item, index }) => {
         return (
             <View key={item.id}>
@@ -53,7 +56,7 @@ const FreeCourse = ({ route }) => {
                         ) : (
                             <>
                                 {item.lessons?.map((lesson, index) => (
-                                    <TouchableOpacity onPress={() => { navigation.navigate('TrialDoc',{lessionId:lesson.id}) }} key={lesson.id} style={styles.LessBorder}>
+                                    <TouchableOpacity key={lesson.id} style={styles.LessBorder}>
                                         <View style={styles.LessId}>
                                             <Text>{index + 1}</Text>
                                         </View>
@@ -62,7 +65,7 @@ const FreeCourse = ({ route }) => {
                                             <Text style={{ color: '#8A8A8A', fontWeight: 'bold' }}>{lesson.duration}:00</Text>
                                         </View>
                                         {lesson.type === 'Video' ? (
-                                            <TouchableOpacity style={{ position: 'absolute', right: wp('2%') }}>
+                                            <TouchableOpacity onPress={() => setShowVideo(true)} style={{ position: 'absolute', right: wp('2%') }}>
                                                 <Image style={{
                                                     width: wp('9%'),
                                                     height: hp('4.51%'),
@@ -144,6 +147,19 @@ const FreeCourse = ({ route }) => {
     const handlePress = () => {
         Linking.openURL('https://kidspro-capstone.github.io/Capstone-Game-WebGL/');
     };
+    const VideoWebView = () => {
+        return (
+            <View style={{ height: 300, alignItems: 'center' }}>
+                <WebView style={{ width: wp('100%') }}
+                    allowsFullscreenVideo
+                    source={{ uri: 'https://www.youtube.com/embed/mpSmBuco6I0?si=p1hauMk3VsiiPzzR%22%20title=' }}
+                />
+            </View>
+        );
+    };
+    const closeModal = () => {
+        setShowVideo(false);
+    };
     const renderScene = SceneMap({
         about: () => (
             <View style={{
@@ -161,59 +177,69 @@ const FreeCourse = ({ route }) => {
             </View >
         ),
         lessons: () => (
-            <View style={{ marginTop: hp('2%'), flex: 1 }}>
+            <View style={{ flex: 1 }}>
                 {loading ? (
                     <Loading />
                 ) : (
-                    <ScrollView showsVerticalScrollIndicator={false}
-                    >
-                        <View>
-                            <FlatList
-                                data={section}
-                                renderItem={render}
-                                keyExtractor={item => item.id.toString()}
-                                numColumns={1}
-                                showsVerticalScrollIndicator={false}
-                                scrollEnabled={false}
-                            />
-                            <TouchableOpacity onPress={handlePress} style={{ marginBottom: hp('3%') }}>
-                                <ImageBackground
-                                    source={gameBtn}
-                                    style={{
-                                        borderWidth: 2,
-                                        borderColor: 'white',
-                                        borderRadius: 30,
-                                        overflow: 'hidden',
-                                        shadowColor: 'black',
-                                        shadowOpacity: 0.9,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowRadius: 20,
-                                        elevation: 5,
-                                        backgroundColor: 'white'
-                                    }}
-                                >
-                                    <View style={{
-                                        height: hp('7%'),
-                                        backgroundColor: 'rgba(200, 200, 200, 0.5)', justifyContent: 'center'
-                                    }}>
-                                        <Text style={{
-                                            textAlign: 'center', color: 'blue'
-                                            , fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('5%'), width: wp('80%')
-                                        }}>Game Programming</Text>
-                                        <Image
-                                            style={{
-                                                width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
-                                                height: hp('4.5%'),
-                                                position: 'absolute',
-                                                right: wp('2%')
-                                            }}
-                                            source={game}
-                                        />
-                                    </View>
-                                </ImageBackground>
-                            </TouchableOpacity>
-                        </View>
-                    </ScrollView>
+                    <View>
+                        <Modal visible={showVideo} animationType="slide" transparent={true} statusBarTranslucent={true}>
+                            <View style={styles.modalContainer}>
+                                <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+                                    <Image source={close} style={styles.buttonClose} />
+                                </TouchableOpacity>
+                                <VideoWebView />
+                            </View>
+                        </Modal>
+                        <ScrollView showsVerticalScrollIndicator={false}
+                        >
+                            <View>
+                                <FlatList
+                                    data={section}
+                                    renderItem={render}
+                                    keyExtractor={item => item.id.toString()}
+                                    numColumns={1}
+                                    showsVerticalScrollIndicator={false}
+                                    scrollEnabled={false}
+                                />
+                                <TouchableOpacity onPress={handlePress} style={{ marginBottom: hp('3%') }}>
+                                    <ImageBackground
+                                        source={gameBtn}
+                                        style={{
+                                            borderWidth: 2,
+                                            borderColor: 'white',
+                                            borderRadius: 30,
+                                            overflow: 'hidden',
+                                            shadowColor: 'black',
+                                            shadowOpacity: 0.9,
+                                            shadowOffset: { width: 0, height: 2 },
+                                            shadowRadius: 20,
+                                            elevation: 5,
+                                            backgroundColor: 'white'
+                                        }}
+                                    >
+                                        <View style={{
+                                            height: hp('7%'),
+                                            backgroundColor: 'rgba(200, 200, 200, 0.5)', justifyContent: 'center'
+                                        }}>
+                                            <Text style={{
+                                                textAlign: 'center', color: 'blue'
+                                                , fontWeight: 'bold', fontSize: isSmallPhone || isSmallTablet ? wp('3.75%') : wp('4%'), marginLeft: wp('5%'), width: wp('80%')
+                                            }}>Game Programming</Text>
+                                            <Image
+                                                style={{
+                                                    width: isSmallPhone || isSmallTablet ? wp('9.4%') : wp('9%'),
+                                                    height: hp('4.5%'),
+                                                    position: 'absolute',
+                                                    right: wp('2%')
+                                                }}
+                                                source={game}
+                                            />
+                                        </View>
+                                    </ImageBackground>
+                                </TouchableOpacity>
+                            </View>
+                        </ScrollView>
+                    </View>
                 )}
             </View>
         ),
