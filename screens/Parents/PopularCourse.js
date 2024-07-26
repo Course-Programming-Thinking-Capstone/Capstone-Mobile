@@ -1,11 +1,10 @@
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import teacher from '../assets/Lesson/teacher1.png'
-import tag from '../assets/Lesson/tag.png'
+import tag from '../../assets/Lesson/tag.png' 
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { getAllCourse } from '../Api/Course';
-import { formatPrice } from '../FormatPrice/Format';
-import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import { getAllCourse } from '../../Api/Course';
+import { formatPrice } from '../../FormatPrice/Format';
+import { isSmallPhone, isSmallTablet } from '../../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 const PopularCourse = ({route}) => {
     const { paidCourses } = route.params;

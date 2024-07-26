@@ -1,18 +1,18 @@
 import { StyleSheet, FlatList, Alert, Text, TouchableOpacity, View, Image, TextInput, Modal, SafeAreaView, ScrollView } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
-import teacher from '../assets/Lesson/teacher1.png'
-import tag from '../assets/Lesson/tag.png'
+import teacher from '../../assets/Lesson/teacher1.png'
+import tag from '../../assets/Lesson/tag.png'
 import { SelectList } from 'react-native-dropdown-select-list'
-import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-import { getStudent, addChildren, getStudentByClassId } from '../Api/Children';
-import { getContact } from '../Api/Parents';
+import { isSmallPhone, isSmallTablet } from '../../Responsive/Responsive'
+import { getStudent, addChildren, getStudentByClassId } from '../../Api/Children';
+import { getContact } from '../../Api/Parents';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CheckBox from 'expo-checkbox';
-import Loading from '../Loading/Loading'
-import lich from '../assets/Profile/lich.png'
-import { formatPrice } from '../FormatPrice/Format';
+import Loading from '../../Loading/Loading'
+import lich from '../../assets/Profile/lich.png'
+import { formatPrice } from '../../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import ErrorModal from '../Alert/Alert';
+import ErrorModal from '../../Alert/Alert';
 const Payment = ({ route, navigation }) => {
     const [name, setName] = useState('')
     const [dob, setDob] = useState(null);

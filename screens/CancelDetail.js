@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import teacher from '../assets/Lesson/teacher1.png'
 import tag from '../assets/Lesson/tag.png'
 import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
 import { getOrderById } from '../Api/Order';

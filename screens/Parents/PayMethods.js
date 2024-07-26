@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import zalo from '../assets/Payment/zalo1.png'
-import momo from '../assets/Payment/momo.png'
-import paypal from '../assets/Payment/paypal1.png'
-import apple from '../assets/Payment/apple1.png'
+import zalo from '../../assets/Payment/zalo1.png'
+import momo from '../../assets/Payment/momo.png'
+import paypal from '../../assets/Payment/paypal1.png'
+import apple from '../../assets/Payment/apple1.png'
 import { RadioButton } from 'react-native-paper';
-import { formatPrice } from '../FormatPrice/Format';
+import { formatPrice } from '../../FormatPrice/Format';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { getVoucher } from '../Api/Voucher';
+import { getVoucher } from '../../Api/Voucher';
 
 const PayMethods = ({ navigation, route }) => {
   const { classCourseId, courseData, classInfo, selectedStudents } = route.params;

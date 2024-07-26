@@ -1,16 +1,15 @@
 import { Image, StyleSheet, Text, View, TouchableOpacity, Modal, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { AppState } from 'react-native';
-import success1 from '../assets/Payment/Success.png'
-import teacher from '../assets/Lesson/teacher1.png'
-import tag from '../assets/Lesson/tag.png'
-import close from '../assets/welcome/close1.png'
-import wait from '../assets/Payment/pend1.png'
-import Loading from '../Loading/Loading'
-import { getOrderDetail } from '../Api/Order';
-import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import success1 from '../../assets/Payment/Success.png'
+import tag from '../../assets/Lesson/tag.png'
+import close from '../../assets/welcome/close1.png'
+import wait from '../../assets/Payment/pend1.png'
+import Loading from '../../Loading/Loading'
+import { getOrderDetail } from '../../Api/Order';
+import { isSmallPhone, isSmallTablet } from '../../Responsive/Responsive'
 import { useFocusEffect } from '@react-navigation/native';
-import { formatPrice } from '../FormatPrice/Format';
+import { formatPrice } from '../../FormatPrice/Format';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Success = ({ navigation, route }) => {
     const { success, classInfo } = route.params;

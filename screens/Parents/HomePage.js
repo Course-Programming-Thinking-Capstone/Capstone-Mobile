@@ -2,29 +2,29 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList, S
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import noti from '../assets/HomePage/noti.png'
-import search from '../assets/HomePage/search.png'
-import filter from '../assets/HomePage/filter.png'
-import party from '../assets/HomePage/party.png'
-import sale from '../assets/HomePage/sale1.png'
-import program from '../assets/HomePage/programmer.png'
-import support from '../assets/HomePage/sup.png'
-import right from '../assets/HomePage/right.png'
-import hello from '../assets/HomePage/hello.png'
-import teacher1 from '../assets/Lesson/teacher1.png'
-import tag from '../assets/Lesson/tag.png'
-import learning from '../assets/Lesson/learning.png'
-import background from '../assets/HomePage/gif5.gif'
-import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
-import { getAllCourse } from '../Api/Course';
-import { getUserInfo } from '../Api/Parents';
-import test from '../assets/Lesson/kid1.jpg'
-import { formatPrice } from '../FormatPrice/Format';
-import { getNoti } from '../Api/Notification';
-import notiIn from '../assets/HomePage/notiIn.png'
-import { getTeacher } from '../Api/Teacher';
-import cong from '../assets/Lesson/cong2.jpg'
-import ava from '../assets/Profile/gamer.png'
+import noti from '../../assets/HomePage/noti.png'
+import search from '../../assets/HomePage/search.png'
+import filter from '../../assets/HomePage/filter.png'
+import party from '../../assets/HomePage/party.png'
+import sale from '../../assets/HomePage/sale1.png'
+import program from '../../assets/HomePage/programmer.png'
+import support from '../../assets/HomePage/sup.png'
+import right from '../../assets/HomePage/right.png'
+import hello from '../../assets/HomePage/hello.png'
+import teacher1 from '../../assets/Lesson/teacher1.png'
+import tag from '../../assets/Lesson/tag.png'
+import learning from '../../assets/Lesson/learning.png'
+import background from '../../assets/HomePage/gif5.gif'
+import { isSmallPhone, isSmallTablet } from '../../Responsive/Responsive'
+import { getAllCourse } from '../../Api/Course';
+import { getUserInfo } from '../../Api/Parents';
+import test from '../../assets/Lesson/kid1.jpg'
+import { formatPrice } from '../../FormatPrice/Format';
+import { getNoti } from '../../Api/Notification';
+import notiIn from '../../assets/HomePage/notiIn.png'
+import { getTeacher } from '../../Api/Teacher';
+import cong from '../../assets/Lesson/cong2.jpg'
+import ava from '../../assets/Profile/gamer.png'
 
 const HomePage = ({ navigation }) => {
     const [course, setCourse] = useState([])
@@ -89,10 +89,10 @@ const HomePage = ({ navigation }) => {
         }
     };
     const Near = [
-        { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1500000', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg') },
-        { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1500000', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg') },
-        { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2000000', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg') },
-        { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2500000', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg') },
+        { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1500000', image: require('../../assets/Lesson/kid1.jpg'), avatar: require('../../assets/Lesson/cong2.jpg') },
+        { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1500000', image: require('../../assets/Lesson/kid2.jpg'), avatar: require('../../assets/Lesson/an.jpg') },
+        { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2000000', image: require('../../assets/Lesson/kid3.jpg'), avatar: require('../../assets/Lesson/vu.jpg') },
+        { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2500000', image: require('../../assets/Lesson/kid4.jpg'), avatar: require('../../assets/Lesson/thien.jpg') },
         { id: '5', name: 'Lập trình with C', teacher: 'CongLT', price: '1500000' },
         { id: '6', name: 'Lập trình with C', teacher: 'CongLT', price: '1500000' },
     ];

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, ScrollView, Button, ImageBackground, Alert } from 'react-native';
 import { Video } from 'expo-av';
-import * as ScreenOrientation from 'expo-screen-orientation';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import open from '../assets/Details/open2.png'
 import answer from '../assets/Profile/reading.png'
@@ -16,7 +15,6 @@ import HTML from 'react-native-render-html';
 import { getStarted } from '../Api/Progress';
 import { getLessonById, markLesson } from '../Api/Course';
 import Loading from '../Loading/Loading';
-import { usePreventScreenCapture } from 'expo-screen-capture';
 
 const StudyCourse = ({ route, navigation }) => {
     // usePreventScreenCapture();

@@ -1,1 +1,1 @@
-export const BASE_URL = "https://kidproproduction.azurewebsites.net/api/v1";
+export const BASE_URL = "http://45.118.134.212:5174/api/v1";

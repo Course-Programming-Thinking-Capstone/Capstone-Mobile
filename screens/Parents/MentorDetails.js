@@ -2,20 +2,20 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList, 
 import React, { useState } from 'react'
 import { useNavigation } from "@react-navigation/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import mess from '../assets/Details/message.png'
-import tele from '../assets/Details/tele.png'
-import google from '../assets/Mentor/google.png'
-import dot from '../assets/Mentor/dot.png'
-import apple from '../assets/Mentor/apple.png'
-import micro from '../assets/Mentor/microsoft.png'
-import teacher from '../assets/Lesson/teacher1.png'
-import tag from '../assets/Lesson/tag.png'
-import cong from '../assets/Lesson/cong2.jpg'
-import search from '../assets/HomePage/search.png'
-import star1 from '../assets/Details/star2.png'
-import an from '../assets/Lesson/an.jpg'
-import vu from '../assets/Lesson/vu.jpg'
-import thien from '../assets/Lesson/thien.jpg'
+import mess from '../../assets/Details/message.png'
+import tele from '../../assets/Details/tele.png'
+import google from '../../assets/Mentor/google.png'
+import dot from '../../assets/Mentor/dot.png'
+import apple from '../../assets/Mentor/apple.png'
+import micro from '../../assets/Mentor/microsoft.png'
+import teacher from '../../assets/Lesson/teacher1.png'
+import tag from '../../assets/Lesson/tag.png'
+import cong from '../../assets/Lesson/cong2.jpg'
+import search from '../../assets/HomePage/search.png'
+import star1 from '../../assets/Details/star2.png'
+import an from '../../assets/Lesson/an.jpg'
+import vu from '../../assets/Lesson/vu.jpg'
+import thien from '../../assets/Lesson/thien.jpg'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 const MentorDetails = ({ route }) => {
@@ -40,10 +40,10 @@ const MentorDetails = ({ route }) => {
     setIsPressed3(!isPressed3);
   };
   const Near = [
-    { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 VND', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg') },
-    { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1.500.000 VND', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg') },
-    { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg') },
-    { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 VND', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg') },
+    { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 VND', image: require('../../assets/Lesson/kid1.jpg'), avatar: require('../../assets/Lesson/cong2.jpg') },
+    { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1.500.000 VND', image: require('../../assets/Lesson/kid2.jpg'), avatar: require('../../assets/Lesson/an.jpg') },
+    { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../../assets/Lesson/kid3.jpg'), avatar: require('../../assets/Lesson/vu.jpg') },
+    { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 VND', image: require('../../assets/Lesson/kid4.jpg'), avatar: require('../../assets/Lesson/thien.jpg') },
     { id: '5', name: 'Lập trình with C', teacher: 'CongLT', price: '1.500.000 VND' },
     { id: '6', name: 'Lập trình with C', teacher: 'CongLT', price: '1.500.000 VND' },
   ];

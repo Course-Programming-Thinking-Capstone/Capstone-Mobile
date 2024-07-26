@@ -1,21 +1,21 @@
 import { StyleSheet, Text, View,FlatList,Image } from 'react-native'
 import React from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import mess from '../assets/Details/message.png'
-import tele from '../assets/Details/tele.png'
+import mess from '../../assets/Details/message.png'
+import tele from '../../assets/Details/tele.png'
 const TopMentor = () => {
     const data = [
-        { id: 1, MentorName: "CongLT", Position: "Design Tutor", avatar: require('../assets/Lesson/cong2.jpg') },
-        { id: 2, MentorName: "AnDVT", Position: "Front-End Tutor", avatar: require('../assets/Lesson/an.jpg') },
-        { id: 3, MentorName: "VuNT", Position: "Back-End Tutor", avatar: require('../assets/Lesson/vu.jpg') },
-        { id: 4, MentorName: "ThienTR", Position: "Game-Dev Tutor", avatar: require('../assets/Lesson/thien.jpg') },
-        { id: 5, MentorName: "CongLT", Position: "Front-End Tutor", avatar: require('../assets/Lesson/cong2.jpg') },
-        { id: 6, MentorName: "AnDVT", Position: "Back-End Tutor", avatar: require('../assets/Lesson/an.jpg') },
-        { id: 7, MentorName: "AnDVT", Position: "Game-Dev Tutor", avatar: require('../assets/Lesson/an.jpg') },
-        { id: 8, MentorName: "VuNT", Position: "Design Tutor", avatar: require('../assets/Lesson/vu.jpg') },
-        { id: 9, MentorName: "ThienTR", Position: "Design Tutor", avatar: require('../assets/Lesson/thien.jpg') },
-        { id: 10, MentorName: "CongLT", Position: "Design Tutor", avatar: require('../assets/Lesson/cong2.jpg') },
-        { id: 11, MentorName: "AnDVT", Position: "Design Tutor", avatar: require('../assets/Lesson/an.jpg') },
+        { id: 1, MentorName: "CongLT", Position: "Design Tutor", avatar: require('../../assets/Lesson/cong2.jpg') },
+        { id: 2, MentorName: "AnDVT", Position: "Front-End Tutor", avatar: require('../../assets/Lesson/an.jpg') },
+        { id: 3, MentorName: "VuNT", Position: "Back-End Tutor", avatar: require('../../assets/Lesson/vu.jpg') },
+        { id: 4, MentorName: "ThienTR", Position: "Game-Dev Tutor", avatar: require('../../assets/Lesson/thien.jpg') },
+        { id: 5, MentorName: "CongLT", Position: "Front-End Tutor", avatar: require('../../assets/Lesson/cong2.jpg') },
+        { id: 6, MentorName: "AnDVT", Position: "Back-End Tutor", avatar: require('../../assets/Lesson/an.jpg') },
+        { id: 7, MentorName: "AnDVT", Position: "Game-Dev Tutor", avatar: require('../../assets/Lesson/an.jpg') },
+        { id: 8, MentorName: "VuNT", Position: "Design Tutor", avatar: require('../../assets/Lesson/vu.jpg') },
+        { id: 9, MentorName: "ThienTR", Position: "Design Tutor", avatar: require('../../assets/Lesson/thien.jpg') },
+        { id: 10, MentorName: "CongLT", Position: "Design Tutor", avatar: require('../../assets/Lesson/cong2.jpg') },
+        { id: 11, MentorName: "AnDVT", Position: "Design Tutor", avatar: require('../../assets/Lesson/an.jpg') },
     ];
     const renderItem = ({ item }) => (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('2%'),marginBottom:hp('2%') }}>

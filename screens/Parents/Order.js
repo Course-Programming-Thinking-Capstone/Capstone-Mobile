@@ -2,14 +2,14 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Pressable } 
 import React, { useState, useEffect } from 'react'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import teacher from '../assets/Lesson/teacher1.png'
-import tag from '../assets/Lesson/tag.png'
+import teacher from '../../assets/Lesson/teacher1.png'
+import tag from '../../assets/Lesson/tag.png'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { getOrder } from '../Api/Order'
-import test from '../assets/Lesson/kid1.jpg'
-import Loading from '../Loading/Loading'
-import { formatPrice } from '../FormatPrice/Format';
-import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import { getOrder } from '../../Api/Order'
+import test from '../../assets/Lesson/kid1.jpg'
+import Loading from '../../Loading/Loading'
+import { formatPrice } from '../../FormatPrice/Format';
+import { isSmallPhone, isSmallTablet } from '../../Responsive/Responsive'
 const Order = ({ route, navigation }) => {
     const [loading, setLoading] = useState(true);
     const [orderList, setOrderList] = useState([]);
@@ -66,7 +66,6 @@ const Order = ({ route, navigation }) => {
                 refundedData.push(item);
             }
         }
-
         setPending(pendingData);
         setProcess(processData);
         setSuccess(successData);

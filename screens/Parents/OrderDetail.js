@@ -1,15 +1,15 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, Button, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import teacher from '../assets/Lesson/teacher1.png'
-import tag from '../assets/Lesson/tag.png'
-import { PaymentAgain, getOrderById } from '../Api/Order';
-import test from '../assets/Lesson/kid1.jpg'
-import Loading from '../Loading/Loading'
+import teacher from '../../assets/Lesson/teacher1.png'
+import tag from '../../assets/Lesson/tag.png'
+import { PaymentAgain, getOrderById } from '../../Api/Order';
+import test from '../../assets/Lesson/kid1.jpg'
+import Loading from '../../Loading/Loading'
 import { Linking } from 'react-native';
-import { formatPrice } from '../FormatPrice/Format';
-import { isSmallPhone, isSmallTablet } from '../Responsive/Responsive'
+import { formatPrice } from '../../FormatPrice/Format';
+import { isSmallPhone, isSmallTablet } from '../../Responsive/Responsive'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { formatDate } from '../FormatPrice/FormatDate';
+import { formatDate } from '../../FormatPrice/FormatDate';
 const OrderDetail = ({ route, navigation }) => {
     const { Name, LessImage, Lecture, Status, Price, Payment, Child, Avatar, Id, Note } = route.params;
     useEffect(() => {

@@ -2,8 +2,8 @@ import { StyleSheet, Text, View, TouchableOpacity,FlatList, Pressable,Image } fr
 import React, { useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import teacher from '../assets/Lesson/teacher1.png'
-import tag from '../assets/Lesson/tag.png'
+import teacher1 from '../../assets/Lesson/teacher1.png'
+import tag from '../../assets/Lesson/tag.png'
 import { useNavigation } from "@react-navigation/native";
 
 const BookMark = ({ route }) => {
@@ -27,10 +27,10 @@ const BookMark = ({ route }) => {
         setIsPressed3(!isPressed3);
     };
     const Near = [
-        { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 VND', image: require('../assets/Lesson/kid1.jpg'), avatar: require('../assets/Lesson/cong2.jpg') },
-        { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1.500.000 VND', image: require('../assets/Lesson/kid2.jpg'), avatar: require('../assets/Lesson/an.jpg') },
-        { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../assets/Lesson/kid3.jpg'), avatar: require('../assets/Lesson/vu.jpg') },
-        { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 VND', image: require('../assets/Lesson/kid4.jpg'), avatar: require('../assets/Lesson/thien.jpg') },
+        { id: '1', name: 'Program with Scratch', teacher: 'CongLT', price: '1.500.000 VND', image: require('../../assets/Lesson/kid1.jpg'), avatar: require('../../assets/Lesson/cong2.jpg') },
+        { id: '2', name: 'Program with Python', teacher: 'AnDVT', price: '1.500.000 VND', image: require('../../assets/Lesson/kid2.jpg'), avatar: require('../../assets/Lesson/an.jpg') },
+        { id: '3', name: 'Program with Tynker', teacher: 'VuNT', price: '2.000.000 VND', image: require('../../assets/Lesson/kid3.jpg'), avatar: require('../../assets/Lesson/vu.jpg') },
+        { id: '4', name: 'Program with Blockly', teacher: 'ThienTr', price: '2.500.000 VND', image: require('../../assets/Lesson/kid4.jpg'), avatar: require('../../assets/Lesson/thien.jpg') },
         { id: '5', name: 'Lập trình with C', teacher: 'CongLT', price: '1.500.000 VND' },
         { id: '6', name: 'Lập trình with C', teacher: 'CongLT', price: '1.500.000 VND' },
     ];
@@ -48,7 +48,7 @@ const BookMark = ({ route }) => {
                     </View>
                     <Text style={{ marginLeft: wp('1.5%'), fontSize: wp('4%'), fontWeight: '500' }}>{item.name}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
-                        <Image source={teacher} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
+                        <Image source={teacher1} style={{ width: wp('5%'), height: hp('3%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                         <Text style={{
                             fontWeight: 'bold',
                             color: '#40BFFF',

@@ -2,30 +2,29 @@ import React from 'react';
 import { Text, View, Image } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import welcome from './screens/Welcome'
+import welcome from './screens/Parents/Welcome'
 import Login from './screens/Login'
 import SignUp from './screens/SignUp'
-import HomePage from './screens/HomePage';
+import HomePage from './screens/Parents/HomePage';
 import Schedule1 from './assets/HomePage/schedule.png';
 import Search from './screens/Search'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import lessonDetails from './screens/LessonDetails';
+import lessonDetails from './screens/Parents/LessonDetails';
 import MyCourse from './screens/MyCourse';
 import { useNavigation } from "@react-navigation/native";
-import MentorDetails from './screens/MentorDetails';
-import PopularCourse from './screens/PopularCourse';
-import TopMentor from './screens/TopMentor';
-import BookMark from './screens/BookMark';
+import MentorDetails from './screens/Parents/MentorDetails';
+import PopularCourse from './screens/Parents/PopularCourse';
+import TopMentor from './screens/Parents/TopMentor';
 import Course from './screens/Course';
 import { LogBox } from 'react-native';
-import PayMethods from './screens/PayMethods';
+import PayMethods from './screens/Parents/PayMethods';
 import ReviewSum from './screens/ReviewSum';
-import Payment from './screens/Payment';
-import Success from './screens/Success';
-import Order from './screens/Order';
-import OrderDetail from './screens/OrderDetail';
-import CancelOrder from './screens/CancelOrder';
+import Payment from './screens/Parents/Payment';
+import Success from './screens/Parents/Success';
+import Order from './screens/Parents/Order';
+import OrderDetail from './screens/Parents/OrderDetail';
+import CancelOrder from './screens/CancelOrder'; 
 import CancelDetail from './screens/CancelDetail';
 import Profile from './screens/Profile';
 import ChildProcess from './screens/ChildProcess';
@@ -40,10 +39,11 @@ import GameIntro from './screens/GameIntro';
 import AccountDetail from './screens/AccountDetail';
 import Notification from './screens/Notification';
 import KidSearch from './screens/KidSearch';
-import FreeCourse from './screens/FreeCourse';
+import FreeCourse from './screens/Parents/FreeCourse';
+import BookMark from './screens/Parents/BookMark';
 const Tab = createBottomTabNavigator();
-LogBox.ignoreLogs(['new NativeEventEmitter']);
-LogBox.ignoreAllLogs();
+// LogBox.ignoreLogs(['new NativeEventEmitter']);
+// LogBox.ignoreAllLogs();
 function MyTabs() {
   const navigation = useNavigation();
   const goBack = () => {
