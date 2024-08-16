@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList, Pressable, Linking, Modal } from 'react-native'
+import { ImageBackground, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList, Pressable, Linking, Modal, TextInput } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from "@react-navigation/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -20,18 +20,37 @@ import lesson from '../../assets/Profile/book2.png'
 import answer from '../../assets/Profile/reading.png'
 import quizPic from '../../assets/Profile/quiz.png'
 import close from '../../assets/welcome/close1.png'
-
+import readBack from '../../assets/Quiz/stduy.jpg'
+import HTML from 'react-native-render-html';
+import { useWindowDimensions } from 'react-native';
+import freecourse from '../../assets/Lesson/kid2.jpg'
 const FreeCourse = ({ route }) => {
     // usePreventScreenCapture();
     const [isModalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
     const { Id } = route.params;
+    const { width: windowWidth } = useWindowDimensions();
     useEffect(() => {
         fetchClass()
     }, []);
     const [showLessons, setShowLessons] = useState({});
     const [showVideo, setShowVideo] = useState(false);
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
     const render = ({ item, index }) => {
+        const htmlContent = `
+<p>Coding can help you earn more.
+The average entry-level salary in the U.S. is $40,153 in 2022. But the average starting salary for a programmer is more than twice as much, at $85,293.</p>
+
+<p>There's no denying the financial advantages of coding skills. The tech industry is known for its lucrative salary packages, and as someone who transitioned into this field, the financial uplift was a significant motivator.</p>
+
+<p>We mentioned earlier that there are differences between coders and programmers. As you continue to learn about coding, you may start to specialize. Many of the highest coding salaries come from the ability to offer your skills in a specific type of coding.</p>
+
+<p>For example, as you continue to code, you may become a developer. Besides writing code, developers also debug software and work with source code. Developers usually specialize in a specific programming language.</p>
+
+<p>Developers often earn higher salaries than programmers and have high projected job growth. According to the U.S. Bureau of Labor Statistics, jobs for developers should grow by 22% by 2030.</p>
+`;
         return (
             <View key={item.id}>
                 <TouchableOpacity
@@ -71,11 +90,10 @@ const FreeCourse = ({ route }) => {
                                                 }} source={open} />
                                             </TouchableOpacity>
                                         ) : lesson.type === 'Document' ? (
-                                            <TouchableOpacity style={{ position: 'absolute', right: wp('2%') }}>
+                                            <TouchableOpacity style={{ position: 'absolute', right: wp('2%') }} onPress={toggleModal}>
                                                 <Image style={{
                                                     width: wp('9%'),
                                                     height: hp('4.5%'),
-                                                    // position: 'absolute', right: wp('2%')
                                                 }} source={answer} />
                                             </TouchableOpacity>
                                         ) : (
@@ -86,6 +104,36 @@ const FreeCourse = ({ route }) => {
                                             }} source={game} />
                                         )
                                         }
+                                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                            <Modal visible={isModalVisible} transparent={false} statusBarTranslucent={true} animationType='slide'>
+                                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+                                                    <TouchableOpacity style={styles.closeDocument} onPress={closeDoc}>
+                                                        <Image source={close} style={styles.buttonClose} />
+                                                    </TouchableOpacity>
+                                                    <View style={styles.Popup}>
+                                                        <ImageBackground source={readBack} style={{ height: hp('70%'), borderRadius: 10, marginTop: 10 }}>
+                                                            <View style={{ paddingLeft: wp('10%'), width: wp('84%'), marginTop: hp('2%') }}>
+                                                                <ScrollView showsVerticalScrollIndicator={false} style={{ height: hp('55%'), marginTop: hp('2%') }}>
+                                                                    <HTML
+                                                                        source={{ html: htmlContent }}
+                                                                        contentWidth={windowWidth}
+                                                                        tagsStyles={{
+                                                                            p: { fontSize: wp('4%') },
+                                                                            h1: { fontSize: wp('5%') },
+                                                                            h2: { fontSize: wp('5%') },
+                                                                            h3: { fontSize: wp('5%') },
+                                                                        }}
+                                                                    />
+                                                                    {/* <View style={{}}>
+                                                                        <Text style={{ textAlign: 'left', width: wp('75%'), fontSize: wp('4.5%'), height: hp('60%'), paddingBottom: hp('2%') }}>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc</Text>
+                                                                    </View> */}
+                                                                </ScrollView>
+                                                            </View>
+                                                        </ImageBackground>
+                                                    </View>
+                                                </View>
+                                            </Modal>
+                                        </View>
                                     </TouchableOpacity>
                                 ))}
                                 {item.quizzes?.map((quiz, index) => (
@@ -151,13 +199,16 @@ const FreeCourse = ({ route }) => {
             <View style={{ height: 300, alignItems: 'center' }}>
                 <WebView style={{ width: wp('100%') }}
                     allowsFullscreenVideo
-                    source={{ uri: 'https://www.youtube.com/embed/mpSmBuco6I0?si=p1hauMk3VsiiPzzR%22%20title=' }}
+                    source={{ uri: 'https://drive.google.com/file/d/1HbFzkqKh7_uaDdiDjAWBpvpJuT9tOaEC/preview' }}
                 />
             </View>
         );
     };
     const closeModal = () => {
         setShowVideo(false);
+    };
+    const closeDoc = () => {
+        setModalVisible(false);
     };
     const renderScene = SceneMap({
         about: () => (
@@ -253,7 +304,7 @@ const FreeCourse = ({ route }) => {
                     <Loading />
                 </View>
             ) : (
-                <ImageBackground source={{ uri: courseData.pictureUrl }} style={{ width: wp('100%'), height: hp('40%') }}>
+                <ImageBackground source={freecourse} style={{ width: wp('100%'), height: hp('40%') }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: wp('6%'), paddingRight: wp('6%'), marginTop: hp('5%') }}>
                         <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'white', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>
                             <TouchableOpacity onPress={goBack}>
@@ -436,13 +487,18 @@ const styles = StyleSheet.create({
     Popup: {
         backgroundColor: 'white',
         width: wp('90%'),
-        height: isSmallPhone || isSmallTablet ? hp('82%') : hp('77%'),
+        height: isSmallPhone || isSmallTablet ? hp('80%') : hp('72%'),
         borderRadius: 10,
     },
     closeButton: {
         position: 'absolute',
         top: hp('20%'),
         right: wp('2%')
+    },
+    closeDocument: {
+        position: 'absolute',
+        top: hp('10%'),
+        right: wp('5%')
     },
     ClassInfo: {
         fontSize: isSmallPhone || isSmallTablet ? wp('4.5%') : wp('5.5%'),

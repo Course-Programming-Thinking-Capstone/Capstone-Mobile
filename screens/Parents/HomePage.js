@@ -25,6 +25,8 @@ import notiIn from '../../assets/HomePage/notiIn.png'
 import { getTeacher } from '../../Api/Teacher';
 import cong from '../../assets/Lesson/cong2.jpg'
 import ava from '../../assets/Profile/gamer.png'
+import paycourse from '../../assets/Lesson/kid1.jpg'
+import freecourse from '../../assets/Lesson/kid2.jpg'
 
 const HomePage = ({ navigation }) => {
     const [course, setCourse] = useState([])
@@ -104,7 +106,7 @@ const HomePage = ({ navigation }) => {
         <TouchableOpacity style={[styles.Course, { height: hp('25%') }]} onPress={() => {
             navigation.navigate('FreeCourse', { Id: item.id })
         }}>
-            <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
+            <Image source={freecourse} style={styles.Image} />
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp('0.5%') }}>
                 <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%'), marginLeft: wp('1%') }} />
                 <Text style={styles.Name}>{item.name}</Text>
@@ -140,7 +142,7 @@ const HomePage = ({ navigation }) => {
                 Id: item.id
             })
         }}>
-            <Image source={{ uri: item.pictureUrl }} style={styles.Image} />
+            <Image source={paycourse} style={styles.Image} />
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, paddingLeft: wp('1%'),position:'absolute',top:hp('15%') }}>
                 <Image source={learning} style={{ width: wp('5%'), height: hp('2%'), marginRight: wp('2.5%')}} />
                 <Text style={styles.Name}>{item.name}</Text>
@@ -184,7 +186,7 @@ const HomePage = ({ navigation }) => {
                             </View>
                             <Text style={styles.Text}>Let's start learning!</Text>
                         </View>
-                        <TouchableOpacity onPress={() => { navigation.navigate('Notification') }} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('9%'), borderRadius: 10 }}>
+                        <TouchableOpacity onPress={() => { navigation.navigate('Notification') }} style={{ backgroundColor: '#83AFFA', height: hp('3%'), width: wp('9%'), paddingTop: hp('0.7%'), paddingBottom: hp('3.7%'), marginRight: wp('8.5%'), borderRadius: 10 }}>
                             <Image source={allRead ? notiIn : noti} style={[styles.Noti, { marginLeft: allRead ? wp('1.5%') : wp('1.5%') }]} />
                         </TouchableOpacity>
                     </View>
@@ -246,7 +248,7 @@ const HomePage = ({ navigation }) => {
                         <View style={styles.Title}>
                             <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Pay Course</Text>
                             <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text onPress={() => { navigation.navigate('PopularCourse', { paidCourses }) }} style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }}>View all</Text>
+                                <Text onPress={() => { navigation.navigate('PopularCourse', { paidCourses }) }} style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }}>View all</Text>
                                 <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                             </TouchableOpacity>
                         </View>
@@ -266,7 +268,7 @@ const HomePage = ({ navigation }) => {
                     <View style={styles.EventTitle}>
                         <Text style={{ fontWeight: 'bold', color: '#223263', fontSize: wp('4%') }}>Top Mentor</Text>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%') }} >View all</Text>
+                            <Text style={{ fontWeight: 'bold', color: '#40BFFF', fontSize: wp('4%'), marginRight: wp('1.5%') }} >View all</Text>
                             <Image source={right} style={{ width: wp('4%'), height: hp('2.7%') }} />
                         </TouchableOpacity>
                     </View>
@@ -331,7 +333,7 @@ const styles = StyleSheet.create({
     Search: {
         marginTop: hp('3.5%'),
         marginRight: wp('4%'),
-        width: wp('69%'),
+        width: wp('72%'),
         height: hp('6.3%'),
         borderColor: '#EFEFEF',
         borderWidth: 1,

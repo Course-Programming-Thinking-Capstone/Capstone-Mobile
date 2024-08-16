@@ -21,6 +21,7 @@ import gameBtn from '../../assets/Game/game.jpg'
 import drop from '../../assets/MyCourse/drop.png'
 import answer from '../../assets/Profile/reading.png'
 import quizPic from '../../assets/Profile/quiz.png'
+import paycourse from '../../assets/Lesson/kid1.jpg'
 const LessonDetails = ({ route }) => {
     const [showVideo, setShowVideo] = useState(false);
     const [payment, setPayment] = React.useState('');
@@ -314,7 +315,7 @@ const LessonDetails = ({ route }) => {
                     <Loading />
                 </View>
             ) : (
-                <ImageBackground source={{ uri: courseData.pictureUrl }} style={{ width: wp('100%'), height: hp('40%') }}>
+                <ImageBackground source={paycourse} style={{ width: wp('100%'), height: hp('40%') }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: wp('6%'), paddingRight: wp('6%'), marginTop: hp('5%') }}>
                         <View style={{ borderRadius: 30, borderColor: 'white', backgroundColor: 'white', borderWidth: 1, width: wp('10%'), alignItems: 'center', height: hp('5%'), justifyContent: 'center' }}>
                             <TouchableOpacity onPress={goBack}>
